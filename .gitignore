@@ -1,0 +1,10 @@
+/.gradle
+/.idea
+/.vs
+/build
+/out
+/vsbuild
+
+/buildSrc/.gradle
+/buildSrc/build
+/buildSrc/out
