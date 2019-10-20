@@ -37,7 +37,7 @@ open class GenerateOpenModuleInfo : DefaultTask() {
     @TaskAction
     fun run() {
         outputFile.delete()
-        outputFile.writeText("open module com.github.gw2toolbelt.gw2ml {}")
+        outputFile.writeText("open module $moduleName {}")
     }
 
 }
