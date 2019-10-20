@@ -20,6 +20,8 @@
  * SOFTWARE.
  */
 import com.github.gw2toolbelt.build.*
+import com.github.gw2toolbelt.build.tasks.*
+import org.gradle.api.publish.maven.MavenPom
 import org.gradle.internal.jvm.*
 
 plugins {
@@ -142,6 +144,112 @@ tasks {
         archiveClassifier.set("javadoc")
         from(javadoc.get().outputs)
     }
+
+    val compileNative = create<Exec>("compileNative") {
+        executable = "cl"
+        workingDir = mkdir(File(buildDir, "compileNative/tmp"))
+
+        args("/LD")
+        args("/Wall")
+        args("/O2")
+
+        inputs.files(fileTree(file("src/main/c")) {
+            include("*.c")
+            include("*.h")
+        })
+
+        val output = File(buildDir, "compileNative/gw2ml.dll")
+        outputs.files(output)
+
+        doFirst {
+            var jdk8Home = Jvm.current().javaHome
+            if (jdk8Home === null || (Jvm.current().javaVersion!! !== JavaVersion.VERSION_1_8)) {
+                val jdk8Props = arrayOf(
+                    "JDK8_HOME",
+                    "JAVA8_HOME",
+                    "JDK_8"
+                )
+
+                jdk8Home = jdk8Props.mapNotNull { System.getenv(it) }
+                    .map { File(it) }
+                    .firstOrNull(File::exists) ?: throw Error("Could not find valid JDK8 home")
+            }
+
+            args("/I${jdk8Home}/include")
+            args("/I${jdk8Home}/include/win32")
+            args(inputs.files)
+            args("/Fe:${output.absolutePath}")
+        }
+    }
+
+    val generateNativeModuleInfo = create<GenerateOpenModuleInfo>("generateNativeModuleInfo") {
+        moduleName = "com.github.gw2toolbelt.gw2ml.natives"
+    }
+
+    val compileNativeModuleInfo = create<JavaCompile>("compileNativeModuleInfo") {
+        dependsOn(generateNativeModuleInfo)
+
+        val ftSource = fileTree(generateNativeModuleInfo.outputFile.parentFile)
+        ftSource.include("**/*.java")
+        options.sourcepath = files(generateNativeModuleInfo.outputFile.parentFile)
+        source = ftSource
+
+        classpath = files()
+        destinationDir = File(buildDir, "classes/compileNativeModuleInfo/main")
+
+        sourceCompatibility = "9"
+        targetCompatibility = "9"
+
+        // Workaround for https://github.com/gradle/gradle/issues/2510
+        options.compilerArgs.addAll(listOf("--release", "9"))
+
+        /*
+         * If the JVM used to invoke Gradle is JDK 9 or later, there is no reason to require a separate JDK 9 instance.
+         */
+        if (!currentJVMAtLeast9) {
+            val jdk9Props = arrayOf(
+                "JDK9_HOME",
+                "JAVA9_HOME",
+                "JDK_9"
+            )
+
+            val jdk9Home = jdk9Props.mapNotNull { System.getenv(it) }
+                .map { File(it) }
+                .firstOrNull(File::exists) ?: throw Error("Could not find valid JDK9 home")
+            options.forkOptions.javaHome = jdk9Home
+            options.isFork = true
+        }
+    }
+
+    create<Jar>("nativeJar") {
+        dependsOn(compileNative)
+        dependsOn(compileNativeModuleInfo)
+
+        archiveClassifier.set("natives-windows")
+
+        into("META-INF/versions/9") {
+            from(compileJava9.outputs.files.filter(File::isDirectory)) {
+                exclude("**/Stub.class")
+            }
+
+            includeEmptyDirs = false
+        }
+
+        from(compileNative.outputs) {
+            into("windows/x64/com/github/gw2toolbelt/gw2ml")
+        }
+
+        manifest {
+            attributes(mapOf(
+                "Name" to project.name,
+                "Specification-Version" to project.version,
+                "Specification-Vendor" to "Leon Linhart <themrmilchmann@gmail.com>",
+                "Implementation-Version" to project.version,
+                "Implementation-Vendor" to "Leon Linhart <themrmilchmann@gmail.com>",
+                "Multi-Release" to "true"
+            ))
+        }
+    }
 }
 
 publishing {
@@ -156,6 +264,36 @@ publishing {
         }
     }
     publications {
+        fun MavenPom.setupMavenPom() {
+            name.set(project.name)
+            description.set("A Java library for accessing data provided by a Guild Wars 2 game client via the MumbleLink mechanism.")
+            packaging = "jar"
+            url.set("https://github.com/GW2Toolbelt/GW2ML")
+
+            licenses {
+                license {
+                    name.set("MIT")
+                    url.set("https://github.com/GW2Toolbelt/GW2ML/blob/master/LICENSE")
+                    distribution.set("repo")
+                }
+            }
+
+            developers {
+                developer {
+                    id.set("TheMrMilchmann")
+                    name.set("Leon Linhart")
+                    email.set("themrmilchmann@gmail.com")
+                    url.set("https://github.com/TheMrMilchmann")
+                }
+            }
+
+            scm {
+                connection.set("scm:git:git://github.com/GW2Toolbelt/GW2ML.git")
+                developerConnection.set("scm:git:git://github.com/GW2Toolbelt/GW2ML.git")
+                url.set("https://github.com/GW2Toolbelt/GW2ML.git")
+            }
+        }
+
         create<MavenPublication>("mavenJava") {
             from(components["java"])
             artifact(tasks["sourcesJar"])
@@ -164,33 +302,16 @@ publishing {
             artifactId = artifactName
 
             pom {
-                name.set(project.name)
-                description.set("A Java library for accessing data provided by a Guild Wars 2 game client via the MumbleLink mechanism.")
-                packaging = "jar"
-                url.set("https://github.com/GW2Toolbelt/GW2ML")
+                setupMavenPom()
+            }
+        }
+        create<MavenPublication>("mavenNative") {
+            artifact(tasks["nativeJar"])
 
-                licenses {
-                    license {
-                        name.set("MIT")
-                        url.set("https://github.com/GW2Toolbelt/GW2ML/blob/master/LICENSE")
-                        distribution.set("repo")
-                    }
-                }
+            artifactId = artifactName
 
-                developers {
-                    developer {
-                        id.set("TheMrMilchmann")
-                        name.set("Leon Linhart")
-                        email.set("themrmilchmann@gmail.com")
-                        url.set("https://github.com/TheMrMilchmann")
-                    }
-                }
-
-                scm {
-                    connection.set("scm:git:git://github.com/GW2Toolbelt/GW2ML.git")
-                    developerConnection.set("scm:git:git://github.com/GW2Toolbelt/GW2ML.git")
-                    url.set("https://github.com/GW2Toolbelt/GW2ML.git")
-                }
+            pom {
+                setupMavenPom()
             }
         }
     }
