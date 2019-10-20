@@ -287,7 +287,7 @@ public final class MumbleLink implements AutoCloseable {
     /**
      * TODO doc
      *
-     * @param dest
+     * @param dest  the array to store the data in
      *
      * @throws IllegalArgumentException if {@code dest.length != 3}
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
@@ -304,7 +304,7 @@ public final class MumbleLink implements AutoCloseable {
     /**
      * TODO doc
      *
-     * @param dest
+     * @param dest  the array to store the data in
      *
      * @throws IllegalArgumentException if {@code dest.length != 3}
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
@@ -321,7 +321,7 @@ public final class MumbleLink implements AutoCloseable {
     /**
      * TODO doc
      *
-     * @param dest
+     * @param dest  the array to store the data in
      *
      * @throws IllegalArgumentException if {@code dest.length != 3}
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
@@ -356,7 +356,7 @@ public final class MumbleLink implements AutoCloseable {
     /**
      * TODO doc
      *
-     * @param dest
+     * @param dest  the array to store the data in
      *
      * @throws IllegalArgumentException if {@code dest.length != 3}
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
@@ -373,7 +373,7 @@ public final class MumbleLink implements AutoCloseable {
     /**
      * TODO doc
      *
-     * @param dest
+     * @param dest  the array to store the data in
      *
      * @throws IllegalArgumentException if {@code dest.length != 3}
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
@@ -390,7 +390,7 @@ public final class MumbleLink implements AutoCloseable {
     /**
      * TODO doc
      *
-     * @param dest
+     * @param dest  the array to store the data in
      *
      * @throws IllegalArgumentException if {@code dest.length != 3}
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
