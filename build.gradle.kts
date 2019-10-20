@@ -279,54 +279,42 @@ publishing {
         }
     }
     publications {
-        fun MavenPom.setupMavenPom() {
-            name.set(project.name)
-            description.set("A Java library for accessing data provided by a Guild Wars 2 game client via the MumbleLink mechanism.")
-            packaging = "jar"
-            url.set("https://github.com/GW2Toolbelt/GW2ML")
-
-            licenses {
-                license {
-                    name.set("MIT")
-                    url.set("https://github.com/GW2Toolbelt/GW2ML/blob/master/LICENSE")
-                    distribution.set("repo")
-                }
-            }
-
-            developers {
-                developer {
-                    id.set("TheMrMilchmann")
-                    name.set("Leon Linhart")
-                    email.set("themrmilchmann@gmail.com")
-                    url.set("https://github.com/TheMrMilchmann")
-                }
-            }
-
-            scm {
-                connection.set("scm:git:git://github.com/GW2Toolbelt/GW2ML.git")
-                developerConnection.set("scm:git:git://github.com/GW2Toolbelt/GW2ML.git")
-                url.set("https://github.com/GW2Toolbelt/GW2ML.git")
-            }
-        }
-
         create<MavenPublication>("mavenJava") {
             from(components["java"])
             artifact(tasks["sourcesJar"])
             artifact(tasks["javadocJar"])
-
-            artifactId = artifactName
-
-            pom {
-                setupMavenPom()
-            }
-        }
-        create<MavenPublication>("mavenNative") {
             artifact(tasks["nativeJar"])
 
             artifactId = artifactName
 
             pom {
-                setupMavenPom()
+                name.set(project.name)
+                description.set("A Java library for accessing data provided by a Guild Wars 2 game client via the MumbleLink mechanism.")
+                packaging = "jar"
+                url.set("https://github.com/GW2Toolbelt/GW2ML")
+
+                licenses {
+                    license {
+                        name.set("MIT")
+                        url.set("https://github.com/GW2Toolbelt/GW2ML/blob/master/LICENSE")
+                        distribution.set("repo")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("TheMrMilchmann")
+                        name.set("Leon Linhart")
+                        email.set("themrmilchmann@gmail.com")
+                        url.set("https://github.com/TheMrMilchmann")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:git://github.com/GW2Toolbelt/GW2ML.git")
+                    developerConnection.set("scm:git:git://github.com/GW2Toolbelt/GW2ML.git")
+                    url.set("https://github.com/GW2Toolbelt/GW2ML.git")
+                }
             }
         }
     }
