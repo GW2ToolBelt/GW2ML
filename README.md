@@ -18,7 +18,7 @@ as possible. The primary entry-point for the library is [MumbleLink.open()](http
 Follow the documentation of that class if you want to learn more about how to
 use GW2ML.
 
-A basic can be found [here](https://github.com/TheMrMilchmann/GW2ML/blob/master/src/test/java/com/example/Sample.java).
+An example can be found [here](https://github.com/TheMrMilchmann/GW2ML/blob/master/src/test/java/com/example/Sample.java).
 
 
 ## Building from source
