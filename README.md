@@ -1,5 +1,42 @@
 # GW2ML
 
+GW2ML is a Java library for accessing the data provided by the Guild Wars 2
+game client via the MumbleLink mechanism with as little overhead as possible.
+
+The library is still supporting Java 8 and makes use of Java 9's multi-release
+feature to fully support the module system.
+
+
+**NOTE: While this library is fully functional its documentation is currently
+still lackluster. [Read more about the current state of this library.](https://github.com/TheMrMilchmann/GW2ML/issues/9)**
+
+
+## Usage
+
+The library was designed to provide a simple API while remaining as efficient
+as possible. The primary entry-point for the library is [`MumbleLink.open()](https://github.com/TheMrMilchmann/GW2ML/blob/master/src/main/java/com/github/gw2toolbelt/gw2ml/MumbleLink.java#L89)https://github.com/TheMrMilchmann/GW2ML/blob/master/src/main/java/com/github/gw2toolbelt/gw2ml/MumbleLink.java#L89).
+Follow the documentation of that class if you want to learn more about how to
+use GW2ML.
+
+A basic can be found [here](https://github.com/TheMrMilchmann/GW2ML/blob/master/src/test/java/com/example/Sample.java).
+
+
+## Building from source
+
+Building GW2ML requires two JDK installations set up as follows:
+1. One of `JDK8_HOME`, `JAVA8_HOME`, or `JDK_8` must point at a valid JDK8
+   installation.
+2. One of `JDK9_HOME`, `JAVA9_HOME`, or `JDK_9` must point at a valid
+   installation of a JDK that support compiling to Java 9 bytecode.
+
+Once the setup is complete, building GW2ML is as simple as invoking the desired
+Gradle task. For example: In order to run a full build of the project, call:
+
+        ./gradlew build
+
+Compiling the native components of the library is currently only supported on
+windows hosts. If you wish to build only the Java components please use the
+`assemble` task instead.
 
 
 ## License

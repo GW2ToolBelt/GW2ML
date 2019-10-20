@@ -250,6 +250,11 @@ tasks {
             ))
         }
     }
+
+    build {
+        dependsOn(compileNative)
+        dependsOn(compileNativeModuleInfo)
+    }
 }
 
 publishing {
