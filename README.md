@@ -14,7 +14,7 @@ still lackluster. [Read more about the current state of this library.](https://g
 ## Usage
 
 The library was designed to provide a simple API while remaining as efficient
-as possible. The primary entry-point for the library is [`MumbleLink.open()](https://github.com/TheMrMilchmann/GW2ML/blob/master/src/main/java/com/github/gw2toolbelt/gw2ml/MumbleLink.java#L89)https://github.com/TheMrMilchmann/GW2ML/blob/master/src/main/java/com/github/gw2toolbelt/gw2ml/MumbleLink.java#L89).
+as possible. The primary entry-point for the library is [MumbleLink.open()](https://github.com/TheMrMilchmann/GW2ML/blob/master/src/main/java/com/github/gw2toolbelt/gw2ml/MumbleLink.java#L89).
 Follow the documentation of that class if you want to learn more about how to
 use GW2ML.
 
