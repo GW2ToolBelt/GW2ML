@@ -289,16 +289,20 @@ public final class MumbleLink implements AutoCloseable {
      *
      * @param dest  the array to store the data in
      *
+     * @return  the {@code dest} array
+     *
      * @throws IllegalArgumentException if {@code dest.length != 3}
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
      *
      * @since   0.1.0
      */
-    public void getAvatarPosition(float[] dest) {
+    public float[] getAvatarPosition(float[] dest) {
         if (dest.length != 3) throw new IllegalArgumentException();
 
         this.validateState();
         for (int i = 0; i < 3; i++) dest[i] = data.getFloat(OFFSET_fAvatarPosition + i * Float.BYTES);
+
+        return dest;
     }
 
     /**
@@ -306,16 +310,20 @@ public final class MumbleLink implements AutoCloseable {
      *
      * @param dest  the array to store the data in
      *
+     * @return  the {@code dest} array
+     *
      * @throws IllegalArgumentException if {@code dest.length != 3}
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
      *
      * @since   0.1.0
      */
-    public void getAvatarFront(float[] dest) {
+    public float[] getAvatarFront(float[] dest) {
         if (dest.length != 3) throw new IllegalArgumentException();
 
         this.validateState();
         for (int i = 0; i < 3; i++) dest[i] = data.getFloat(OFFSET_fAvatarFront + i * Float.BYTES);
+
+        return dest;
     }
 
     /**
@@ -323,16 +331,20 @@ public final class MumbleLink implements AutoCloseable {
      *
      * @param dest  the array to store the data in
      *
+     * @return  the {@code dest} array
+     *
      * @throws IllegalArgumentException if {@code dest.length != 3}
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
      *
      * @since   0.1.0
      */
-    public void getAvatarTop(float[] dest) {
+    public float[] getAvatarTop(float[] dest) {
         if (dest.length != 3) throw new IllegalArgumentException();
 
         this.validateState();
         for (int i = 0; i < 3; i++) dest[i] = data.getFloat(OFFSET_fAvatarTop + i * Float.BYTES);
+
+        return dest;
     }
 
     /**
@@ -358,16 +370,20 @@ public final class MumbleLink implements AutoCloseable {
      *
      * @param dest  the array to store the data in
      *
+     * @return  the {@code dest} array
+     *
      * @throws IllegalArgumentException if {@code dest.length != 3}
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
      *
      * @since   0.1.0
      */
-    public void getCameraPosition(float[] dest) {
+    public float[] getCameraPosition(float[] dest) {
         if (dest.length != 3) throw new IllegalArgumentException();
 
         this.validateState();
         for (int i = 0; i < 3; i++) dest[i] = data.getFloat(OFFSET_fCameraPosition + i * Float.BYTES);
+
+        return dest;
     }
 
     /**
@@ -375,16 +391,20 @@ public final class MumbleLink implements AutoCloseable {
      *
      * @param dest  the array to store the data in
      *
+     * @return  the {@code dest} array
+     *
      * @throws IllegalArgumentException if {@code dest.length != 3}
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
      *
      * @since   0.1.0
      */
-    public void getCameraFront(float[] dest) {
+    public float[] getCameraFront(float[] dest) {
         if (dest.length != 3) throw new IllegalArgumentException();
 
         this.validateState();
         for (int i = 0; i < 3; i++) dest[i] = data.getFloat(OFFSET_fCameraFront + i * Float.BYTES);
+
+        return dest;
     }
 
     /**
@@ -392,16 +412,20 @@ public final class MumbleLink implements AutoCloseable {
      *
      * @param dest  the array to store the data in
      *
+     * @return  the {@code dest} array
+     *
      * @throws IllegalArgumentException if {@code dest.length != 3}
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
      *
      * @since   0.1.0
      */
-    public void getCameraTop(float[] dest) {
+    public float[] getCameraTop(float[] dest) {
         if (dest.length != 3) throw new IllegalArgumentException();
 
         this.validateState();
         for (int i = 0; i < 3; i++) dest[i] = data.getFloat(OFFSET_fCameraTop + i * Float.BYTES);
+
+        return dest;
     }
 
     /**
