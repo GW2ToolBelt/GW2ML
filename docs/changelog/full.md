@@ -1,0 +1,11 @@
+### 0.1.0
+
+_2019 Oct 31_
+
+#### Overview
+
+This is the first pre-release of GW2ML, a library for accessing data provided by
+the Guild Wars 2 game client via the MumbleLink mechanism.
+
+This is a initial version is published for easy public consumption and the API
+might change in the future (although that is unlikely).
