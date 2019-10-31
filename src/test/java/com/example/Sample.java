@@ -33,39 +33,41 @@ public class Sample {
             while (true) {
                 float[] buffer = new float[3];
 
-                System.out.println(String.format("uiVersion:\t\t%s", mumbleLink.getUIVersion()));
-                System.out.println(String.format("uiTick:\t\t%s", mumbleLink.getUITick()));
+                System.out.println("=== GW2ML Sample ===");
+                System.out.println(String.format("uiVersion:\t\t\t\t%s", mumbleLink.getUIVersion()));
+                System.out.println(String.format("uiTick:\t\t\t\t\t%s", mumbleLink.getUITick()));
                 System.out.println(String.format("fAvatarPosition:\t\t%s", Arrays.toString(mumbleLink.getAvatarPosition(buffer))));
-                System.out.println(String.format("fAvatarFront:\t\t%s", Arrays.toString(mumbleLink.getAvatarFront(buffer))));
-                System.out.println(String.format("fAvatarTop:\t\t%s", Arrays.toString(mumbleLink.getAvatarTop(buffer))));
-                System.out.println(String.format("name:\t\t%s", mumbleLink.getName()));
+                System.out.println(String.format("fAvatarFront:\t\t\t%s", Arrays.toString(mumbleLink.getAvatarFront(buffer))));
+                System.out.println(String.format("fAvatarTop:\t\t\t\t%s", Arrays.toString(mumbleLink.getAvatarTop(buffer))));
+                System.out.println(String.format("name:\t\t\t\t\t%s", mumbleLink.getName()));
                 System.out.println(String.format("fCameraPosition:\t\t%s", Arrays.toString(mumbleLink.getCameraPosition(buffer))));
-                System.out.println(String.format("fCameraFront:\t\t%s", Arrays.toString(mumbleLink.getCameraFront(buffer))));
-                System.out.println(String.format("fCameraTop:\t\t%s", Arrays.toString(mumbleLink.getCameraTop(buffer))));
-                System.out.println(String.format("identity:\t\t%s", mumbleLink.getIdentity()));
-                System.out.println(String.format("contextLength:\t\t%s", mumbleLink.getContextLength()));
+                System.out.println(String.format("fCameraFront:\t\t\t%s", Arrays.toString(mumbleLink.getCameraFront(buffer))));
+                System.out.println(String.format("fCameraTop:\t\t\t\t%s", Arrays.toString(mumbleLink.getCameraTop(buffer))));
+                System.out.println(String.format("identity:\t\t\t\t%s", mumbleLink.getIdentity()));
+                System.out.println(String.format("contextLength:\t\t\t%s", mumbleLink.getContextLength()));
                 System.out.println(String.format("ctx_ServerAddress:\t\t%s", mumbleLink.getContext().getServerAddress()));
-                System.out.println(String.format("ctx_MapID:\t\t%s", mumbleLink.getContext().getMapID()));
-                System.out.println(String.format("ctx_MapType:\t\t%s", mumbleLink.getContext().getMapType()));
-                System.out.println(String.format("ctx_ShardID:\t\t%s", mumbleLink.getContext().getShardID()));
-                System.out.println(String.format("ctx_Instance:\t\t%s", mumbleLink.getContext().getInstance()));
-                System.out.println(String.format("ctx_BuildID:\t\t%s", mumbleLink.getContext().getBuildID()));
+                System.out.println(String.format("ctx_MapID:\t\t\t\t%s", mumbleLink.getContext().getMapID()));
+                System.out.println(String.format("ctx_MapType:\t\t\t%s", mumbleLink.getContext().getMapType()));
+                System.out.println(String.format("ctx_ShardID:\t\t\t%s", mumbleLink.getContext().getShardID()));
+                System.out.println(String.format("ctx_Instance:\t\t\t%s", mumbleLink.getContext().getInstance()));
+                System.out.println(String.format("ctx_BuildID:\t\t\t%s", mumbleLink.getContext().getBuildID()));
 
                 int uiState = mumbleLink.getContext().getUIState();
                 System.out.println(String.format(
-                    "ctx_UIState:\t\t%s (isMapOpen=%s, isCompassTopRight=%s, isCompassRotationEnabled=%s)",
+                    "ctx_UIState:\t\t\t%s (isMapOpen=%s, isCompassTopRight=%s, isCompassRotationEnabled=%s)",
                     uiState, UIState.isMapOpen(uiState), UIState.isCompassTopRight(uiState), UIState.isCompassRotationEnabled(uiState))
                 );
 
                 System.out.println(String.format("ctx_CompassWidth:\t\t%s", mumbleLink.getContext().getCompassWidth()));
                 System.out.println(String.format("ctx_CompassHeight:\t\t%s", mumbleLink.getContext().getCompassHeight()));
-                System.out.println(String.format("ctx_CompassRotation:\t\t%s", mumbleLink.getContext().getCompassRotation()));
-                System.out.println(String.format("ctx_PlayerX:\t\t%s", mumbleLink.getContext().getPlayerX()));
-                System.out.println(String.format("ctx_PlayerY:\t\t%s", mumbleLink.getContext().getPlayerY()));
-                System.out.println(String.format("ctx_MapCenterX:\t\t%s", mumbleLink.getContext().getMapCenterX()));
-                System.out.println(String.format("ctx_MapCenterY:\t\t%s", mumbleLink.getContext().getMapCenterY()));
-                System.out.println(String.format("ctx_MapScale:\t\t%s", mumbleLink.getContext().getMapScale()));
-                System.out.println(String.format("description:\t\t%s", mumbleLink.getDescription()));
+                System.out.println(String.format("ctx_CompassRotation:\t%s", mumbleLink.getContext().getCompassRotation()));
+                System.out.println(String.format("ctx_PlayerX:\t\t\t%s", mumbleLink.getContext().getPlayerX()));
+                System.out.println(String.format("ctx_PlayerY:\t\t\t%s", mumbleLink.getContext().getPlayerY()));
+                System.out.println(String.format("ctx_MapCenterX:\t\t\t%s", mumbleLink.getContext().getMapCenterX()));
+                System.out.println(String.format("ctx_MapCenterY:\t\t\t%s", mumbleLink.getContext().getMapCenterY()));
+                System.out.println(String.format("ctx_MapScale:\t\t\t%s", mumbleLink.getContext().getMapScale()));
+                System.out.println(String.format("description:\t\t\t%s", mumbleLink.getDescription()));
+                System.out.println();
 
                 sleepAtLeast(5, TimeUnit.SECONDS);
             }
