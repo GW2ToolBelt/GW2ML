@@ -235,6 +235,7 @@ tasks {
         dependsOn(compileNative)
         dependsOn(compileNativeModuleInfo)
 
+        archiveBaseName.set(artifactName)
         archiveClassifier.set("natives-windows")
 
         into("META-INF/versions/9") {
