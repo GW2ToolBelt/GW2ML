@@ -568,6 +568,7 @@ public final class MumbleLink implements AutoCloseable {
          *
          * @since   0.1.0
          */
+        @Nullable
         public InetSocketAddress getServerAddress() {
             MumbleLink.this.validateState();
 
@@ -626,8 +627,7 @@ public final class MumbleLink implements AutoCloseable {
                         throw new RuntimeException(e);
                     }
                 } break;
-                default:
-                    throw new IllegalStateException();
+                default: return null;
             }
 
             return new InetSocketAddress(inetAddress, port);
