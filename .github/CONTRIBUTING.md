@@ -29,12 +29,13 @@ If you are contributing documentation on how to use GW2ML, please describe why
 you think these improvements are necessary.
 
 If you are contributing documentation on how to use the data provided by GW2,
-please backup your explanation with sources in the description of your pull
+please back up your explanation with sources in the description of your pull
 request. (The JavaDoc should only contain references to sources from the GW2
 wiki or the Mumble wiki.)
 
 
 ## Contributing bug fixes
 
-If you are submitting a fix to a GW2ML bug, please describe the issue you fixing
-as well how you are fixing the issue in the description of your pull request.
+If you are submitting a fix to a GW2ML bug, please describe the issue you are
+fixing as well how you are fixing the issue in the description of your pull
+request.
