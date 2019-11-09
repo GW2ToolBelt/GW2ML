@@ -20,5 +20,3 @@
  * SOFTWARE.
  */
 rootProject.name = "GW2ML"
-
-enableFeaturePreview("GRADLE_METADATA")
