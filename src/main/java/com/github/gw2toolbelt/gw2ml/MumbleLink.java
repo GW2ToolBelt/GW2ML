@@ -285,7 +285,17 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * TODO doc
+     * Returns the position of the avatar (in meters).
+     *
+     * <p>Notes:</p>
+     *
+     * <ul>
+     * <li>Guild Wars 2's units correspond to inches.</li>
+     * <li>The coordinate system used by MumbleLink is left-handed.</li>
+     * <li>Due to limitations of the MumbleLink mechanism, it is possible that the underlying data is modified while
+     * reading, thus the returned position may be incorrect. (In practice, this is fairly rare and can just be ignored
+     * for the most part. Implement basic interpolation, if necessary.)</li>
+     * </ul>
      *
      * @param dest  the array to store the data in
      *
@@ -366,7 +376,17 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * TODO doc
+     * Returns the position of the camera (in meters).
+     *
+     * <p>Notes:</p>
+     *
+     * <ul>
+     * <li>Guild Wars 2's units correspond to inches.</li>
+     * <li>The coordinate system used by MumbleLink is left-handed.</li>
+     * <li>Due to limitations of the MumbleLink mechanism, it is possible that the underlying data is modified while
+     * reading, thus the returned position may be incorrect. (In practice, this is fairly rare and can just be ignored
+     * for the most part. Implement basic interpolation, if necessary.)</li>
+     * </ul>
      *
      * @param dest  the array to store the data in
      *
