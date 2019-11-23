@@ -546,11 +546,11 @@ public final class MumbleLink implements AutoCloseable {
          * is not modified:</p>
          *
          * <ul>
-         *     <li>The {@code srcOffset} argument is negative.</li>
-         *     <li>The {@code destOffset} argument is negative.</li>
-         *     <li>The {@code length} argument is negative.</li>
-         *     <li>{@code srcOffset + length} is greater than {@link #BYTES}, the length of the context</li>
-         *     <li>{@code destOffset + length} is greater than {@code dest.length}, the length of the destination array.</li>
+         * <li>The {@code srcOffset} argument is negative.</li>
+         * <li>The {@code destOffset} argument is negative.</li>
+         * <li>The {@code length} argument is negative.</li>
+         * <li>{@code srcOffset + length} is greater than {@link #BYTES}, the length of the context</li>
+         * <li>{@code destOffset + length} is greater than {@code dest.length}, the length of the destination array.</li>
          * </ul>
          *
          * @param srcOffset     starting position in the context
