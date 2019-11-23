@@ -78,6 +78,8 @@ public final class MumbleLink implements AutoCloseable {
      * @return  a {@code MumbleLink} object that may be used to read the data provided by Guild Wars 2 via the
      *          MumbleLink mechanism
      *
+     * @throws IllegalStateException    if an unexpected error occurs
+     *
      * @implNote    For better performance this implementation reuses MumbleLink objects whenever possible. In practice
      *              this means that closing a MumbleLink object might not have an immediate effect which in turn results
      *              into the object still being valid. However, once close has been invoked on a reference to an object,
