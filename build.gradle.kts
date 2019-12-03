@@ -38,78 +38,122 @@ version = when (deployment.type) {
     else -> nextVersion
 }
 
-val currentJVMAtLeast9 = Jvm.current().javaVersion!! >= JavaVersion.VERSION_1_9
-
 java {
-    /*
-     * Source- and target-compatibility are set here so that an IDE can easily pick them up. They are, however,
-     * overwritten by the compileJava task (as part of a workaround).
-     */
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+val currentJVM = Jvm.current() ?: error("Failed to detect current JVM.")
+val currentJVMVersion = currentJVM.javaVersion ?: error("Failed to detect version of the current JVM.")
+
+val String.toJDKHome get() = (findProperty(this) ?: System.getenv(this))?.let {
+    File(it.toString()).also(Jvm::forHome)
+} ?: error("Failed to locate JDK: $this")
+
+val jdk8Home by lazy {
+    if (currentJVMVersion.isJava8 && currentJVM.javaHome !== null) {
+        currentJVM.javaHome!!
+    } else {
+        "JDK_8".toJDKHome
+    }
+}
+val jdk9Home by lazy {
+    if (currentJVMVersion.isJava9 && currentJVM.javaHome !== null) {
+        currentJVM.javaHome!!
+    } else {
+        "JDK_9".toJDKHome
+    }
+}
+val jdk13Home by lazy {
+    if (currentJVMVersion == JavaVersion.VERSION_13 && currentJVM.javaHome !== null) {
+        currentJVM.javaHome!!
+    } else {
+        "JDK_13".toJDKHome
+    }
+}
+
 tasks {
     compileJava {
-        /* JDK 8 does not support the --release option */
-        if (Jvm.current().javaVersion!! > JavaVersion.VERSION_1_8) {
-            // Workaround for https://github.com/gradle/gradle/issues/2510
+        /*
+         * The main target of this library is Java 8. Thus, if we want to compile it in production mode, either the
+         * current JVM needs to support compilation to Java 8 or it must be a JDK 8 installation.
+         * The former is achieved by passing the "--release 8" parameter to the compiler. [1]
+         * However, there is a bug in JDK 9 preventing usage of the "--release" flag from the JDK Tools API. [2] Thus
+         * Gradle cannot invoke the compiler using that API and instead needs to use the command line.
+         *
+         * [1] https://github.com/gradle/gradle/issues/2510
+         * [2] https://bugs.openjdk.java.net/browse/JDK-8139607
+         */
+        if (currentJVMVersion > JavaVersion.VERSION_1_8) {
             options.compilerArgs.addAll(listOf("--release", "8"))
 
-            /*
-             * There is a bug in JDK 9 preventing usage of the --release option from Gradle, thus the process needs to
-             * be run in a fork. (https://bugs-stage.openjdk.java.net/browse/JDK-8139607)
-             */
-            if (Jvm.current().javaVersion!! == JavaVersion.VERSION_1_9) {
+            if  (currentJVMVersion.isJava9) {
                 options.isFork = true
-                options.forkOptions.javaHome = Jvm.current().javaHome!!
+                options.forkOptions.javaHome = jdk8Home
             }
         }
     }
 
     val compileJava9 = create<JavaCompile>("compileJava9") {
-        val ftSource = fileTree("src/main/java-jdk9")
-        ftSource.include("**/*.java")
-        options.sourcepath = files("src/main/java-jdk9")
-        source = ftSource
+        /*
+         * To make the library a fully functional module for Java 9 and later, we make use of multi-release JARs. To be
+         * precise: The module descriptor (module-info.class) is placed in /META-INF/versions/9 to be available on
+         * Java 9 and later only.
+         *
+         * (Additional Java 9 specific functionality may also be used and is handled by this task.)
+         *
+         * Usually we want to pass the "--release 9" parameter to the compiler to specify the target version. [1]
+         * Keep in mind however, that there is a bug in JDK 9 preventing usage of the "--release" flag from the JDK
+         * Tools API. [2] Since we want to compile using JDK 9 there is no reason to pass the flag when we are running
+         * on JDK 9 though.
+         * Also there is a bug in javac that causes modular MRJARs to be recognized as automatic modules. This is a
+         * warning when javac is invoke via CLI, but seems to be an error when it is invoked via Tools API. Thus Gradle
+         * cannot invoke the compiler using that API and needs to use the command line. (This bug only surfaces with an
+         * according dependency.)
+         *
+         * TODO: Remove the workaround described below. It is horrible.
+         *
+         * Just one more thing: The compiler validates "exports" statements in module descriptors (as it should!) but
+         * this leaves us in an unfortunate situation where we technically would need to recompile the entire project
+         * with all additional Java 9 files added or replacing their respective counterparts. Seems easy enough but this
+         * becomes a huge annoyance once more version-specific stuff is added, thus we make the following compromise:
+         * Any code specific to Java version X (with X >= 9) must be a utility class with no dependencies on code that
+         * is part of other compilations.
+         * (This is fine since these classes - if they exist - are most likely internal anyways.)
+         *
+         * Notes on this workaround:
+         * - The source file to class file mapping is not trivial and there is no way to (reasonably) detect it, thus it
+         *   becomes practically impossible to figure out if a class has changed in a multi-release setup.
+         * - Comparing class file contents (without version number) might be a solution albeit a hacky one that could
+         *   easily lead to bloated JARs.
+         * - Maintaining an explicit list of class files to include is not an option!
+         *
+         * [1] https://github.com/gradle/gradle/issues/2510
+         * [2] https://bugs.openjdk.java.net/browse/JDK-8139607
+         * [3] https://bugs.openjdk.java.net/browse/JDK-8235229
+         */
+        destinationDir = File(buildDir, "classes/java-jdk9/main")
+
+        val java9Source = fileTree("src/main/java-jdk9") {
+            include("**/*.java")
+        }
+
+        source = java9Source
+        options.sourcepath = files(java9Source.dir)
 
         classpath = files()
-        destinationDir = File(buildDir, "classes/java-jdk9/main")
 
         sourceCompatibility = "9"
         targetCompatibility = "9"
-
-        /*
-         * There is a bug in JDK 9 preventing usage of the --release option from Gradle. Luckily there is need no need
-         * to specify --release 9 when we are running on JDK9. (https://bugs-stage.openjdk.java.net/browse/JDK-8139607)
-         */
-        if (Jvm.current().javaVersion!! != JavaVersion.VERSION_1_9) {
-            // Workaround for https://github.com/gradle/gradle/issues/2510
-            options.compilerArgs.addAll(listOf("--release", "9"))
-        }
+        if (!currentJVMVersion.isJava9) options.compilerArgs.addAll(listOf("--release", "9"))
 
         afterEvaluate {
-            // module-path hack
             options.compilerArgs.add("--module-path")
             options.compilerArgs.add(compileJava.get().classpath.asPath)
         }
 
-        /*
-         * If the JVM used to invoke Gradle is JDK 9 or later, there is no reason to require a separate JDK 9 instance.
-         */
-        if (!currentJVMAtLeast9) {
-            val jdk9Props = arrayOf(
-                "JDK9_HOME",
-                "JAVA9_HOME",
-                "JDK_9"
-            )
-
-            val jdk9Home = jdk9Props.mapNotNull { System.getenv(it) }
-                .map { File(it) }
-                .firstOrNull(File::exists) ?: throw Error("Could not find valid JDK9 home")
-            options.forkOptions.javaHome = jdk9Home
-            options.isFork = true
-        }
+        options.forkOptions.javaHome = jdk9Home
+        options.isFork = true
     }
 
     classes {
@@ -154,6 +198,10 @@ tasks {
     }
 
     javadoc {
+        doFirst {
+            executable = Jvm.forHome(jdk13Home).javadocExecutable.absolutePath
+        }
+
         with (options as StandardJavadocDocletOptions) {
             tags = listOf(
                 "apiNote:a:API Note:",
@@ -171,6 +219,7 @@ tasks {
         from(javadoc.get().outputs)
     }
 
+    // TODO the compileNative task still needs a major revamp
     val compileNative = create<Exec>("compileNative") {
         executable = "cl"
         workingDir = mkdir(File(buildDir, "compileNative/tmp"))
@@ -188,19 +237,6 @@ tasks {
         outputs.files(output)
 
         doFirst {
-            var jdk8Home = Jvm.current().javaHome
-            if (jdk8Home === null || (Jvm.current().javaVersion!! !== JavaVersion.VERSION_1_8)) {
-                val jdk8Props = arrayOf(
-                    "JDK8_HOME",
-                    "JAVA8_HOME",
-                    "JDK_8"
-                )
-
-                jdk8Home = jdk8Props.mapNotNull { System.getenv(it) }
-                    .map { File(it) }
-                    .firstOrNull(File::exists) ?: throw Error("Could not find valid JDK8 home")
-            }
-
             args("/I${jdk8Home}/include")
             args("/I${jdk8Home}/include/win32")
             args(inputs.files)
@@ -215,36 +251,28 @@ tasks {
     val compileNativeModuleInfo = create<JavaCompile>("compileNativeModuleInfo") {
         dependsOn(generateNativeModuleInfo)
 
-        val ftSource = fileTree(generateNativeModuleInfo.outputFile.parentFile)
-        ftSource.include("**/*.java")
-        options.sourcepath = files(generateNativeModuleInfo.outputFile.parentFile)
-        source = ftSource
+        destinationDir = File(buildDir, "classes/compileNativeModuleInfo/main")
+
+        val nativeModuleInfoSource = fileTree(generateNativeModuleInfo.outputFile.parentFile) {
+            include("**/*.java")
+        }
+
+        source = nativeModuleInfoSource
+        options.sourcepath = files(nativeModuleInfoSource.dir)
 
         classpath = files()
-        destinationDir = File(buildDir, "classes/compileNativeModuleInfo/main")
 
         sourceCompatibility = "9"
         targetCompatibility = "9"
+        if (!currentJVMVersion.isJava9) options.compilerArgs.addAll(listOf("--release", "9"))
 
-        // Workaround for https://github.com/gradle/gradle/issues/2510
-        options.compilerArgs.addAll(listOf("--release", "9"))
-
-        /*
-         * If the JVM used to invoke Gradle is JDK 9 or later, there is no reason to require a separate JDK 9 instance.
-         */
-        if (!currentJVMAtLeast9) {
-            val jdk9Props = arrayOf(
-                "JDK9_HOME",
-                "JAVA9_HOME",
-                "JDK_9"
-            )
-
-            val jdk9Home = jdk9Props.mapNotNull { System.getenv(it) }
-                .map { File(it) }
-                .firstOrNull(File::exists) ?: throw Error("Could not find valid JDK9 home")
-            options.forkOptions.javaHome = jdk9Home
-            options.isFork = true
+        afterEvaluate {
+            options.compilerArgs.add("--module-path")
+            options.compilerArgs.add(compileJava.get().classpath.asPath)
         }
+
+        options.forkOptions.javaHome = jdk9Home
+        options.isFork = true
     }
 
     create<Jar>("nativeJar") {
@@ -278,7 +306,7 @@ tasks {
         }
     }
 
-    build {
+    create("buildNativeWindows") {
         dependsOn(compileNative)
         dependsOn(compileNativeModuleInfo)
     }

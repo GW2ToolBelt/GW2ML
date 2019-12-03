@@ -55,20 +55,46 @@ be found [here](/src/test/java/com/example/Sample.java).
 
 ## Building from source
 
-Building GW2ML requires two JDK installations set up as follows:
-1. One of `JDK8_HOME`, `JAVA8_HOME`, or `JDK_8` must point at a valid JDK8
-   installation.
-2. One of `JDK9_HOME`, `JAVA9_HOME`, or `JDK_9` must point at a valid
-   installation of a JDK that supports compiling to Java 9 bytecode.
+### Setup
 
-Once the setup is complete, building GW2ML is as simple as invoking the desired
-Gradle task. For example: In order to run a full build of the project, call:
+A complete build expects multiple JDK installations set up as follows:
+1. JDK 1.8 (used to compile the basic library)
+2. JDK   9 (used to compile the module descriptor)
+3. JDK  13 (used to generate the JavaDoc)
 
-        ./gradlew build
+These JDKs must be made visible to the build process by setting up
+environment variables (or [Gradle properties](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_configuration_properties))
+for each JDK version as follows:
 
-Compiling the native components of the library is currently only supported on
-windows hosts. If you wish to build only the Java components please use the
-`assemble` task instead.
+```
+JAVA_HOME="path to JDK 1.8"
+JDK_8="path to JDK 1.8"
+JDK_9="path to JDK 9"
+JDK_13="path to JDK 13"
+```
+
+// TODO document native build process
+
+### Building
+
+Once the setup is complete, invoke the respective Gradle tasks using the
+following command on Unix/macOS:
+
+    ./gradlew <tasks>
+
+or the following command on Windows:
+
+    gradlew <tasks>
+
+Important Gradle tasks to remember are:
+- `clean`                   - clean build results
+- `build`                   - assemble and test the Java library
+- `buildNative<Platform>`   - assemble and test the platform-specific native
+                              code
+- `publishToMavenLocal`     - build and install all public artifacts to the
+                              local maven repository
+
+Additionally `tasks` may be used to print a list of all available tasks.
 
 
 ## License
