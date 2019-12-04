@@ -1,4 +1,6 @@
-Portions of this code were forked from LWJGL 3.2.3 which is provided under the following conditions:
+This library contains code that was forked from LWJGL 3.2.3. All relevant files
+contain appropriate copyright notices. LWJGL 3.2.3 is distributed under the
+following terms:
 
 Copyright (c) 2012-present Lightweight Java Game Library
 All rights reserved.
