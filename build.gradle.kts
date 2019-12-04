@@ -121,6 +121,17 @@ tasks {
          * is part of other compilations.
          * (This is fine since these classes - if they exist - are most likely internal anyways.)
          *
+         * Further, we can now use some very simple "Stub" classes to avoid issues with empty exported packages. These
+         * "Stub.java" files should only contain the following code:
+         *
+         *     package ${packageName};
+         *
+         *     class Stub {}
+         *
+         * No reasonable Java compiler implementation will generate anything other than a simple Stub.class file from
+         * this source file. Thus, the JAR task (used to generate the MRJAR; see below) can now simply strip any file
+         * named "Stub.class".
+         *
          * Notes on this workaround:
          * - The source file to class file mapping is not trivial and there is no way to (reasonably) detect it, thus it
          *   becomes practically impossible to figure out if a class has changed in a multi-release setup.
