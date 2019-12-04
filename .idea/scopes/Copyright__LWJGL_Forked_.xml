@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Copyright (LWJGL Forked)" pattern="file[GW2MumbleLink.main]:java/com/github/gw2toolbelt/gw2ml/Configuration.java||file[GW2MumbleLink.main]:java/com/github/gw2toolbelt/gw2ml/SharedLibraryLoader.java||file[GW2MumbleLink.main]:java/com/github/gw2toolbelt/gw2ml/Platform.java" />
+</component>

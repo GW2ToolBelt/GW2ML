@@ -1,6 +1,9 @@
 /.gradle
-/.idea
-/.vs
+!/.idea
+/.idea/*
+!/.idea/copyright
+!/.idea/scopes/
+.vs
 /build
 /out
 /vsbuild
