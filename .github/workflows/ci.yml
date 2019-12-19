@@ -1,0 +1,20 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  jdk8:
+    name: OpenJDK 8 (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: TheMrMilchmann/install-jdk@master
+        with:
+          version: '1.8'
+      - uses: TheMrMilchmann/install-jdk@master
+        with:
+          version: '9'
+          targets: 'JDK_9'
+      - name: Gradle Build
+        run: |
+          ./gradlew --version
+          ./gradlew build -Psnapshot
