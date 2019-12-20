@@ -318,7 +318,13 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * TODO doc
+     * Returns the unit vector pointing out of the avatar's eyes.
+     *
+     * <p>Notes:</p>
+     *
+     * <ul>
+     * <li>This is commonly referred to as "look-at-vector" in computer graphics.</li>
+     * </ul>
      *
      * @param dest  the array to store the data in
      *
@@ -339,7 +345,13 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * TODO doc
+     * Returns the unit vector pointing out of the top of the avatar's head.
+     *
+     * <p>Notes:</p>
+     *
+     * <ul>
+     * <li>This is commonly referred to as "up-vector" in computer graphics.</li>
+     * </ul>
      *
      * @param dest  the array to store the data in
      *
@@ -409,7 +421,13 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * TODO doc
+     * Returns the unit vector pointing out of the camera.
+     *
+     * <p>Notes:</p>
+     *
+     * <ul>
+     * <li>This is commonly referred to as "look-at-vector" in computer graphics.</li>
+     * </ul>
      *
      * @param dest  the array to store the data in
      *
@@ -430,7 +448,13 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * TODO doc
+     * Returns the unit vector pointing out of the top of the camera.
+     *
+     * <p>Notes:</p>
+     *
+     * <ul>
+     * <li>This is commonly referred to as "up-vector" in computer graphics.</li>
+     * </ul>
      *
      * @param dest  the array to store the data in
      *
