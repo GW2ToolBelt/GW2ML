@@ -22,6 +22,6 @@ jobs:
           targets: 'JDK_9'
       - name: Gradle Build
         run: |
-          ./gradlew --version
-          ./gradlew build -Psnapshot
-          ./gradlew buildNativeWindows -Psnapshot
+          ./gradlew --version --console=plain
+          ./gradlew build -Psnapshot --info -S --console=plain
+          ./gradlew buildNativeWindows -Psnapshot --info -S --console=plain
