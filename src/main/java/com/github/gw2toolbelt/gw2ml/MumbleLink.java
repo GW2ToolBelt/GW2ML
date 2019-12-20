@@ -273,9 +273,17 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * TODO doc
+     * Returns an integral identifier that is incremented every time the MumbleLink data is updated.
      *
-     * @return
+     * <p>Notes:</p>
+     *
+     * <ul>
+     * <li>At the time of writing MumbleLink data is not updated during loading screens. Thus, this identifier may be
+     * used to (roughly) detect whether or not the game client is currently in one. (Keep in mind that is behavior might
+     * change.)</li>
+     * </ul>
+     *
+     * @return  an integral identifier that is incremented every time the MumbleLink data is updated
      *
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
      *
