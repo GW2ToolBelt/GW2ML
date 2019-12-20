@@ -257,7 +257,6 @@ public final class MumbleLink implements AutoCloseable {
                              OFFSET_Context_mapScale        = OFFSET_context + 76,
                              OFFSET_description             = 1364;
 
-
     /**
      * TODO doc
      *
@@ -670,7 +669,7 @@ public final class MumbleLink implements AutoCloseable {
                      * }
                      */
                     port = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 2);
-                    // TODO flow information is currently ignored (but should not be required).
+                    // TODO flow information is currently ignored (but should not be required)
 
                     byte[] addr = new byte[16];
                     for (int i = 0; i < addr.length; i++) addr[i] = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 8 + i);
