@@ -518,11 +518,13 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * TODO doc
+     * Returns the description that may provide additional information about the game's current state.
      *
-     * @return
+     * @return  the description that may provide additional information about the game's current state
      *
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
+     *
+     * @apiNote This field is currently not used by the game client.
      *
      * @since   0.1.0
      */
