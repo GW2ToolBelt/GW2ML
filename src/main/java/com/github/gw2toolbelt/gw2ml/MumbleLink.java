@@ -475,7 +475,7 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * A JSON-formatted {@code String} with additional information.
+     * Returns a JSON-formatted {@code String} with additional information.
      *
      * @return  a JSON-formatted {@code String} with additional information
      *
