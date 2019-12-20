@@ -6,7 +6,7 @@ jobs:
     name: OpenJDK 8 (Windows)
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: TheMrMilchmann/install-jdk@master
         with:
           version: '1.8'
