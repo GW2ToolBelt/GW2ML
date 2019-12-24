@@ -258,9 +258,11 @@ public final class MumbleLink implements AutoCloseable {
                              OFFSET_description             = 1364;
 
     /**
-     * TODO doc
+     * Returns the version number as specified by the MumbleLink standard.
      *
-     * @return
+     * <p>This is part of the MumbleLink standard and useless to most applications.</p>
+     *
+     * @return  the version number as specified by the MumbleLink standard
      *
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
      *
