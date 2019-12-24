@@ -13,10 +13,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: TheMrMilchmann/install-jdk@master
+      - uses: TheMrMilchmann/install-jdk@v1
         with:
           version: '1.8'
-      - uses: TheMrMilchmann/install-jdk@master
+      - uses: TheMrMilchmann/install-jdk@v1
         with:
           version: '9'
           targets: 'JDK_9'
