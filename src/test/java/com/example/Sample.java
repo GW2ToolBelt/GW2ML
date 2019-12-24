@@ -55,14 +55,14 @@ public class Sample {
                     mapType, MapType.valueOf(mapType).toString())
                 );
 
-                System.out.println(String.format("ctx_ShardID:\t\t\t%s", mumbleLink.getContext().getShardID()));
+                System.out.println(String.format("ctx_ShardID:\t\t\t%s", Long.toBinaryString(mumbleLink.getContext().getShardID())));
                 System.out.println(String.format("ctx_Instance:\t\t\t%s", mumbleLink.getContext().getInstance()));
                 System.out.println(String.format("ctx_BuildID:\t\t\t%s", mumbleLink.getContext().getBuildID()));
 
                 int uiState = mumbleLink.getContext().getUIState();
                 System.out.println(String.format(
                     "ctx_UIState:\t\t\t%s (isMapOpen=%s, isCompassTopRight=%s, isCompassRotationEnabled=%s)",
-                    uiState, UIState.isMapOpen(uiState), UIState.isCompassTopRight(uiState), UIState.isCompassRotationEnabled(uiState))
+                    Integer.toBinaryString(uiState), UIState.isMapOpen(uiState), UIState.isCompassTopRight(uiState), UIState.isCompassRotationEnabled(uiState))
                 );
 
                 System.out.println(String.format("ctx_CompassWidth:\t\t%s", mumbleLink.getContext().getCompassWidth()));
