@@ -23,6 +23,7 @@ package com.example;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import com.github.gw2toolbelt.gw2ml.MapType;
 import com.github.gw2toolbelt.gw2ml.MumbleLink;
 import com.github.gw2toolbelt.gw2ml.UIState;
 
@@ -47,7 +48,13 @@ public class Sample {
                 System.out.println(String.format("contextLength:\t\t\t%s", mumbleLink.getContextLength()));
                 System.out.println(String.format("ctx_ServerAddress:\t\t%s", mumbleLink.getContext().getServerAddress()));
                 System.out.println(String.format("ctx_MapID:\t\t\t\t%s", mumbleLink.getContext().getMapID()));
-                System.out.println(String.format("ctx_MapType:\t\t\t%s", mumbleLink.getContext().getMapType()));
+
+                long mapType = mumbleLink.getContext().getMapType();
+                System.out.println(String.format(
+                    "ctx_MapType:\t\t\t%s (%s)",
+                    mapType, MapType.valueOf(mapType).toString())
+                );
+
                 System.out.println(String.format("ctx_ShardID:\t\t\t%s", mumbleLink.getContext().getShardID()));
                 System.out.println(String.format("ctx_Instance:\t\t\t%s", mumbleLink.getContext().getInstance()));
                 System.out.println(String.format("ctx_BuildID:\t\t\t%s", mumbleLink.getContext().getBuildID()));
