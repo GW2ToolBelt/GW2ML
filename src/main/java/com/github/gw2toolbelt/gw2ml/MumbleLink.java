@@ -704,9 +704,11 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * TODO doc
+         * Returns information about the type of the map the player is currently on.
          *
-         * @return
+         * <p>The functionality provided by {@link MapType} may be used to interpret the value.</p>
+         *
+         * @return  information about the type of the map the player is currently on
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
