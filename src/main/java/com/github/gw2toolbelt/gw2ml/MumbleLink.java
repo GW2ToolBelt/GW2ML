@@ -763,7 +763,7 @@ public final class MumbleLink implements AutoCloseable {
         /**
          * A 32bit bitfield that contains various information about the current state of the game UI.
          *
-         * <p>The functionality provided {@link UIState} may be used to interpret the value of the bitfield.</p>
+         * <p>The functionality provided by {@link UIState} may be used to interpret the value of the bitfield.</p>
          *
          * @return  a 32bit bitfield that contains various information about the current state of the game UI.
          *
