@@ -61,9 +61,13 @@ public class Sample {
 
                 int uiState = mumbleLink.getContext().getUIState();
                 System.out.println(String.format(
-                    "ctx_UIState:\t\t\t%s (isMapOpen=%s, isCompassTopRight=%s, isCompassRotationEnabled=%s)",
-                    Integer.toBinaryString(uiState), UIState.isMapOpen(uiState), UIState.isCompassTopRight(uiState), UIState.isCompassRotationEnabled(uiState))
-                );
+                    "ctx_UIState:\t\t\t%s (isMapOpen=%s, isCompassTopRight=%s, isCompassRotationEnabled=%s, isInLoadingScreen=%s)",
+                    Integer.toBinaryString(uiState),
+                    UIState.isMapOpen(uiState),
+                    UIState.isCompassTopRight(uiState),
+                    UIState.isCompassRotationEnabled(uiState),
+                    UIState.isInLoadingScreen(uiState)
+                ));
 
                 System.out.println(String.format("ctx_CompassWidth:\t\t%s", mumbleLink.getContext().getCompassWidth()));
                 System.out.println(String.format("ctx_CompassHeight:\t\t%s", mumbleLink.getContext().getCompassHeight()));

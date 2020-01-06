@@ -73,6 +73,19 @@ public final class UIState {
         return (uiState & (1 << 2)) != 0;
     }
 
+    /**
+     * Returns whether or not the game is currently in a loading screen.
+     *
+     * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
+     *
+     * @return  whether or not the game is currently in a loading screen
+     *
+     * @since   0.2.0
+     */
+    public static boolean isInLoadingScreen(int uiState) {
+        return (uiState & (1 << 3)) != 0;
+    }
+
     // This utility class only provides static functionality and is not meant to be initialized.
     private UIState() {}
 
