@@ -722,25 +722,29 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * TODO doc
+         * Returns a 32bit bitfield that contains various information about the current game shard.
          *
-         * @return
+         * @return  a 32bit bitfield that contains various information about the current game shard
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
-         * @since   0.1.0
+         * @apiNote This field has no known purpose for outside use.
+         *
+         * @since   0.2.0
          */
-        public long getShardID() {
+        public int getShardID() {
             MumbleLink.this.validateState();
-            return Integer.toUnsignedLong(MumbleLink.this.data.getInt(OFFSET_Context_shardId));
+            return MumbleLink.this.data.getInt(OFFSET_Context_shardId);
         }
 
         /**
-         * TODO doc
+         * Returns the ID of the current game instance.
          *
-         * @return
+         * @return  the ID of the current game instance
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
+         *
+         * @apiNote This field has no known purpose for outside use.
          *
          * @since   0.1.0
          */
@@ -765,7 +769,7 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * A 32bit bitfield that contains various information about the current state of the game UI.
+         * Returns a 32bit bitfield that contains various information about the current state of the game UI.
          *
          * <p>The functionality provided by {@link UIState} may be used to interpret the value of the bitfield.</p>
          *

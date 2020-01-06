@@ -55,7 +55,7 @@ public class Sample {
                     mapType, MapType.valueOf(mapType).toString())
                 );
 
-                System.out.println(String.format("ctx_ShardID:\t\t\t%s", Long.toBinaryString(mumbleLink.getContext().getShardID())));
+                System.out.println(String.format("ctx_ShardID:\t\t\t%s", Integer.toBinaryString(mumbleLink.getContext().getShardID())));
                 System.out.println(String.format("ctx_Instance:\t\t\t%s", mumbleLink.getContext().getInstance()));
                 System.out.println(String.format("ctx_BuildID:\t\t\t%s", mumbleLink.getContext().getBuildID()));
 
