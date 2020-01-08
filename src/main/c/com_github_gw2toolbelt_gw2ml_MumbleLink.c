@@ -36,7 +36,7 @@ typedef struct GW2MLinstance {
     void*   linkedMem;
 } GW2MLinstance;
 
-jint throwIllegalStateException(JNIEnv *env, char *message) {
+inline jint throwIllegalStateException(JNIEnv *env, char *message) {
     jclass clazz = (*env)->FindClass(env, "java/lang/NoClassDefFoundError");
     return (*env)->ThrowNew(env, clazz, message);
 }
@@ -47,7 +47,7 @@ JNIEXPORT jobject JNICALL Java_com_github_gw2toolbelt_gw2ml_MumbleLink_nOpen(JNI
     HANDLE hFileMapping = OpenFileMappingW(FILE_MAP_READ, FALSE, L"MumbleLink");
     if (hFileMapping == NULL) {
         hFileMapping = CreateFileMappingW(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, MUMBLE_LINK_BYTES, L"MumbleLink");
-        if (hFileMapping == NULL) throwIllegalStateException(env, L"Failed to create FileMapping.");
+        if (hFileMapping == NULL) throwIllegalStateException(env, "Failed to create FileMapping.");
     }
 
     void* linkedMem = (void*) MapViewOfFile(hFileMapping, FILE_MAP_READ, 0, 0, MUMBLE_LINK_BYTES);
@@ -65,21 +65,21 @@ JNIEXPORT jobject JNICALL Java_com_github_gw2toolbelt_gw2ml_MumbleLink_nOpen(JNI
     if (buffer == NULL) {
         UnmapViewOfFile(linkedMem);
         CloseHandle(hFileMapping);
-        if (hFileMapping == NULL) throwIllegalStateException(env, L"Failed to create new direct ByteBuffer.");
+        if (hFileMapping == NULL) throwIllegalStateException(env, "Failed to create new direct ByteBuffer.");
     }
 
     jclass cls = (*env)->FindClass(env, "com/github/gw2toolbelt/gw2ml/MumbleLink");
     if (!cls) {
         UnmapViewOfFile(linkedMem);
         CloseHandle(hFileMapping);
-        if (hFileMapping == NULL) throwIllegalStateException(env, L"Failed to find MumbleLink class.");
+        if (hFileMapping == NULL) throwIllegalStateException(env, "Failed to find MumbleLink class.");
     }
 
     jmethodID cid = (*env)->GetMethodID(env, cls, "<init>", "(JLjava/nio/ByteBuffer;)V");
     if (!cid) {
         UnmapViewOfFile(linkedMem);
         CloseHandle(hFileMapping);
-        if (hFileMapping == NULL) throwIllegalStateException(env, L"Failed to find MumbleLink constructor.");
+        if (hFileMapping == NULL) throwIllegalStateException(env, "Failed to find MumbleLink constructor.");
     }
 
     return (*env)->NewObject(env, cls, cid, instance, buffer);
