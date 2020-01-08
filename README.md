@@ -1,8 +1,8 @@
 # GW2ML
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)](https://github.com/GW2Toolbelt/GW2ML/blob/master/LICENSE)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.gw2toolbelt.gw2ml/gw2ml.svg?style=flat-square&label=maven%20central)](https://maven-badges.herokuapp.com/maven-central/com.github.gw2toolbelt.gw2ml/gw2ml)
-
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square&label=License)](https://github.com/GW2Toolbelt/GW2ML/blob/master/LICENSE)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.gw2toolbelt.gw2ml/gw2ml.svg?style=flat-square&label=Maven%20Central)](https://maven-badges.herokuapp.com/maven-central/com.github.gw2toolbelt.gw2ml/gw2ml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.gw2toolbelt.gw2ml/gw2ml.svg?style=flat-square&label=JavaDoc&color=blue)](https://javadoc.io/doc/com.github.gw2toolbelt.gw2ml/gw2ml)
 
 GW2ML is a Java library for fast and non-cached access to the data provided
 by the Guild Wars 2 game client via the MumbleLink mechanism.
@@ -11,20 +11,16 @@ This library supports Java 8 and is fully compatible with the module system
 introduced in Java 9.
 
 
-**NOTE: While this library is fully functional its documentation is currently
-still lackluster. [Read more about the current state of this library.](https://github.com/TheMrMilchmann/GW2ML/issues/9)**
-
-
 ## Usage
 
 ### Setup
 
-GW2ML provides prebuilt artifacts for all supported platforms.
+GW2ML consists of multiple artifacts:
 
-- `gw2ml.jar`
-- `gw2ml-sources.jar`
-- `gw2ml-javadoc.jar`
-- `gw2ml-natives-<platform>.jar`
+- `gw2ml.jar` (The main library.)
+- `gw2ml-sources.jar` (The source archive.)
+- `gw2ml-javadoc.jar` (The JavaDoc archive.)
+- `gw2ml-natives-<platform>.jar` (The platform-specific prebuilt native libraries.)
 
 To compile an application using GW2ML, the base artifact should be added to the
 class-path (or the module-path). When running an application GW2ML requires a
@@ -35,7 +31,8 @@ when creating a platform-specific installer) the natives may be extracted
 manually and loaded via `java.library.path`. See the [Configuration](/src/main/java/com/github/gw2toolbelt/gw2ml/Configuration.java)
 class for more options.
 
-Currently supported platforms/architectures are:
+GW2ML provides prebuilt artifacts for all supported platforms. The currently
+supported platforms/architectures are:
 
 - Windows x64 (`gw2ml-natives-windows.jar`)
 
@@ -73,7 +70,10 @@ JDK_9="path to JDK 9"
 JDK_13="path to JDK 13"
 ```
 
-// TODO document native build process
+To build the native components for a platform, a compatible host is required.
+Additionally, it is recommended to run the task with the `no-daemon` flag to
+ensure that Gradle properly picks up all tools from the current environment.
+
 
 ### Building
 

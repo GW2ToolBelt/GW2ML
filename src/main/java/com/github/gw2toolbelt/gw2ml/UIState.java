@@ -80,7 +80,7 @@ public final class UIState {
      *
      * @return  whether or not the game is currently in a loading screen
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     public static boolean isInLoadingScreen(int uiState) {
         return (uiState & (1 << 3)) != 0;

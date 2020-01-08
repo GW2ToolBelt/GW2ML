@@ -730,7 +730,7 @@ public final class MumbleLink implements AutoCloseable {
          *
          * @apiNote This field has no known purpose for outside use.
          *
-         * @since   0.2.0
+         * @since   1.0.0
          */
         public int getShardID() {
             MumbleLink.this.validateState();

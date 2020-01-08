@@ -26,7 +26,7 @@ import java.util.Arrays;
 /**
  * A utility class for interpreting the value of the {@link MumbleLink.Context#getMapType() mapType} field.
  *
- * @since   0.2.0
+ * @since   1.0.0
  *
  * @author  Leon Linhart
  */
@@ -36,25 +36,25 @@ public enum MapType {
      *
      * <p>This is used as a fallback.</p>
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     UNKNOWN(-1),
     /**
      * Redirect "maps" (e.g. when logging in while in a PvP match).
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     REDIRECT(0),
     /**
      * Character creation screens.
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     CHARACTER_CREATION(1),
     /**
      * Player vs Player (PvP) maps.
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     PVP(2),
     /**
@@ -62,85 +62,85 @@ public enum MapType {
      *
      * @apiNote At the time of writing this `mapType` is unused.
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     GVG(3),
     /**
      * Instance maps (such as dungeons and story content).
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     INSTANCE(4),
     /**
      * Public maps (e.g. open world).
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     PUBLIC(5),
     /**
      * Tournament maps.
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     TOURNAMENT(6),
     /**
      * Tutorial maps.
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     TUTORIAL(7),
     /**
      * User tournament maps.
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     USER_TOURNAMENT(8),
     /**
      * "Eternal Battlegrounds" maps.
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     ETERNAL_BATTLEGROUNDS(9),
     /**
      * "Blue Battlegrounds" maps.
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     BLUE_BORDERLANDS(10),
     /**
      * "Green Battlegrounds" maps.
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     GREEN_BORDERLANDS(11),
     /**
      * "Red Battlegrounds" maps.
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     RED_BORDERLANDS(12),
     /**
      * <strong>This map type is currently unused and it's purpose is unknown.</strong>
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     FORTUNES_VALE(13),
     /**
      * "Obsidian Sanctum" maps.
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     OBSIDIAN_SANCTUM(14),
     /**
      * "Edge of the Mists" maps.
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     EOTM(15),
     /**
      * Public "mini" maps (such as "Dry Top", "The Silverwastes", and "Mistlock Sanctuary").
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     PUBLIC_MINI(16),
     /**
@@ -149,7 +149,7 @@ public enum MapType {
      * @apiNote This map type might be re-used by other WvW lounge maps in the
      *          future.
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     WVW_LOUNGE(18);
 
@@ -162,7 +162,7 @@ public enum MapType {
      *
      * @return  the appropriate {@code MapType} representation for the given numerical value
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     public static MapType valueOf(long mapType) {
         return Arrays.stream(MapType.values())
@@ -184,7 +184,7 @@ public enum MapType {
      *
      * @return  the numerical value of this map type
      *
-     * @since   0.2.0
+     * @since   1.0.0
      */
     public long numericalValue() {
         return this.mapType;
