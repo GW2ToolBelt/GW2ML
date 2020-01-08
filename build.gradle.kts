@@ -235,6 +235,9 @@ tasks {
         executable = "cl"
         workingDir = mkdir(File(buildDir, "compileNative/tmp"))
 
+        standardOutput = System.out
+        errorOutput = System.err
+
         args("/LD")
         args("/Wall")
         args("/O2")
