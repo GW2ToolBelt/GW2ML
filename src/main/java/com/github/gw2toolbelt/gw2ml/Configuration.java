@@ -55,6 +55,8 @@ public final class Configuration<T> {
      * <p style="font-family: monospace">
      * Property: <b>com.github.gw2toolbelt.gw2ml.librarypath</b><br>
      * &nbsp; &nbsp;Usage: Dynamic<br>
+     *
+     * @since   0.1.0
      */
     public static final Configuration<String> LIBRARY_PATH = new Configuration<>(
         "com.github.gw2toolbelt.gw2ml.librarypath",
@@ -77,6 +79,8 @@ public final class Configuration<T> {
      * Property: <b>com.github.gw2toolbelt.gw2ml.bundledLibrary.nameMapper</b><br>
      * &nbsp; &nbsp; Type: String or a {@link Function Function&lt;String, String&gt;} instance<br>
      * &nbsp; &nbsp;Usage: Static</p>
+     *
+     * @since   0.1.0
      */
     public static final Configuration<Object> BUNDLED_LIBRARY_NAME_MAPPER = new Configuration<>(
         "com.github.gw2toolbelt.gw2ml.bundledLibrary.nameMapper",
@@ -99,6 +103,8 @@ public final class Configuration<T> {
      * Property: <b>com.github.gw2toolbelt.gw2ml.bundledLibrary.nameMapper</b><br>
      * &nbsp; &nbsp; Type: String or a {@link Function Function&lt;String, String&gt;} instance<br>
      * &nbsp; &nbsp;Usage: Static</p>
+     *
+     * @since   0.1.0
      */
     public static final Configuration<Object> BUNDLED_LIBRARY_PATH_MAPPER = new Configuration<>(
         "com.github.gw2toolbelt.gw2ml.bundledLibrary.pathMapper",
@@ -113,6 +119,8 @@ public final class Configuration<T> {
      * <p style="font-family: monospace">
      * Property: <b>com.github.gw2toolbelt.gw2ml.SharedLibraryExtractDirectory</b><br>
      * &nbsp; &nbsp;Usage: Dynamic<br>
+     *
+     * @since   0.1.0
      */
     public static final Configuration<String> SHARED_LIBRARY_EXTRACT_DIRECTORY = new Configuration<>(
         "com.github.gw2toolbelt.gw2ml.SharedLibraryExtractDirectory",
@@ -141,6 +149,8 @@ public final class Configuration<T> {
      * <p style="font-family: monospace">
      * Property: <b>com.github.gw2toolbelt.gw2ml.SharedLibraryExtractPath</b><br>
      * &nbsp; &nbsp;Usage: Dynamic</p>
+     *
+     * @since   0.1.0
      */
     public static final Configuration<String> SHARED_LIBRARY_EXTRACT_PATH = new Configuration<>(
         "com.github.gw2toolbelt.gw2ml.SharedLibraryExtractPath",
@@ -154,6 +164,8 @@ public final class Configuration<T> {
      * <p style="font-family: monospace">
      * Property: <b>com.github.gw2toolbelt.gw2ml.libname</b><br>
      * &nbsp; &nbsp;Usage: Dynamic</p>
+     *
+     * @since   0.1.0
      */
     public static final Configuration<String> LIBRARY_NAME = new Configuration<>(
         "com.github.gw2toolbelt.gw2ml.libname",
@@ -168,6 +180,8 @@ public final class Configuration<T> {
      * <p style="font-family: monospace">
      * Property: <b>com.github.gw2toolbelt.gw2ml.util.Debug</b><br>
      * &nbsp; &nbsp;Usage: Static</p>
+     *
+     * @since   0.1.0
      */
     public static final Configuration<Boolean> DEBUG = new Configuration<>(
         "com.github.gw2toolbelt.gw2ml.util.Debug",
@@ -183,6 +197,8 @@ public final class Configuration<T> {
      * <p style="font-family: monospace">
      * Property: <b>com.github.gw2toolbelt.gw2ml.util.DebugLoader</b><br>
      * &nbsp; &nbsp;Usage: Static</p>
+     *
+     * @since   0.1.0
      */
     public static final Configuration<Boolean> DEBUG_LOADER = new Configuration<>(
         "com.github.gw2toolbelt.gw2ml.util.DebugLoader",
@@ -201,6 +217,8 @@ public final class Configuration<T> {
      * Property: <b>com.github.gw2toolbelt.gw2ml.util.DebugStream</b><br>
      * &nbsp; &nbsp; Type: String or a {@link PrintStream} instance<br>
      * &nbsp; &nbsp;Usage: Static</p>
+     *
+     * @since   0.1.0
      */
     public static final Configuration<Object> DEBUG_STREAM = new Configuration<>(
         "com.github.gw2toolbelt.gw2ml.util.DebugStream",
@@ -215,6 +233,8 @@ public final class Configuration<T> {
      * <p style="font-family: monospace">
      * Property: <b>com.github.gw2toolbelt.gw2ml.util.NoChecks</b><br>
      * &nbsp; &nbsp;Usage: Static</p>
+     *
+     * @since   0.1.0
      */
     public static final Configuration<Boolean> DISABLE_CHECKS = new Configuration<>(
         "com.github.gw2toolbelt.gw2ml.util.NoChecks",
@@ -255,6 +275,8 @@ public final class Configuration<T> {
      * Returns the property key.
      *
      * @return  the property key
+     *
+     * @since   0.1.0
      */
     String getProperty() {
         return property;
@@ -264,6 +286,8 @@ public final class Configuration<T> {
      * Sets the option value.
      *
      * @param value the value to set
+     *
+     * @since   0.1.0
      */
     public void set(@Nullable T value) {
         if (this.isFrozen) throw new IllegalStateException("Property is statically used.");
@@ -271,9 +295,11 @@ public final class Configuration<T> {
     }
 
     /**
-     * Returns the option value.
+     * Returns the value of this option, or {@code null} if no value has been set.
      *
-     * <p>If the option value has not been set, null will be returned.</p>
+     * @return  the value of this option, or {@code null} if no value has been set
+     *
+     * @since   0.1.0
      */
     @Nullable
     public T get() {
@@ -282,11 +308,13 @@ public final class Configuration<T> {
     }
 
     /**
-     * Returns the option value.
+     * Returns the value of this option, or {@code defaultValue} if no value has been set.
      *
-     * <p>If the option value has not been set, the specified default value will be returned.</p>
+     * @param defaultValue  the default value
      *
-     * @param defaultValue the default value
+     * @return  the value of this option, or {@code defaultValue} if no value has been set
+     *
+     * @since   0.1.0
      */
     public T get(T defaultValue) {
         if (this.usage == Usage.STATIC) this.isFrozen = true;
