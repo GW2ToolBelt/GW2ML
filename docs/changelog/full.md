@@ -1,6 +1,6 @@
 ### 1.0.0
 
-_2020 Jan 08_
+_Released 2020 Jan 08_
 
 #### Improvements
 
@@ -16,9 +16,11 @@ _2020 Jan 08_
 - Changed return type of `MumbleLink.Context#getShardID` from `long` to `int`
 
 
+---
+
 ### 0.1.0
 
-_2019 Oct 31_
+_Released 2019 Oct 31_
 
 #### Overview
 

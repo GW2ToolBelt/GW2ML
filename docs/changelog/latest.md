@@ -1,6 +1,6 @@
 ### 1.0.0
 
-_2020 Jan 08_
+_Released 2020 Jan 08_
 
 #### Improvements
 
