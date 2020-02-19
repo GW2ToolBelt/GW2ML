@@ -115,6 +115,19 @@ public final class UIState {
         return (uiState & (1 << 4)) != 0;
     }
 
+    /**
+     * Returns whether or not the input focus is currently owned by a textfield.
+     *
+     * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
+     *
+     * @return  whether or not the input focus is currently owned by a textfield
+     *
+     * @since   1.2.0
+     */
+    public static boolean isInTextField(int uiState) {
+        return (uiState & (1 << 5)) != 0;
+    }
+
     // This utility class only provides static functionality and is not meant to be initialized.
     private UIState() {}
 
