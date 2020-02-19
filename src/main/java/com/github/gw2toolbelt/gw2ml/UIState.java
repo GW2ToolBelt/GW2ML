@@ -80,10 +80,39 @@ public final class UIState {
      *
      * @return  whether or not the game is currently in a loading screen
      *
+     * @deprecated  This bit is wrongly labeled. Use {@link #isGameFocused(int)} instead.
+     *
      * @since   1.0.0
      */
+    @Deprecated
     public static boolean isInLoadingScreen(int uiState) {
         return (uiState & (1 << 3)) != 0;
+    }
+
+    /**
+     * Returns whether or not the game client is currently focused.
+     *
+     * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
+     *
+     * @return  whether or not the game client is currently focused
+     *
+     * @since   1.1.0
+     */
+    public static boolean isGameFocused(int uiState) {
+        return (uiState & (1 << 3)) != 0;
+    }
+
+    /**
+     * Returns whether or not the player is currently in a competitive mode.
+     *
+     * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
+     *
+     * @return  whether or not the player is currently in a competitive mode
+     *
+     * @since   1.1.0
+     */
+    public static boolean isInCompetitiveMode(int uiState) {
+        return (uiState & (1 << 4)) != 0;
     }
 
     // This utility class only provides static functionality and is not meant to be initialized.
