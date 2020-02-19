@@ -115,6 +115,28 @@ public final class UIState {
         return (uiState & (1 << 4)) != 0;
     }
 
+    /**
+     * Returns whether or not the input focus is currently owned by a textfield.
+     *
+     * <p>Notes:</p>
+     *
+     * <ul>
+     * <li>This does not work for CoherentUI GUI elements (such as the trading post, gem store and some guildhall
+     * interfaces).</li>
+     * <li>The bit is not unset consistently when the game loses input focus. (If in doubt, use this in conjunction with
+     * {@link #isGameFocused(int)}).</li>
+     * </ul>
+     *
+     * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
+     *
+     * @return  whether or not the input focus is currently owned by a textfield
+     *
+     * @since   1.2.0
+     */
+    public static boolean isTextFieldFocused(int uiState) {
+        return (uiState & (1 << 5)) != 0;
+    }
+
     // This utility class only provides static functionality and is not meant to be initialized.
     private UIState() {}
 
