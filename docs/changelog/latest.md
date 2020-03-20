@@ -1,12 +1,7 @@
-### 1.1.0
+### 1.2.0
 
-_Released 2020 Feb 19_
+_Released 2020 Mar 20_
 
 #### Improvements
 
-- Added `UIState#isGameFocused` and `UIState#isInCompetitiveMode`.
-    - `UIState#isGameFocused` replaces the mislabeled `UIState#isInLoadingScreen`. [[GH-11](https://github.com/GW2Toolbelt/GW2ML/issues/11)]
-
-#### Deprecations
-
-- Deprecated the mislabeled `UIState#isInLoadingScreen`.
+- Added `UIState#isTextFieldFocused` bit check [[GH-12](https://github.com/GW2Toolbelt/GW2ML/issues/12)].
