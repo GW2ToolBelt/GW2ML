@@ -1,11 +1,5 @@
 name: CI
-on:
-  push:
-    branches-ignore:
-      - 'gh-pages'
-  pull_request:
-    branches-ignore:
-      - 'gh-pages'
+on: push
 
 jobs:
   jdk8:
@@ -13,10 +7,11 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: TheMrMilchmann/install-jdk@v1
+      - uses: AdoptOpenJDK/install-jdk@v1
         with:
           version: '1.8'
-      - uses: TheMrMilchmann/install-jdk@v1
+          impl: 'hotspot'
+      - uses: AdoptOpenJDK/install-jdk@v1
         with:
           version: '9'
           targets: 'JDK_9'
