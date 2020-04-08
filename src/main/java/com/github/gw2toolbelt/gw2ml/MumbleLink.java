@@ -609,7 +609,7 @@ public final class MumbleLink implements AutoCloseable {
             if (destOffset + length > dest.length) throw new IndexOutOfBoundsException();
 
             for (int i = 0; i < length; i++) {
-                dest[destOffset + i] = MumbleLink.this.data.get(srcOffset + i);
+                dest[destOffset + i] = MumbleLink.this.data.get(OFFSET_context + srcOffset + i);
             }
         }
 
