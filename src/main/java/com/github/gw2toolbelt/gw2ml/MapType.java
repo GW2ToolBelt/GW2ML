@@ -23,6 +23,34 @@ package com.github.gw2toolbelt.gw2ml;
 
 import java.util.Arrays;
 
+/*
+ * Full MapType enum as published on 08 Apr 2020 07:56 UTC.
+ *
+ * enum EMapType {
+ *     MAP_TYPE_AUTO_REDIRECT,
+ *     MAP_TYPE_CHAR_CREATE,
+ *     MAP_TYPE_COMPETITIVE_PVP,
+ *     MAP_TYPE_GVG,
+ *     MAP_TYPE_INSTANCE,
+ *     MAP_TYPE_PUBLIC,
+ *     MAP_TYPE_TOURNAMENT,
+ *     MAP_TYPE_TUTORIAL,
+ *     MAP_TYPE_USERTOURN,
+ *     MAP_TYPE_WVW_CENTER,
+ *     MAP_TYPE_WVW_BLUE_HOME,
+ *     MAP_TYPE_WVW_GREEN_HOME,
+ *     MAP_TYPE_WVW_RED_HOME,
+ *     MAP_TYPE_WVW_REWARD,
+ *     MAP_TYPE_WVW_EB_JUMP_PUZZLE,
+ *     MAP_TYPE_WVW_OVERFLOW,
+ *     MAP_TYPE_PUBLIC_MINI,
+ *     MAP_TYPE_BIG_BATTLE,        // NO LONGER SUPPORTED
+ *     MAP_TYPE_WVW_LOUNGE,
+ *     MAP_TYPE_WVW,
+ *     MAP_TYPES
+ * };
+ */
+
 /**
  * A utility class for interpreting the value of the {@link MumbleLink.Context#getMapType() mapType} field.
  *
@@ -144,6 +172,12 @@ public enum MapType {
      */
     PUBLIC_MINI(16),
     /**
+     * <strong>This map type is currently unused and it's purpose is unknown.</strong>
+     *
+     * @since   1.3.0
+     */
+    BIG_BATTLE(17),
+    /**
      * "Armistice Bastion" maps.
      *
      * @apiNote This map type might be re-used by other WvW lounge maps in the
@@ -151,7 +185,13 @@ public enum MapType {
      *
      * @since   1.0.0
      */
-    WVW_LOUNGE(18);
+    WVW_LOUNGE(18),
+    /**
+     * <strong>This map type's purpose is unknown.</strong>
+     *
+     * @since   1.3.0
+     */
+    WVW(19);
 
     /**
      * Returns the appropriate {@code MapType} representation for the given numerical value.
