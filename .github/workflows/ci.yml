@@ -10,7 +10,6 @@ jobs:
       - uses: AdoptOpenJDK/install-jdk@v1
         with:
           version: '1.8'
-          impl: 'hotspot'
       - uses: AdoptOpenJDK/install-jdk@v1
         with:
           version: '9'
