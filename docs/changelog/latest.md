@@ -1,7 +1,14 @@
-### 1.2.0
+### 1.3.0
 
-_Released 2020 Mar 20_
+_Released 2020 Apr 08_
 
 #### Improvements
 
-- Added `UIState#isTextFieldFocused` bit check [[GH-12](https://github.com/GW2Toolbelt/GW2ML/issues/12)].
+- Added support for MumbleLink views of custom source ByteBuffers.
+- Added `MumbleLink#copy` operations to cover from the entire MumbleLink buffer (instead of just the context).
+- Added ByteBuffer overloads for `MumbleLink.Context#copy` operations.
+
+#### Fixes
+
+- Fixes an issue that caused `MumbleLink.Context#copy` operations to copy from
+  the start of the buffer instead of the start from the context.
