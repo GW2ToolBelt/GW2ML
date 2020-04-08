@@ -38,8 +38,9 @@ import java.util.jar.Manifest;
 import javax.annotation.Nullable;
 
 /**
- * A {@link MumbleLink} object serves as a view for the data provided by a Guild Wars 2 game client via the MumbleLink
- * mechanism. An instance can be obtained by calling {@link #open()} - the primary entry point of GW2ML.
+ * A {@link MumbleLink} object serves as a view for the data provided by a Guild Wars 2 game client in MumbleLink
+ * format. The data may either be provided by the game client via the MumbleLink mechanism or by a custom source. An
+ * instance for the former can be obtained by calling {@link #open()} - the primary entry point of GW2ML.
  *
  * <p>{@link Configuration} may be used to further configure the behavior of the initialization of this class.</p>
  *
@@ -51,6 +52,9 @@ import javax.annotation.Nullable;
  * @author  Leon Linhart
  */
 public final class MumbleLink implements AutoCloseable {
+
+    private static final long NULL = 0L;
+    private static final long ADDRESS_CUSTOM = -1L;
 
     static final String GW2ML_VERSION = apiGetManifestValue("Implementation-Version").orElse("dev");
 
@@ -66,7 +70,9 @@ public final class MumbleLink implements AutoCloseable {
     private static MumbleLink instance;
 
     /**
-     * Opens a {@link MumbleLink view} of the data provided by Guild Wars 2 via the MumbleLink mechanism.
+     * Opens a {@link MumbleLink} view of the data provided by Guild Wars 2 via the MumbleLink mechanism.
+     *
+     * <p>The object returned by this method must be explicitly {@link #close() closed}.</p>
      *
      * <p>The object returned by this method may not be unique, and may make use of reference-counting mechanisms.
      * Additionally, it is not guaranteed that the returned object becomes {@link #isClosed()} invalid after calling
@@ -96,6 +102,20 @@ public final class MumbleLink implements AutoCloseable {
 
         assert (instance != null);
         return instance;
+    }
+
+    /**
+     * Returns a {@link MumbleLink} view of the given buffer.
+     *
+     * @param buffer    the buffer to provide a {@link MumbleLink} view of
+     *
+     * @return  a {@code MumbleLink} object that may be used to read the data provided by the given buffer in the
+     *          MumbleLink format
+     *
+     * @since   1.3.0
+     */
+    public static MumbleLink viewOf(ByteBuffer buffer) {
+        return new MumbleLink(ADDRESS_CUSTOM, buffer);
     }
 
     private static native MumbleLink nOpen();
@@ -132,26 +152,26 @@ public final class MumbleLink implements AutoCloseable {
 
     private MumbleLink(long address, ByteBuffer data) {
         this.address = address;
-        this.data = data.order(ByteOrder.nativeOrder());
+
+        /* Only configure the ByteOrder for the */
+        this.data = (address != ADDRESS_CUSTOM) ? data.order(ByteOrder.nativeOrder()) : data;
     }
 
     /**
      * Closes this resource.
      *
-     * @implNote    For better performance this implementation reuses MumbleLink objects whenever possible. In practice
-     *              this means that closing a MumbleLink object might not have an immediate effect which in turn results
-     *              into the object still being valid. However, once close has been invoked on a reference to an object,
-     *              that reference should be discarded as quickly as possible since the underlying object may be
-     *              invalidated at any time by another thread.
+     * <p>This method does nothing if this view is backed by a custom buffer or if it has already been closed.</p>
      *
      * @since   0.1.0
      */
     @Override
     public void close() {
+        if (this.address == ADDRESS_CUSTOM) return;
+
         if (refCounter.decrementAndGet() == 0) {
             nClose(this.address);
 
-            this.address = 0;
+            this.address = NULL;
         }
     }
 
@@ -167,7 +187,7 @@ public final class MumbleLink implements AutoCloseable {
      * @since   0.1.0
      */
     public boolean isClosed() {
-        return (this.address == 0);
+        return (this.address == NULL);
     }
 
     private void validateState() {
