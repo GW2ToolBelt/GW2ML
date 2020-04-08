@@ -80,7 +80,7 @@ public enum MapType {
      */
     CHARACTER_CREATION(1),
     /**
-     * Player vs Player (PvP) maps.
+     * Competitive Player vs Player (PvP) maps.
      *
      * @since   1.0.0
      */
