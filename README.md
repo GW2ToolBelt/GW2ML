@@ -57,7 +57,7 @@ be found [here](/src/test/java/com/example/Sample.java).
 A complete build expects multiple JDK installations set up as follows:
 1. JDK 1.8 (used to compile the basic library)
 2. JDK   9 (used to compile the module descriptor)
-3. JDK  13 (used to generate the JavaDoc)
+3. JDK  14 (used to generate the JavaDoc)
 
 These JDKs must be made visible to the build process by setting up
 environment variables (or [Gradle properties](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_configuration_properties))
@@ -67,7 +67,7 @@ for each JDK version as follows:
 JAVA_HOME="path to JDK 1.8"
 JDK_8="path to JDK 1.8"
 JDK_9="path to JDK 9"
-JDK_13="path to JDK 13"
+JDK_14="path to JDK 14"
 ```
 
 To build the native components for a platform, a compatible host is required.

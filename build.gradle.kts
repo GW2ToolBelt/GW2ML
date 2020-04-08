@@ -64,11 +64,11 @@ val jdk9Home by lazy {
         "JDK_9".toJDKHome
     }
 }
-val jdk13Home by lazy {
-    if (currentJVMVersion == JavaVersion.VERSION_13 && currentJVM.javaHome !== null) {
+val jdk14Home by lazy {
+    if (currentJVMVersion == JavaVersion.VERSION_14 && currentJVM.javaHome !== null) {
         currentJVM.javaHome!!
     } else {
-        "JDK_13".toJDKHome
+        "JDK_14".toJDKHome
     }
 }
 
@@ -210,7 +210,7 @@ tasks {
 
     javadoc {
         doFirst {
-            executable = Jvm.forHome(jdk13Home).javadocExecutable.absolutePath
+            executable = Jvm.forHome(jdk14Home).javadocExecutable.absolutePath
         }
 
         with (options as StandardJavadocDocletOptions) {
