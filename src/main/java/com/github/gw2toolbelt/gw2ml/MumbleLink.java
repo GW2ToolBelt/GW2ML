@@ -574,6 +574,23 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
+         * Shorthand for {@code copy(0, dest, 0, BYTES)}.
+         *
+         * <p>See {@link #copy(int, ByteBuffer, int, int)}.</p>
+         *
+         * @param dest  the destination buffer
+         *
+         * @throws IllegalStateException        if this view was {@link #isClosed() invalidated}
+         * @throws IndexOutOfBoundsException    if any index is violated
+         * @throws NullPointerException         if {@code dest} is {@code null}
+         *
+         * @since   1.3.0
+         */
+        public void copy(ByteBuffer dest) {
+            this.copy(0, dest, 0, BYTES);
+        }
+
+        /**
          * Copies the underlying data beginning at the specified offset, to the specified offset of the destination
          * array.
          *
@@ -610,6 +627,46 @@ public final class MumbleLink implements AutoCloseable {
 
             for (int i = 0; i < length; i++) {
                 dest[destOffset + i] = MumbleLink.this.data.get(OFFSET_context + srcOffset + i);
+            }
+        }
+
+        /**
+         * Copies the underlying data beginning at the specified offset, to the specified offset of the destination
+         * buffer.
+         *
+         * <p>If any of the following is true, an {@linkplain IndexOutOfBoundsException} is thrown and the destination
+         * is not modified:</p>
+         *
+         * <ul>
+         * <li>The {@code srcOffset} argument is negative.</li>
+         * <li>The {@code destOffset} argument is negative.</li>
+         * <li>The {@code length} argument is negative.</li>
+         * <li>{@code srcOffset + length} is greater than {@link #BYTES}, the length of the context</li>
+         * <li>{@code destOffset + length} is greater than {@code dest.length}, the length of the destination buffer.</li>
+         * </ul>
+         *
+         * @param srcOffset     starting position in the context
+         * @param dest          the destination buffer
+         * @param destOffset    starting position in the destination data
+         * @param length        the number of bytes to be copied
+         *
+         * @throws IllegalStateException        if this view was {@link #isClosed() invalidated}
+         * @throws IndexOutOfBoundsException    if any index is violated
+         * @throws NullPointerException         if {@code dest} is {@code null}
+         *
+         * @since   1.3.0
+         */
+        public void copy(int srcOffset, ByteBuffer dest, int destOffset, int length) {
+            MumbleLink.this.validateState();
+            Objects.requireNonNull(dest);
+
+            if (srcOffset < 0) throw new IndexOutOfBoundsException("srcOffset must be non-negative");
+            if (destOffset < 0) throw new IndexOutOfBoundsException("destOffset must be non-negative");
+            if (srcOffset + length > BYTES) throw new IndexOutOfBoundsException();
+            if (destOffset + length > dest.capacity()) throw new IndexOutOfBoundsException();
+
+            for (int i = 0; i < length; i++) {
+                dest.put(destOffset + i, MumbleLink.this.data.get(OFFSET_context + srcOffset + i));
             }
         }
 
