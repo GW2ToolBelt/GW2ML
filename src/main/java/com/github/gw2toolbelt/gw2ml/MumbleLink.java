@@ -277,6 +277,7 @@ public final class MumbleLink implements AutoCloseable {
      *          float mapCenterX;                         1108+68            1            4
      *          float mapCenterY;                         1108+72            1            4
      *          float mapScale;                           1108+76            1            4
+     *          uint32_t processId;                       1108+80            1            4
      *     }
      *     wchar_t description[2048];                     1364            2048         4096
      * }
@@ -310,6 +311,7 @@ public final class MumbleLink implements AutoCloseable {
                              OFFSET_Context_mapCenterX      = OFFSET_context + 68,
                              OFFSET_Context_mapCenterY      = OFFSET_context + 72,
                              OFFSET_Context_mapScale        = OFFSET_context + 76,
+                             OFFSET_Context_processId       = OFFSET_context + 80,
                              OFFSET_description             = 1364;
 
     /**
@@ -1127,6 +1129,20 @@ public final class MumbleLink implements AutoCloseable {
         public float getMapScale() {
             MumbleLink.this.validateState();
             return MumbleLink.this.data.getFloat(OFFSET_Context_mapScale);
+        }
+
+        /**
+         * Returns the ID of the process.
+         *
+         * @return  the ID of the process
+         *
+         * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
+         *
+         * @since   1.4.0
+         */
+        public long getProcessID() {
+            MumbleLink.this.validateState();
+            return Integer.toUnsignedLong(MumbleLink.this.data.getInt(OFFSET_Context_processId));
         }
 
     }

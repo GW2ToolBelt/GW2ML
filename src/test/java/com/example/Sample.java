@@ -80,6 +80,7 @@ public class Sample {
                 System.out.println(String.format("ctx_MapCenterX:\t\t\t%s", mumbleLink.getContext().getMapCenterX()));
                 System.out.println(String.format("ctx_MapCenterY:\t\t\t%s", mumbleLink.getContext().getMapCenterY()));
                 System.out.println(String.format("ctx_MapScale:\t\t\t%s", mumbleLink.getContext().getMapScale()));
+                System.out.println(String.format("ctx_ProcessID:\t\t\t%s", mumbleLink.getContext().getProcessID()));
                 System.out.println(String.format("description:\t\t\t%s", mumbleLink.getDescription()));
                 System.out.println();
 
