@@ -41,13 +41,19 @@ inline jint throwIllegalStateException(JNIEnv *env, char *message) {
     return (*env)->ThrowNew(env, clazz, message);
 }
 
-JNIEXPORT jobject JNICALL Java_com_github_gw2toolbelt_gw2ml_MumbleLink_nOpen(JNIEnv* env, jclass clazz) {
+JNIEXPORT jobject JNICALL Java_com_github_gw2toolbelt_gw2ml_MumbleLink_nOpen(JNIEnv* env, jclass clazz, jstring handle) {
     UNUSED_PARAM(clazz);
 
-    HANDLE hFileMapping = OpenFileMappingW(FILE_MAP_READ, FALSE, L"MumbleLink");
+    const char* handleName = (*env)->GetStringUTFChars(env, handle, NULL);
+
+    HANDLE hFileMapping = OpenFileMappingA(FILE_MAP_READ, FALSE, handleName);
     if (hFileMapping == NULL) {
-        hFileMapping = CreateFileMappingW(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, MUMBLE_LINK_BYTES, L"MumbleLink");
+        hFileMapping = CreateFileMappingA(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, MUMBLE_LINK_BYTES, handleName);
+        (*env)->ReleaseStringUTFChars(env, handle, handleName);
+
         if (hFileMapping == NULL) throwIllegalStateException(env, "Failed to create FileMapping.");
+    } else {
+        (*env)->ReleaseStringUTFChars(env, handle, handleName);
     }
 
     void* linkedMem = (void*) MapViewOfFile(hFileMapping, FILE_MAP_READ, 0, 0, MUMBLE_LINK_BYTES);
@@ -75,14 +81,14 @@ JNIEXPORT jobject JNICALL Java_com_github_gw2toolbelt_gw2ml_MumbleLink_nOpen(JNI
         if (hFileMapping == NULL) throwIllegalStateException(env, "Failed to find MumbleLink class.");
     }
 
-    jmethodID cid = (*env)->GetMethodID(env, cls, "<init>", "(JLjava/nio/ByteBuffer;)V");
+    jmethodID cid = (*env)->GetMethodID(env, cls, "<init>", "(JLjava/nio/ByteBuffer;Ljava/lang/String;)V");
     if (!cid) {
         UnmapViewOfFile(linkedMem);
         CloseHandle(hFileMapping);
         if (hFileMapping == NULL) throwIllegalStateException(env, "Failed to find MumbleLink constructor.");
     }
 
-    return (*env)->NewObject(env, cls, cid, instance, buffer);
+    return (*env)->NewObject(env, cls, cid, instance, buffer, handle);
 }
 
 JNIEXPORT void JNICALL Java_com_github_gw2toolbelt_gw2ml_MumbleLink_nClose(JNIEnv* env, jclass clazz, jlong address) {

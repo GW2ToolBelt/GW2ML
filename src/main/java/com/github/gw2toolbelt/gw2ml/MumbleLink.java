@@ -30,9 +30,10 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import javax.annotation.Nullable;
@@ -53,6 +54,8 @@ import javax.annotation.Nullable;
  */
 public final class MumbleLink implements AutoCloseable {
 
+    private static final String DEFAULT_HANDLE = "MumbleLink";
+
     private static final long NULL = 0L;
     private static final long ADDRESS_CUSTOM = -1L;
 
@@ -64,22 +67,15 @@ public final class MumbleLink implements AutoCloseable {
         JNILibraryLoader.loadSystem("com.github.gw2toolbelt.gw2ml", JNI_LIBRARY_NAME);
     }
 
-    private static final AtomicInteger refCounter = new AtomicInteger(0);
+    private static final Object cacheGuard = new Object();
+    private static final Map<String, MumbleLink> cachedInstances = new HashMap<>();
 
-    @Nullable
-    private static MumbleLink instance;
+    private int refCount = 0;
 
     /**
      * Opens a {@link MumbleLink} view of the data provided by Guild Wars 2 via the MumbleLink mechanism.
      *
-     * <p>The object returned by this method must be explicitly {@link #close() closed}.</p>
-     *
-     * <p>The object returned by this method may not be unique, and may make use of reference-counting mechanisms.
-     * Additionally, it is not guaranteed that the returned object becomes {@link #isClosed()} invalid after calling
-     * {@link #close()}.</p>
-     *
-     * <p>It is recommended to open a {@code MumbleLink} object once and keep it around for the lifetime of the
-     * application when possible.</p>
+     * <p>This method is shorthand for {@code MumbleLink.open("MumbleLink");}</p>
      *
      * @return  a {@code MumbleLink} object that may be used to read the data provided by Guild Wars 2 via the
      *          MumbleLink mechanism
@@ -95,13 +91,45 @@ public final class MumbleLink implements AutoCloseable {
      * @since   0.1.0
      */
     public static MumbleLink open() {
-        int refCount = refCounter.getAndIncrement();
-        if (refCount < 0) throw new IllegalStateException("This GW2ML implementation does not support having more than 2147483647 open views.");
+        return open(DEFAULT_HANDLE);
+    }
 
-        if (refCount == 0) instance = nOpen();
+    /**
+     * Opens a {@link MumbleLink} view of the data provided by Guild Wars 2 via the MumbleLink mechanism using a custom
+     * handle.
+     *
+     * <p>The object returned by this method must be explicitly {@link #close() closed}.</p>
+     *
+     * <p>The object returned by this method may not be unique, and may make use of reference-counting mechanisms.
+     * Additionally, it is not guaranteed that the returned object becomes {@link #isClosed()} invalid after calling
+     * {@link #close()}.</p>
+     *
+     * <p>It is recommended to open a {@code MumbleLink} object once and keep it around for the lifetime of the
+     * application when possible.</p>
+     *
+     * @param handle    the handle of the shared memory which will back the view
+     *
+     * @return  a {@code MumbleLink} object that may be used to read the data provided by Guild Wars 2 via the
+     *          MumbleLink mechanism
+     *
+     * @throws IllegalStateException    if an unexpected error occurs
+     *
+     * @implNote    For better performance this implementation reuses MumbleLink objects whenever possible. In practice
+     *              this means that closing a MumbleLink object might not have an immediate effect which in turn results
+     *              into the object still being valid. However, once close has been invoked on a reference to an object,
+     *              that reference should be discarded as quickly as possible since the underlying object may be
+     *              invalidated at any time by another thread.
+     *
+     * @since   1.4.0
+     */
+    public static MumbleLink open(String handle) {
+        synchronized (cacheGuard) {
+            MumbleLink instance = cachedInstances.computeIfAbsent(handle, ignored -> nOpen(handle));
+            if (instance.refCount + 1 < 0) throw new IllegalStateException("This GW2ML implementation does not support having more than 2147483647 open views of the same handle.");
 
-        assert (instance != null);
-        return instance;
+            instance.refCount++;
+            return instance;
+        }
     }
 
     /**
@@ -115,10 +143,10 @@ public final class MumbleLink implements AutoCloseable {
      * @since   1.3.0
      */
     public static MumbleLink viewOf(ByteBuffer buffer) {
-        return new MumbleLink(ADDRESS_CUSTOM, buffer);
+        return new MumbleLink(ADDRESS_CUSTOM, buffer, null);
     }
 
-    private static native MumbleLink nOpen();
+    private static native MumbleLink nOpen(String handle);
 
     /**
      * Returns the value of the specified manifest attribute in the JAR file.
@@ -150,11 +178,15 @@ public final class MumbleLink implements AutoCloseable {
     private long address;
     private final ByteBuffer data;
 
-    private MumbleLink(long address, ByteBuffer data) {
+    @Nullable
+    private final String handle;
+
+    private MumbleLink(long address, ByteBuffer data, @Nullable String handle) {
         this.address = address;
 
         /* Only configure the ByteOrder for the */
         this.data = (address != ADDRESS_CUSTOM) ? data.order(ByteOrder.nativeOrder()) : data;
+        this.handle = handle;
     }
 
     /**
@@ -168,8 +200,11 @@ public final class MumbleLink implements AutoCloseable {
     public void close() {
         if (this.address == ADDRESS_CUSTOM) return;
 
-        if (refCounter.decrementAndGet() == 0) {
-            nClose(this.address);
+        synchronized (cacheGuard) {
+            if (--refCount == 0) {
+                nClose(this.address);
+                cachedInstances.remove(this.handle);
+            }
 
             this.address = NULL;
         }
