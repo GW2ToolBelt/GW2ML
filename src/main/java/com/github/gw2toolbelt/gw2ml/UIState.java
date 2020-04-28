@@ -137,6 +137,19 @@ public final class UIState {
         return (uiState & (1 << 5)) != 0;
     }
 
+    /**
+     * Returns whether or not the player is currently in combat.
+     *
+     * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
+     *
+     * @return  whether or not the player is currently in combat
+     *
+     * @since   1.4.0
+     */
+    public static boolean isInCombat(int uiState) {
+        return (uiState & (1 << 6)) != 0;
+    }
+
     // This utility class only provides static functionality and is not meant to be initialized.
     private UIState() {}
 
