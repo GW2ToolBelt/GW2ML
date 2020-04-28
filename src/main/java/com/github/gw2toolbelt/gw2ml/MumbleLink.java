@@ -278,6 +278,7 @@ public final class MumbleLink implements AutoCloseable {
      *          float mapCenterY;                         1108+72            1            4
      *          float mapScale;                           1108+76            1            4
      *          uint32_t processId;                       1108+80            1            4
+     *          uint32_t processId;                       1108+84            1            1
      *     }
      *     wchar_t description[2048];                     1364            2048         4096
      * }
@@ -312,6 +313,7 @@ public final class MumbleLink implements AutoCloseable {
                              OFFSET_Context_mapCenterY      = OFFSET_context + 72,
                              OFFSET_Context_mapScale        = OFFSET_context + 76,
                              OFFSET_Context_processId       = OFFSET_context + 80,
+                             OFFSET_Context_mountType       = OFFSET_context + 84,
                              OFFSET_description             = 1364;
 
     /**
@@ -1143,6 +1145,22 @@ public final class MumbleLink implements AutoCloseable {
         public long getProcessID() {
             MumbleLink.this.validateState();
             return Integer.toUnsignedLong(MumbleLink.this.data.getInt(OFFSET_Context_processId));
+        }
+
+        /**
+         * Returns information about the type of the mount the player is currently riding.
+         *
+         * <p>The functionality provided by {@link MountType} may be used to interpret the value.</p>
+         *
+         * @return  information about the type of the mount the player is currently riding
+         *
+         * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
+         *
+         * @since   1.5.0
+         */
+        public byte getMountType() {
+            MumbleLink.this.validateState();
+            return MumbleLink.this.data.get(OFFSET_Context_mountType);
         }
 
     }
