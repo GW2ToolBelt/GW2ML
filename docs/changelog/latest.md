@@ -1,14 +1,14 @@
-### 1.3.0
+### 1.4.0
 
-_Released 2020 Apr 08_
+_Released 2020 Apr 28_
 
 #### Improvements
 
-- Added support for MumbleLink views of custom source ByteBuffers.
-- Added `MumbleLink#copy` operations to cover from the entire MumbleLink buffer (instead of just the context).
-- Added ByteBuffer overloads for `MumbleLink.Context#copy` operations.
-
-#### Fixes
-
-- Fixes an issue that caused `MumbleLink.Context#copy` operations to copy from
-  the start of the buffer instead of the start from the context.
+- Added support for specifying file handle explicitly when opening a view via
+  `MumbleLink#open(String)`.
+    - This is meant to be used with the `-mumble <name>` command line argument
+      that was added to Guild Wars 2 on 28. April 2020 to better support
+      multiple game clients on a single PC.
+- Added `UIState#isInCombat` bit check.
+- Added `MumbleLink.Context#getProcessID` which returns the ID of the game
+  process that has most recently updated the data.
