@@ -31,13 +31,16 @@ open class GenerateOpenModuleInfo : DefaultTask() {
     @Input
     lateinit var moduleName: String
 
+    @Input
+    var body: String? = null
+
     @OutputFile
     val outputFile: File = File(project.buildDir, "generateOpenModuleInfo/$name/src/module-info.java")
 
     @TaskAction
     fun run() {
         outputFile.delete()
-        outputFile.writeText("open module $moduleName {}")
+        outputFile.writeText("open module $moduleName {${if (body.isNullOrEmpty()) "" else "\n\n    $body\n\n"}}")
     }
 
 }

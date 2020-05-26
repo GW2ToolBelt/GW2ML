@@ -260,10 +260,12 @@ tasks {
 
     val generateNativeModuleInfo = create<GenerateOpenModuleInfo>("generateNativeModuleInfo") {
         moduleName = "com.github.gw2toolbelt.gw2ml.natives"
+        body = "requires transitive com.github.gw2toolbelt.gw2ml;"
     }
 
     val compileNativeModuleInfo = create<JavaCompile>("compileNativeModuleInfo") {
         dependsOn(generateNativeModuleInfo)
+        dependsOn(jar)
 
         destinationDir = File(buildDir, "classes/compileNativeModuleInfo/main")
 
@@ -282,7 +284,7 @@ tasks {
 
         afterEvaluate {
             options.compilerArgs.add("--module-path")
-            options.compilerArgs.add(compileJava.get().classpath.asPath)
+            options.compilerArgs.add(compileJava.get().classpath.asPath + ";" + jar.get().outputs.files.asPath)
         }
 
         options.forkOptions.javaHome = jdk9Home
@@ -297,7 +299,7 @@ tasks {
         archiveClassifier.set("natives-windows")
 
         into("META-INF/versions/9") {
-            from(compileJava9.outputs.files.filter(File::isDirectory)) {
+            from(compileNativeModuleInfo.outputs.files.filter(File::isDirectory)) {
                 exclude("**/Stub.class")
             }
 
