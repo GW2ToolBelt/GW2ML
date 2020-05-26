@@ -24,6 +24,7 @@ package com.example;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import com.github.gw2toolbelt.gw2ml.MapType;
+import com.github.gw2toolbelt.gw2ml.MountType;
 import com.github.gw2toolbelt.gw2ml.MumbleLink;
 import com.github.gw2toolbelt.gw2ml.UIState;
 
@@ -81,6 +82,13 @@ public class Sample {
                 System.out.println(String.format("ctx_MapCenterY:\t\t\t%s", mumbleLink.getContext().getMapCenterY()));
                 System.out.println(String.format("ctx_MapScale:\t\t\t%s", mumbleLink.getContext().getMapScale()));
                 System.out.println(String.format("ctx_ProcessID:\t\t\t%s", mumbleLink.getContext().getProcessID()));
+
+                byte mountType = mumbleLink.getContext().getMountType();
+                System.out.println(String.format(
+                    "ctx_MountType:\t\t\t%s (%s)",
+                    mountType, MountType.valueOf(mountType).toString())
+                );
+
                 System.out.println(String.format("description:\t\t\t%s", mumbleLink.getDescription()));
                 System.out.println();
 
