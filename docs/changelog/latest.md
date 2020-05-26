@@ -1,14 +1,13 @@
-### 1.4.0
+### 1.5.0
 
-_Released 2020 Apr 28_
+_Released 2020 May 27_
 
 #### Improvements
 
-- Added support for specifying file handle explicitly when opening a view via
-  `MumbleLink#open(String)`.
-    - This is meant to be used with the `-mumble <name>` command line argument
-      that was added to Guild Wars 2 on 28. April 2020 to better support
-      multiple game clients on a single PC.
-- Added `UIState#isInCombat` bit check.
-- Added `MumbleLink.Context#getProcessID` which returns the ID of the game
-  process that has most recently updated the data.
+- Added `MumbleLink.Context#getMountType` which returns the ID of the current
+  mount and `MountType` which provides the functionality required to interpret
+  such IDs.
+
+#### Fixes
+
+- Use the correct module descriptor for native binaries [[GH-15](https://github.com/GW2Toolbelt/GW2ML/issues/15)].
