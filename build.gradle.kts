@@ -30,7 +30,7 @@ plugins {
 }
 
 val artifactName = "gw2ml"
-val nextVersion = "1.5.0"
+val nextVersion = "2.0.0"
 
 group = "com.github.gw2toolbelt.gw2ml"
 version = when (deployment.type) {
