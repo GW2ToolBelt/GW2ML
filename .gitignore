@@ -2,7 +2,7 @@
 !/.idea
 /.idea/*
 !/.idea/copyright
-!/.idea/scopes/
+!/.idea/scopes
 .vs
 /build
 /out
