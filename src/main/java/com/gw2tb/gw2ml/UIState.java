@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.gw2ml;
+package com.gw2tb.gw2ml;
 
 /**
  * A utility class for interpreting the value of the {@link MumbleLink.Context#getUIState() uiState} bitfield.

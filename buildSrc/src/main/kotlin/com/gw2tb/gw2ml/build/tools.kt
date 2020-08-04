@@ -19,12 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.build
+package com.gw2tb.gw2ml.build
 
 import org.gradle.api.*
 import org.gradle.kotlin.dsl.*
 
-private const val DEPLOYMENT_KEY = "com.github.gw2toolbelt.build.Deployment"
+private const val DEPLOYMENT_KEY = "com.gw2tb.gw2ml.build.Deployment"
 
 val Project.deployment: Deployment
     get() =

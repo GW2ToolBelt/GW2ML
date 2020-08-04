@@ -29,7 +29,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.gw2ml;
+package com.gw2tb.gw2ml;
 
 import java.io.File;
 import java.io.IOException;
@@ -107,7 +107,7 @@ final class SharedLibraryLoader {
     private static void initExtractPath(Path extractPath) {
         String newLibPath = extractPath.toAbsolutePath().toString();
 
-        // Prepend the path in which the libraries were extracted to com.github.gw2toolbelt.gw2ml.librarypath
+        // Prepend the path in which the libraries were extracted to com.gw2tb.gw2ml.librarypath
         String libPath = Configuration.LIBRARY_PATH.get();
         if (libPath != null && !libPath.isEmpty()) newLibPath += File.pathSeparator + libPath;
 

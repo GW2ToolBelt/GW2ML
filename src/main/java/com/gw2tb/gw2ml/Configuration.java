@@ -29,7 +29,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.gw2ml;
+package com.gw2tb.gw2ml;
 
 import java.io.PrintStream;
 import java.util.function.Function;
@@ -53,13 +53,13 @@ public final class Configuration<T> {
      * {@link java.io.File#pathSeparator}.
      *
      * <p style="font-family: monospace">
-     * Property: <b>com.github.gw2toolbelt.gw2ml.librarypath</b><br>
+     * Property: <b>com.gw2tb.gw2ml.librarypath</b><br>
      * &nbsp; &nbsp;Usage: Dynamic<br>
      *
      * @since   0.1.0
      */
     public static final Configuration<String> LIBRARY_PATH = new Configuration<>(
-        "com.github.gw2toolbelt.gw2ml.librarypath",
+        "com.gw2tb.gw2ml.librarypath",
         StateInit.STRING,
         Usage.DYNAMIC
     );
@@ -76,14 +76,14 @@ public final class Configuration<T> {
      * <p>When set programmatically, it can also be a {@link Function Function&lt;String, String&gt;} instance.</p>
      *
      * <p style="font-family: monospace">
-     * Property: <b>com.github.gw2toolbelt.gw2ml.bundledLibrary.nameMapper</b><br>
+     * Property: <b>com.gw2tb.gw2ml.bundledLibrary.nameMapper</b><br>
      * &nbsp; &nbsp; Type: String or a {@link Function Function&lt;String, String&gt;} instance<br>
      * &nbsp; &nbsp;Usage: Static</p>
      *
      * @since   0.1.0
      */
     public static final Configuration<Object> BUNDLED_LIBRARY_NAME_MAPPER = new Configuration<>(
-        "com.github.gw2toolbelt.gw2ml.bundledLibrary.nameMapper",
+        "com.gw2tb.gw2ml.bundledLibrary.nameMapper",
         StateInit.STRING,
         Usage.STATIC
     );
@@ -100,14 +100,14 @@ public final class Configuration<T> {
      * <p>When set programmatically, it can also be a {@link Function Function&lt;String, String&gt;} instance.</p>
      *
      * <p style="font-family: monospace">
-     * Property: <b>com.github.gw2toolbelt.gw2ml.bundledLibrary.nameMapper</b><br>
+     * Property: <b>com.gw2tb.gw2ml.bundledLibrary.nameMapper</b><br>
      * &nbsp; &nbsp; Type: String or a {@link Function Function&lt;String, String&gt;} instance<br>
      * &nbsp; &nbsp;Usage: Static</p>
      *
      * @since   0.1.0
      */
     public static final Configuration<Object> BUNDLED_LIBRARY_PATH_MAPPER = new Configuration<>(
-        "com.github.gw2toolbelt.gw2ml.bundledLibrary.pathMapper",
+        "com.gw2tb.gw2ml.bundledLibrary.pathMapper",
         StateInit.STRING,
         Usage.STATIC
     );
@@ -117,13 +117,13 @@ public final class Configuration<T> {
      * option is not set, it defaults to <code>gw2ml&lt;user name&gt;</code>.
      *
      * <p style="font-family: monospace">
-     * Property: <b>com.github.gw2toolbelt.gw2ml.SharedLibraryExtractDirectory</b><br>
+     * Property: <b>com.gw2tb.gw2ml.SharedLibraryExtractDirectory</b><br>
      * &nbsp; &nbsp;Usage: Dynamic<br>
      *
      * @since   0.1.0
      */
     public static final Configuration<String> SHARED_LIBRARY_EXTRACT_DIRECTORY = new Configuration<>(
-        "com.github.gw2toolbelt.gw2ml.SharedLibraryExtractDirectory",
+        "com.gw2tb.gw2ml.SharedLibraryExtractDirectory",
         StateInit.STRING,
         Usage.DYNAMIC
     );
@@ -147,13 +147,13 @@ public final class Configuration<T> {
      * </code></pre>
      *
      * <p style="font-family: monospace">
-     * Property: <b>com.github.gw2toolbelt.gw2ml.SharedLibraryExtractPath</b><br>
+     * Property: <b>com.gw2tb.gw2ml.SharedLibraryExtractPath</b><br>
      * &nbsp; &nbsp;Usage: Dynamic</p>
      *
      * @since   0.1.0
      */
     public static final Configuration<String> SHARED_LIBRARY_EXTRACT_PATH = new Configuration<>(
-        "com.github.gw2toolbelt.gw2ml.SharedLibraryExtractPath",
+        "com.gw2tb.gw2ml.SharedLibraryExtractPath",
         StateInit.STRING,
         Usage.DYNAMIC
     );
@@ -162,13 +162,13 @@ public final class Configuration<T> {
      * Can be used to override the GW2ML library name. It can be an absolute path.
      *
      * <p style="font-family: monospace">
-     * Property: <b>com.github.gw2toolbelt.gw2ml.libname</b><br>
+     * Property: <b>com.gw2tb.gw2ml.libname</b><br>
      * &nbsp; &nbsp;Usage: Dynamic</p>
      *
      * @since   0.1.0
      */
     public static final Configuration<String> LIBRARY_NAME = new Configuration<>(
-        "com.github.gw2toolbelt.gw2ml.libname",
+        "com.gw2tb.gw2ml.libname",
         StateInit.STRING,
         Usage.DYNAMIC
     );
@@ -178,13 +178,13 @@ public final class Configuration<T> {
      * extra runtime checks will be performed (some potentially expensive, performance-wise).
      *
      * <p style="font-family: monospace">
-     * Property: <b>com.github.gw2toolbelt.gw2ml.util.Debug</b><br>
+     * Property: <b>com.gw2tb.gw2ml.util.Debug</b><br>
      * &nbsp; &nbsp;Usage: Static</p>
      *
      * @since   0.1.0
      */
     public static final Configuration<Boolean> DEBUG = new Configuration<>(
-        "com.github.gw2toolbelt.gw2ml.util.Debug",
+        "com.gw2tb.gw2ml.util.Debug",
         StateInit.BOOLEAN,
         Usage.STATIC
     );
@@ -195,13 +195,13 @@ public final class Configuration<T> {
      * <p>This option requires {@link #DEBUG} to be enabled.</p>
      *
      * <p style="font-family: monospace">
-     * Property: <b>com.github.gw2toolbelt.gw2ml.util.DebugLoader</b><br>
+     * Property: <b>com.gw2tb.gw2ml.util.DebugLoader</b><br>
      * &nbsp; &nbsp;Usage: Static</p>
      *
      * @since   0.1.0
      */
     public static final Configuration<Boolean> DEBUG_LOADER = new Configuration<>(
-        "com.github.gw2toolbelt.gw2ml.util.DebugLoader",
+        "com.gw2tb.gw2ml.util.DebugLoader",
         StateInit.BOOLEAN,
         Usage.STATIC
     );
@@ -214,14 +214,14 @@ public final class Configuration<T> {
      * <p>When set programmatically, it can also be a {@link PrintStream} instance.</p>
      *
      * <p style="font-family: monospace">
-     * Property: <b>com.github.gw2toolbelt.gw2ml.util.DebugStream</b><br>
+     * Property: <b>com.gw2tb.gw2ml.util.DebugStream</b><br>
      * &nbsp; &nbsp; Type: String or a {@link PrintStream} instance<br>
      * &nbsp; &nbsp;Usage: Static</p>
      *
      * @since   0.1.0
      */
     public static final Configuration<Object> DEBUG_STREAM = new Configuration<>(
-        "com.github.gw2toolbelt.gw2ml.util.DebugStream",
+        "com.gw2tb.gw2ml.util.DebugStream",
         StateInit.STRING,
         Usage.STATIC
     );
@@ -231,13 +231,13 @@ public final class Configuration<T> {
      * development. Their performance impact is usually minimal, but they may be disabled for release builds.
      *
      * <p style="font-family: monospace">
-     * Property: <b>com.github.gw2toolbelt.gw2ml.util.NoChecks</b><br>
+     * Property: <b>com.gw2tb.gw2ml.util.NoChecks</b><br>
      * &nbsp; &nbsp;Usage: Static</p>
      *
      * @since   0.1.0
      */
     public static final Configuration<Boolean> DISABLE_CHECKS = new Configuration<>(
-        "com.github.gw2toolbelt.gw2ml.util.NoChecks",
+        "com.gw2tb.gw2ml.util.NoChecks",
         StateInit.BOOLEAN,
         Usage.STATIC
     );

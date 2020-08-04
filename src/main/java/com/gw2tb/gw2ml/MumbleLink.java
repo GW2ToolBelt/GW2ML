@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.gw2ml;
+package com.gw2tb.gw2ml;
 
 import java.io.InputStream;
 import java.net.Inet6Address;
@@ -64,7 +64,7 @@ public final class MumbleLink implements AutoCloseable {
     private static final String JNI_LIBRARY_NAME = Configuration.LIBRARY_NAME.get(Platform.mapLibraryNameBundled("gw2ml"));
 
     static {
-        JNILibraryLoader.loadSystem("com.github.gw2toolbelt.gw2ml", JNI_LIBRARY_NAME);
+        JNILibraryLoader.loadSystem("com.gw2tb.gw2ml", JNI_LIBRARY_NAME);
     }
 
     private static final Object cacheGuard = new Object();
@@ -156,7 +156,7 @@ public final class MumbleLink implements AutoCloseable {
      * @return  the attribute value or null if the attribute was not found or there is no JAR file
      */
     private static Optional<String> apiGetManifestValue(String attributeName) {
-        URL url = MumbleLink.class.getClassLoader().getResource("com/github/gw2toolbelt/gw2ml/MumbleLink.class");
+        URL url = MumbleLink.class.getClassLoader().getResource("com/gw2tb/gw2ml/MumbleLink.class");
 
         if (url != null) {
             String classURL = url.toString();

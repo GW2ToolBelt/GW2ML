@@ -19,10 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.github.gw2toolbelt.gw2ml {
+module com.gw2tb.gw2ml {
 
     requires static jsr305;
 
-    exports com.github.gw2toolbelt.gw2ml;
+    exports com.gw2tb.gw2ml;
 
 }

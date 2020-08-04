@@ -29,13 +29,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.gw2ml;
+package com.gw2tb.gw2ml;
 
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
-import static com.github.gw2toolbelt.gw2ml.JNILibraryLoader.*;
+import static com.gw2tb.gw2ml.JNILibraryLoader.*;
 
 /**
  * Platform specific tools.

@@ -19,6 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.gw2ml;
+package com.gw2tb.gw2ml.build
 
-class Stub {}
+enum class BuildType {
+    LOCAL,
+    SNAPSHOT,
+    RELEASE
+}

@@ -19,10 +19,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.build
+package com.gw2tb.gw2ml.build.tasks
 
-enum class BuildType {
-    LOCAL,
-    SNAPSHOT,
-    RELEASE
+import org.gradle.api.*
+import org.gradle.api.tasks.*
+import java.io.*
+
+@CacheableTask
+open class GenerateOpenModuleInfo : DefaultTask() {
+
+    @Input
+    lateinit var moduleName: String
+
+    @Input
+    var body: String? = null
+
+    @OutputFile
+    val outputFile: File = File(project.buildDir, "generateOpenModuleInfo/$name/src/module-info.java")
+
+    @TaskAction
+    fun run() {
+        outputFile.delete()
+        outputFile.writeText("open module $moduleName {${if (body.isNullOrEmpty()) "" else "\n\n    $body\n\n"}}")
+    }
+
 }

@@ -41,7 +41,7 @@ inline jint throwIllegalStateException(JNIEnv *env, char *message) {
     return (*env)->ThrowNew(env, clazz, message);
 }
 
-JNIEXPORT jobject JNICALL Java_com_github_gw2toolbelt_gw2ml_MumbleLink_nOpen(JNIEnv* env, jclass clazz, jstring handle) {
+JNIEXPORT jobject JNICALL Java_com_gw2tb_gw2ml_MumbleLink_nOpen(JNIEnv* env, jclass clazz, jstring handle) {
     UNUSED_PARAM(clazz);
 
     const char* handleName = (*env)->GetStringUTFChars(env, handle, NULL);
@@ -74,7 +74,7 @@ JNIEXPORT jobject JNICALL Java_com_github_gw2toolbelt_gw2ml_MumbleLink_nOpen(JNI
         if (hFileMapping == NULL) throwIllegalStateException(env, "Failed to create new direct ByteBuffer.");
     }
 
-    jclass cls = (*env)->FindClass(env, "com/github/gw2toolbelt/gw2ml/MumbleLink");
+    jclass cls = (*env)->FindClass(env, "com/gw2tb/gw2ml/MumbleLink");
     if (!cls) {
         UnmapViewOfFile(linkedMem);
         CloseHandle(hFileMapping);
@@ -91,7 +91,7 @@ JNIEXPORT jobject JNICALL Java_com_github_gw2toolbelt_gw2ml_MumbleLink_nOpen(JNI
     return (*env)->NewObject(env, cls, cid, instance, buffer, handle);
 }
 
-JNIEXPORT void JNICALL Java_com_github_gw2toolbelt_gw2ml_MumbleLink_nClose(JNIEnv* env, jclass clazz, jlong address) {
+JNIEXPORT void JNICALL Java_com_gw2tb_gw2ml_MumbleLink_nClose(JNIEnv* env, jclass clazz, jlong address) {
     UNUSED_PARAM(env);
     UNUSED_PARAM(clazz);
 

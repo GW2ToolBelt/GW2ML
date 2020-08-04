@@ -29,7 +29,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.gw2ml;
+package com.gw2tb.gw2ml;
 
 import java.io.File;
 import java.io.IOException;
@@ -153,7 +153,7 @@ final class JNILibraryLoader {
 
         String libName = Platform.get().mapLibraryName(name);
 
-        // METHOD 2: com.github.gw2toolbelt.gw2ml.librarypath
+        // METHOD 2: com.gw2tb.gw2ml.librarypath
         URL libURL = findResource(context, module, libName);
         if (libURL == null) {
             if (loadSystemFromLibraryPath(load, context, module, libName)) {
@@ -174,7 +174,7 @@ final class JNILibraryLoader {
 
                 if (debugLoader) log("\tUsing SharedLibraryLoader...");
 
-                // Extract from classpath and try com.github.gw2toolbelt.gw2ml.librarypath
+                // Extract from classpath and try com.gw2tb.gw2ml.librarypath
                 try (FileChannel ignored = SharedLibraryLoader.load(name, libName, libURL)) {
                     if (loadSystemFromLibraryPath(load, context, module, libName)) {
                         return;
@@ -292,7 +292,7 @@ final class JNILibraryLoader {
     private static void printError() {
         printError(
             "[GW2ML] Failed to load a library. Possible solutions:\n" +
-                "\ta) Add the directory that contains the shared library to -Djava.library.path or -Dcom.github.gw2toolbelt.gw2ml.librarypath.\n" +
+                "\ta) Add the directory that contains the shared library to -Djava.library.path or -Dcom.gw2tb.gw2ml.librarypath.\n" +
                 "\tb) Add the JAR that contains the shared library to the classpath."
         );
     }
@@ -301,10 +301,10 @@ final class JNILibraryLoader {
         DEBUG_STREAM.println(message);
 
         if (!DEBUG) {
-            DEBUG_STREAM.println("[GW2ML] Enable debug mode with -Dcom.github.gw2toolbelt.gw2ml.util.Debug=true for better diagnostics.");
+            DEBUG_STREAM.println("[GW2ML] Enable debug mode with -Dcom.gw2tb.gw2ml.util.Debug=true for better diagnostics.");
 
             if (!Configuration.DEBUG_LOADER.get(false))
-                DEBUG_STREAM.println("[GW2ML] Enable the SharedLibraryLoader debug mode with -Dcom.github.gw2toolbelt.gw2ml.util.DebugLoader=true for better diagnostics.");
+                DEBUG_STREAM.println("[GW2ML] Enable the SharedLibraryLoader debug mode with -Dcom.gw2tb.gw2ml.util.DebugLoader=true for better diagnostics.");
         }
     }
 

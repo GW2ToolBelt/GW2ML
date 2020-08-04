@@ -19,8 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import com.github.gw2toolbelt.build.*
-import com.github.gw2toolbelt.build.tasks.*
+import com.gw2tb.gw2ml.build.*
+import com.gw2tb.gw2ml.build.BuildType
+import com.gw2tb.gw2ml.build.tasks.*
 import org.gradle.internal.jvm.*
 
 plugins {
@@ -32,9 +33,9 @@ plugins {
 val artifactName = "gw2ml"
 val nextVersion = "2.0.0"
 
-group = "com.github.gw2toolbelt.gw2ml"
+group = "com.gw2tb.gw2ml"
 version = when (deployment.type) {
-    com.github.gw2toolbelt.build.BuildType.SNAPSHOT -> "$nextVersion-SNAPSHOT"
+    BuildType.SNAPSHOT -> "$nextVersion-SNAPSHOT"
     else -> nextVersion
 }
 
@@ -259,8 +260,8 @@ tasks {
     }
 
     val generateNativeModuleInfo = create<GenerateOpenModuleInfo>("generateNativeModuleInfo") {
-        moduleName = "com.github.gw2toolbelt.gw2ml.natives"
-        body = "requires transitive com.github.gw2toolbelt.gw2ml;"
+        moduleName = "com.gw2tb.gw2ml.natives"
+        body = "requires transitive com.gw2tb.gw2ml;"
     }
 
     val compileNativeModuleInfo = create<JavaCompile>("compileNativeModuleInfo") {
@@ -307,7 +308,7 @@ tasks {
         }
 
         from(compileNative.outputs) {
-            into("windows/x64/com/github/gw2toolbelt/gw2ml")
+            into("windows/x64/com/gw2tb/gw2ml")
         }
 
         manifest {
@@ -382,7 +383,7 @@ publishing {
 }
 
 signing {
-    isRequired = (deployment.type === com.github.gw2toolbelt.build.BuildType.RELEASE)
+    isRequired = (deployment.type === BuildType.RELEASE)
     sign(publishing.publications)
 }
 

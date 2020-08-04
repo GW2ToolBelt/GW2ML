@@ -1,3 +1,3 @@
 <component name="DependencyValidationManager">
-  <scope name="Copyright (LWJGL Forked)" pattern="file[GW2ML.main]:java/com/github/gw2toolbelt/gw2ml/JNILibraryLoader.java||file[GW2ML.main]:java/com/github/gw2toolbelt/gw2ml/Platform.java||file[GW2ML.main]:java/com/github/gw2toolbelt/gw2ml/SharedLibraryLoader.java||file[GW2ML.main]:java/com/github/gw2toolbelt/gw2ml/Configuration.java" />
+  <scope name="Copyright (LWJGL Forked)" pattern="file[GW2ML.main]:java/com/github/gw2toolbelt/gw2ml/JNILibraryLoader.java||file[GW2ML.main]:java/com/github/gw2toolbelt/gw2ml/Platform.java||file[GW2ML.main]:java/com/gw2tb/gw2ml/SharedLibraryLoader.java||file[GW2ML.main]:java/com/github/gw2toolbelt/gw2ml/Configuration.java" />
 </component>

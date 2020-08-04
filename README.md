@@ -1,8 +1,8 @@
 # GW2ML
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square&label=License)](https://github.com/GW2Toolbelt/GW2ML/blob/master/LICENSE)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.gw2toolbelt.gw2ml/gw2ml.svg?style=flat-square&label=Maven%20Central)](https://maven-badges.herokuapp.com/maven-central/com.github.gw2toolbelt.gw2ml/gw2ml)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.gw2toolbelt.gw2ml/gw2ml.svg?style=flat-square&label=JavaDoc&color=blue)](https://javadoc.io/doc/com.github.gw2toolbelt.gw2ml/gw2ml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.gw2tb.gw2ml/gw2ml.svg?style=flat-square&label=Maven%20Central)](https://maven-badges.herokuapp.com/maven-central/com.gw2tb.gw2ml/gw2ml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.gw2tb.gw2ml/gw2ml.svg?style=flat-square&label=JavaDoc&color=blue)](https://javadoc.io/doc/com.gw2tb.gw2ml/gw2ml)
 
 GW2ML is a Java library for fast and non-cached access to the data provided
 by the Guild Wars 2 game client via the MumbleLink mechanism.
@@ -28,7 +28,7 @@ platform-specific native library to be available. GW2ML extracts the native
 library to a temporary folder and loads them automatically if a native artifact
 is on the class-path (or module-path). If more customization is required (e.g.
 when creating a platform-specific installer) the natives may be extracted
-manually and loaded via `java.library.path`. See the [Configuration](/src/main/java/com/github/gw2toolbelt/gw2ml/Configuration.java)
+manually and loaded via `java.library.path`. See the [Configuration](/src/main/java/com/gw2tb/gw2ml/Configuration.java)
 class for more options.
 
 GW2ML provides prebuilt artifacts for all supported platforms. The currently
@@ -40,7 +40,7 @@ supported platforms/architectures are:
 ### Accessing MumbleLink data
 
 GW2ML provides an API that is designed to be as simple and intuitive to use as
-possible while remaining efficient. The primary entry-point is [`MumbleLink.open()`](https://github.com/TheMrMilchmann/GW2ML/blob/master/src/main/java/com/github/gw2toolbelt/gw2ml/MumbleLink.java#L89)
+possible while remaining efficient. The primary entry-point is [`MumbleLink.open()`](/src/main/java/com/gw2tb/gw2ml/MumbleLink.java#L89)
 which must be used to open a view of the MumbleLink data before anything can be
 read. Once that is done the data can be accessed through various getter methods
 on the returned view object.
