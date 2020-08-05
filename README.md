@@ -40,7 +40,7 @@ supported platforms/architectures are:
 ### Accessing MumbleLink data
 
 GW2ML provides an API that is designed to be as simple and intuitive to use as
-possible while remaining efficient. The primary entry-point is [`MumbleLink.open()`](/src/main/java/com/gw2tb/gw2ml/MumbleLink.java#L89)
+possible while remaining efficient. The primary entry-point is [`MumbleLink.open()`](https://javadoc.io/doc/com.gwtb.gw2ml/gw2ml/latest/com/gw2tb/gw2ml/MumbleLink.html)
 which must be used to open a view of the MumbleLink data before anything can be
 read. Once that is done the data can be accessed through various getter methods
 on the returned view object.
