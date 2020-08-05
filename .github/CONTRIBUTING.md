@@ -9,7 +9,7 @@ that:
 - or fixes bugs in the library.
 
 Any contribution must be submitted as a pull request. (If you wish to report an
-issue or ask a question please use the [issue tracker](https://github.com/TheMrMilchmann/GW2ML/issues)
+issue or ask a question please use the [issue tracker](https://github.com/GW2ToolBelt/GW2ML/issues)
 instead.)
 
 
