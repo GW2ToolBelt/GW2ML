@@ -74,22 +74,6 @@ public final class UIState {
     }
 
     /**
-     * Returns whether or not the game is currently in a loading screen.
-     *
-     * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
-     *
-     * @return  whether or not the game is currently in a loading screen
-     *
-     * @deprecated  This bit is wrongly labeled. Use {@link #isGameFocused(int)} instead.
-     *
-     * @since   1.0.0
-     */
-    @Deprecated
-    public static boolean isInLoadingScreen(int uiState) {
-        return (uiState & (1 << 3)) != 0;
-    }
-
-    /**
      * Returns whether or not the game client is currently focused.
      *
      * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
