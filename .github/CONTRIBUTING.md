@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for considering to contribute to GW2ML!
+Thank you for considering contributing to GW2ML!
 
 While the library is considered feature-complete, we welcome any contribution
 that:
