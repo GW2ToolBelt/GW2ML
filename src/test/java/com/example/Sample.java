@@ -109,15 +109,17 @@ public class Sample {
         if (unit == TimeUnit.NANOSECONDS || unit == TimeUnit.MICROSECONDS) throw new IllegalArgumentException();
 
         long startTime = System.currentTimeMillis();
-        long endTime = startTime + unit.toMillis(timeout);
-        long sleepBudget = endTime - startTime;
+        long stopTime = startTime + unit.toMillis(timeout);
+        long sleepBudget = stopTime - startTime;
 
         while (sleepBudget > 0) {
             try {
-                unit.sleep(timeout);
-            } catch (InterruptedException e) {}
+                TimeUnit.MILLISECONDS.sleep(sleepBudget);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
-            sleepBudget -= System.currentTimeMillis() - startTime;
+            sleepBudget = stopTime - System.currentTimeMillis();
         }
     }
 
