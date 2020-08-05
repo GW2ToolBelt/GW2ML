@@ -112,37 +112,8 @@ tasks {
          * cannot invoke the compiler using that API and needs to use the command line. (This bug only surfaces with an
          * according dependency.)
          *
-         * TODO: Remove the workaround described below. It is horrible.
-         *
-         * Just one more thing: The compiler validates "exports" statements in module descriptors (as it should!) but
-         * this leaves us in an unfortunate situation where we technically would need to recompile the entire project
-         * with all additional Java 9 files added or replacing their respective counterparts. Seems easy enough but this
-         * becomes a huge annoyance once more version-specific stuff is added, thus we make the following compromise:
-         * Any code specific to Java version X (with X >= 9) must be a utility class with no dependencies on code that
-         * is part of other compilations.
-         * (This is fine since these classes - if they exist - are most likely internal anyways.)
-         *
-         * Further, we can now use some very simple "Stub" classes to avoid issues with empty exported packages. These
-         * "Stub.java" files should only contain the following code:
-         *
-         *     package ${packageName};
-         *
-         *     class Stub {}
-         *
-         * No reasonable Java compiler implementation will generate anything other than a simple Stub.class file from
-         * this source file. Thus, the JAR task (used to generate the MRJAR; see below) can now simply strip any file
-         * named "Stub.class".
-         *
-         * Notes on this workaround:
-         * - The source file to class file mapping is not trivial and there is no way to (reasonably) detect it, thus it
-         *   becomes practically impossible to figure out if a class has changed in a multi-release setup.
-         * - Comparing class file contents (without version number) might be a solution albeit a hacky one that could
-         *   easily lead to bloated JARs.
-         * - Maintaining an explicit list of class files to include is not an option!
-         *
          * [1] https://github.com/gradle/gradle/issues/2510
          * [2] https://bugs.openjdk.java.net/browse/JDK-8139607
-         * [3] https://bugs.openjdk.java.net/browse/JDK-8235229
          */
         destinationDir = File(buildDir, "classes/java-jdk9/main")
 
@@ -151,7 +122,7 @@ tasks {
         }
 
         source = java9Source
-        options.sourcepath = files(java9Source.dir)
+        options.sourcepath = files(sourceSets["main"].java.srcDirs) + files(java9Source.dir)
 
         classpath = files()
 
@@ -176,10 +147,7 @@ tasks {
         archiveBaseName.set(artifactName)
 
         into("META-INF/versions/9") {
-            from(compileJava9.outputs.files.filter(File::isDirectory)) {
-                exclude("**/Stub.class")
-            }
-
+            from(compileJava9.outputs.files.filter(File::isDirectory))
             includeEmptyDirs = false
         }
 
@@ -201,10 +169,7 @@ tasks {
         from(sourceSets["main"].allSource)
 
         into("META-INF/versions/9") {
-            from(compileJava9.inputs.files.filter(File::isDirectory)) {
-                exclude("**/Stub.java")
-            }
-
+            from(compileJava9.inputs.files.filter(File::isDirectory))
             includeEmptyDirs = false
         }
     }
@@ -300,10 +265,7 @@ tasks {
         archiveClassifier.set("natives-windows")
 
         into("META-INF/versions/9") {
-            from(compileNativeModuleInfo.outputs.files.filter(File::isDirectory)) {
-                exclude("**/Stub.class")
-            }
-
+            from(compileNativeModuleInfo.outputs.files.filter(File::isDirectory))
             includeEmptyDirs = false
         }
 
