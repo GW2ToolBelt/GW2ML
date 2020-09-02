@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:Suppress("UnstableApiUsage")
 import com.gw2tb.gw2ml.build.*
 import com.gw2tb.gw2ml.build.BuildType
 import com.gw2tb.gw2ml.build.tasks.*
@@ -125,10 +126,7 @@ tasks {
         options.sourcepath = files(sourceSets["main"].java.srcDirs) + files(java9Source.dir)
 
         classpath = files()
-
-        sourceCompatibility = "9"
-        targetCompatibility = "9"
-        if (!currentJVMVersion.isJava9) options.compilerArgs.addAll(listOf("--release", "9"))
+        options.release.set(9)
 
         afterEvaluate {
             options.compilerArgs.add("--module-path")
