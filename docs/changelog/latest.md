@@ -1,13 +1,15 @@
-### 1.5.0
+### 2.0.0
 
-_Released 2020 May 27_
+_Released 2020 Sep 03_
 
-#### Improvements
+#### Overview
 
-- Added `MumbleLink.Context#getMountType` which returns the ID of the current
-  mount and `MountType` which provides the functionality required to interpret
-  such IDs.
+With `2.0.0` comes a major maintenance release that removes previously
+deprecated functionality and - most importantly - migrates to the `gw2tb.com`
+domain to bring GW2ML in line with upcoming libraries.
 
-#### Fixes
+#### Breaking Changes
 
-- Use the correct module descriptor for native binaries [[GH-15](https://github.com/GW2Toolbelt/GW2ML/issues/15)].
+- Switched from the "gw2toolbelt.github.com" URL to "gw2tb.com". (This affects
+  all package names, module names and imports.) 
+- Removed the mislabeled `UIState#isInLoadingScreen`.
