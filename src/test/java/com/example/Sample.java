@@ -36,33 +36,33 @@ public class Sample {
                 float[] buffer = new float[3];
 
                 System.out.println("=== GW2ML Sample ===");
-                System.out.println(String.format("uiVersion:\t\t\t\t%s", mumbleLink.getUIVersion()));
-                System.out.println(String.format("uiTick:\t\t\t\t\t%s", mumbleLink.getUITick()));
-                System.out.println(String.format("fAvatarPosition:\t\t%s", Arrays.toString(mumbleLink.getAvatarPosition(buffer))));
-                System.out.println(String.format("fAvatarFront:\t\t\t%s", Arrays.toString(mumbleLink.getAvatarFront(buffer))));
-                System.out.println(String.format("fAvatarTop:\t\t\t\t%s", Arrays.toString(mumbleLink.getAvatarTop(buffer))));
-                System.out.println(String.format("name:\t\t\t\t\t%s", mumbleLink.getName()));
-                System.out.println(String.format("fCameraPosition:\t\t%s", Arrays.toString(mumbleLink.getCameraPosition(buffer))));
-                System.out.println(String.format("fCameraFront:\t\t\t%s", Arrays.toString(mumbleLink.getCameraFront(buffer))));
-                System.out.println(String.format("fCameraTop:\t\t\t\t%s", Arrays.toString(mumbleLink.getCameraTop(buffer))));
-                System.out.println(String.format("identity:\t\t\t\t%s", mumbleLink.getIdentity()));
-                System.out.println(String.format("contextLength:\t\t\t%s", mumbleLink.getContextLength()));
-                System.out.println(String.format("ctx_ServerAddress:\t\t%s", mumbleLink.getContext().getServerAddress()));
-                System.out.println(String.format("ctx_MapID:\t\t\t\t%s", mumbleLink.getContext().getMapID()));
+                System.out.printf("uiVersion:\t\t\t\t%s%n", mumbleLink.getUIVersion());
+                System.out.printf("uiTick:\t\t\t\t\t%s%n", mumbleLink.getUITick());
+                System.out.printf("fAvatarPosition:\t\t%s%n", Arrays.toString(mumbleLink.getAvatarPosition(buffer)));
+                System.out.printf("fAvatarFront:\t\t\t%s%n", Arrays.toString(mumbleLink.getAvatarFront(buffer)));
+                System.out.printf("fAvatarTop:\t\t\t\t%s%n", Arrays.toString(mumbleLink.getAvatarTop(buffer)));
+                System.out.printf("name:\t\t\t\t\t%s%n", mumbleLink.getName());
+                System.out.printf("fCameraPosition:\t\t%s%n", Arrays.toString(mumbleLink.getCameraPosition(buffer)));
+                System.out.printf("fCameraFront:\t\t\t%s%n", Arrays.toString(mumbleLink.getCameraFront(buffer)));
+                System.out.printf("fCameraTop:\t\t\t\t%s%n", Arrays.toString(mumbleLink.getCameraTop(buffer)));
+                System.out.printf("identity:\t\t\t\t%s%n", mumbleLink.getIdentity());
+                System.out.printf("contextLength:\t\t\t%s%n", mumbleLink.getContextLength());
+                System.out.printf("ctx_ServerAddress:\t\t%s%n", mumbleLink.getContext().getServerAddress());
+                System.out.printf("ctx_MapID:\t\t\t\t%s%n", mumbleLink.getContext().getMapID());
 
                 long mapType = mumbleLink.getContext().getMapType();
-                System.out.println(String.format(
-                    "ctx_MapType:\t\t\t%s (%s)",
-                    mapType, MapType.valueOf(mapType).toString())
+                System.out.printf(
+                    "ctx_MapType:\t\t\t%s (%s)%n",
+                    mapType, MapType.valueOf(mapType).toString()
                 );
 
-                System.out.println(String.format("ctx_ShardID:\t\t\t%s", Integer.toBinaryString(mumbleLink.getContext().getShardID())));
-                System.out.println(String.format("ctx_Instance:\t\t\t%s", mumbleLink.getContext().getInstance()));
-                System.out.println(String.format("ctx_BuildID:\t\t\t%s", mumbleLink.getContext().getBuildID()));
+                System.out.printf("ctx_ShardID:\t\t\t%s%n", Integer.toBinaryString(mumbleLink.getContext().getShardID()));
+                System.out.printf("ctx_Instance:\t\t\t%s%n", mumbleLink.getContext().getInstance());
+                System.out.printf("ctx_BuildID:\t\t\t%s%n", mumbleLink.getContext().getBuildID());
 
                 int uiState = mumbleLink.getContext().getUIState();
-                System.out.println(String.format(
-                    "ctx_UIState:\t\t\t%s (isMapOpen=%s, isCompassTopRight=%s, isCompassRotationEnabled=%s, isGameFocused=%s, isInCompetitiveMode=%s, isTextFieldFocused=%s, isInCombat=%s)",
+                System.out.printf(
+                    "ctx_UIState:\t\t\t%s (isMapOpen=%s, isCompassTopRight=%s, isCompassRotationEnabled=%s, isGameFocused=%s, isInCompetitiveMode=%s, isTextFieldFocused=%s, isInCombat=%s)%n",
                     Integer.toBinaryString(uiState),
                     UIState.isMapOpen(uiState),
                     UIState.isCompassTopRight(uiState),
@@ -71,26 +71,25 @@ public class Sample {
                     UIState.isInCompetitiveMode(uiState),
                     UIState.isTextFieldFocused(uiState),
                     UIState.isInCombat(uiState)
-                ));
-
-                System.out.println(String.format("ctx_CompassWidth:\t\t%s", mumbleLink.getContext().getCompassWidth()));
-                System.out.println(String.format("ctx_CompassHeight:\t\t%s", mumbleLink.getContext().getCompassHeight()));
-                System.out.println(String.format("ctx_CompassRotation:\t%s", mumbleLink.getContext().getCompassRotation()));
-                System.out.println(String.format("ctx_PlayerX:\t\t\t%s", mumbleLink.getContext().getPlayerX()));
-                System.out.println(String.format("ctx_PlayerY:\t\t\t%s", mumbleLink.getContext().getPlayerY()));
-                System.out.println(String.format("ctx_MapCenterX:\t\t\t%s", mumbleLink.getContext().getMapCenterX()));
-                System.out.println(String.format("ctx_MapCenterY:\t\t\t%s", mumbleLink.getContext().getMapCenterY()));
-                System.out.println(String.format("ctx_MapScale:\t\t\t%s", mumbleLink.getContext().getMapScale()));
-                System.out.println(String.format("ctx_ProcessID:\t\t\t%s", mumbleLink.getContext().getProcessID()));
-
-                byte mountType = mumbleLink.getContext().getMountType();
-                System.out.println(String.format(
-                    "ctx_MountType:\t\t\t%s (%s)",
-                    mountType, MountType.valueOf(mountType).toString())
                 );
 
-                System.out.println(String.format("description:\t\t\t%s", mumbleLink.getDescription()));
-                System.out.println();
+                System.out.printf("ctx_CompassWidth:\t\t%s%n", mumbleLink.getContext().getCompassWidth());
+                System.out.printf("ctx_CompassHeight:\t\t%s%n", mumbleLink.getContext().getCompassHeight());
+                System.out.printf("ctx_CompassRotation:\t%s%n", mumbleLink.getContext().getCompassRotation());
+                System.out.printf("ctx_PlayerX:\t\t\t%s%n", mumbleLink.getContext().getPlayerX());
+                System.out.printf("ctx_PlayerY:\t\t\t%s%n", mumbleLink.getContext().getPlayerY());
+                System.out.printf("ctx_MapCenterX:\t\t\t%s%n", mumbleLink.getContext().getMapCenterX());
+                System.out.printf("ctx_MapCenterY:\t\t\t%s%n", mumbleLink.getContext().getMapCenterY());
+                System.out.printf("ctx_MapScale:\t\t\t%s%n", mumbleLink.getContext().getMapScale());
+                System.out.printf("ctx_ProcessID:\t\t\t%s%n", mumbleLink.getContext().getProcessID());
+
+                byte mountType = mumbleLink.getContext().getMountType();
+                System.out.printf(
+                    "ctx_MountType:\t\t\t%s (%s)%n",
+                    mountType, MountType.valueOf(mountType).toString()
+                );
+
+                System.out.printf("description:\t\t\t%s%n%n", mumbleLink.getDescription());
 
                 sleepAtLeast(5, TimeUnit.SECONDS);
             }
