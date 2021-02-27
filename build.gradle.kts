@@ -163,9 +163,8 @@ tasks {
             languageVersion.set(JavaLanguageVersion.of(8))
         }.get()
 
-        args("I${compiler.metadata.installationPath}/include")
-        args("I${compiler.metadata.installationPath}/include/win32")
-        args("I${compiler.metadata.installationPath}/include/win32")
+        args("/I${compiler.metadata.installationPath}/include")
+        args("/I${compiler.metadata.installationPath}/include/win32")
         args(inputs.files)
         args("/Fe:${output.absolutePath}")
     }
