@@ -256,12 +256,12 @@ publishing {
                 name.set(project.name)
                 description.set("A Java library for accessing data provided by a Guild Wars 2 game client via the MumbleLink mechanism.")
                 packaging = "jar"
-                url.set("https://github.com/GW2Toolbelt/GW2ML")
+                url.set("https://github.com/GW2ToolBelt/GW2ML")
 
                 licenses {
                     license {
                         name.set("MIT")
-                        url.set("https://github.com/GW2Toolbelt/GW2ML/blob/master/LICENSE")
+                        url.set("https://github.com/GW2ToolBelt/GW2ML/blob/master/LICENSE")
                         distribution.set("repo")
                     }
                 }
@@ -276,9 +276,9 @@ publishing {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/GW2Toolbelt/GW2ML.git")
-                    developerConnection.set("scm:git:git://github.com/GW2Toolbelt/GW2ML.git")
-                    url.set("https://github.com/GW2Toolbelt/GW2ML.git")
+                    connection.set("scm:git:git://github.com/GW2ToolBelt/GW2ML.git")
+                    developerConnection.set("scm:git:git://github.com/GW2ToolBelt/GW2ML.git")
+                    url.set("https://github.com/GW2ToolBelt/GW2ML.git")
                 }
             }
         }
