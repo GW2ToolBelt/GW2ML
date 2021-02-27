@@ -24,7 +24,7 @@ package com.gw2tb.gw2ml;
 import java.util.Arrays;
 
 /**
- * A utility class for interpreting the value of the {@link MumbleLink.Context#getMountType() mount type} field.
+ * A utility class for interpreting the value of the {@link MumbleLink.Context#getMountType() mountType} field.
  *
  * @since   1.5.0
  *
