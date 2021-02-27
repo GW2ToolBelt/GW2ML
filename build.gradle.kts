@@ -20,10 +20,10 @@
  * SOFTWARE.
  */
 @file:Suppress("UnstableApiUsage")
+
 import com.gw2tb.gw2ml.build.*
 import com.gw2tb.gw2ml.build.BuildType
 import com.gw2tb.gw2ml.build.tasks.*
-import org.gradle.internal.jvm.*
 
 plugins {
     `java-library`
@@ -41,81 +41,30 @@ version = when (deployment.type) {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-val currentJVM = Jvm.current() ?: error("Failed to detect current JVM.")
-val currentJVMVersion = currentJVM.javaVersion ?: error("Failed to detect version of the current JVM.")
-
-val String.toJDKHome get() = (findProperty(this) ?: System.getenv(this))?.let {
-    File(it.toString()).also(Jvm::forHome)
-} ?: error("Failed to locate JDK: $this")
-
-val jdk8Home by lazy {
-    if (currentJVMVersion.isJava8 && currentJVM.javaHome !== null) {
-        currentJVM.javaHome!!
-    } else {
-        "JDK_8".toJDKHome
-    }
-}
-val jdk9Home by lazy {
-    if (currentJVMVersion.isJava9 && currentJVM.javaHome !== null) {
-        currentJVM.javaHome!!
-    } else {
-        "JDK_9".toJDKHome
-    }
-}
-val jdk14Home by lazy {
-    if (currentJVMVersion == JavaVersion.VERSION_14 && currentJVM.javaHome !== null) {
-        currentJVM.javaHome!!
-    } else {
-        "JDK_14".toJDKHome
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(15))
     }
 }
 
 tasks {
     compileJava {
-        /*
-         * The main target of this library is Java 8. Thus, if we want to compile it in production mode, either the
-         * current JVM needs to support compilation to Java 8 or it must be a JDK 8 installation.
-         * The former is achieved by passing the "--release 8" parameter to the compiler. [1]
-         * However, there is a bug in JDK 9 preventing usage of the "--release" flag from the JDK Tools API. [2] Thus
-         * Gradle cannot invoke the compiler using that API and instead needs to use the command line.
-         *
-         * [1] https://github.com/gradle/gradle/issues/2510
-         * [2] https://bugs.openjdk.java.net/browse/JDK-8139607
-         */
-        if (currentJVMVersion > JavaVersion.VERSION_1_8) {
-            options.compilerArgs.addAll(listOf("--release", "8"))
-
-            if  (currentJVMVersion.isJava9) {
-                options.isFork = true
-                options.forkOptions.javaHome = jdk8Home
-            }
-        }
+        /* Java 8 is the minimum supported version. */
+        options.release.set(8)
     }
 
+    compileTestJava {
+        /* Java 8 is used for testing. */
+        options.release.set(8)
+    }
+
+    /*
+     * To make the library a fully functional module for Java 9 and later, we make use of multi-release JARs. To be
+     * precise: The module descriptor (module-info.class) is placed in /META-INF/versions/9 to be available on
+     * Java 9 and later only.
+     *
+     * (Additional Java 9 specific functionality may also be used and is handled by this task.)
+     */
     val compileJava9 = create<JavaCompile>("compileJava9") {
-        /*
-         * To make the library a fully functional module for Java 9 and later, we make use of multi-release JARs. To be
-         * precise: The module descriptor (module-info.class) is placed in /META-INF/versions/9 to be available on
-         * Java 9 and later only.
-         *
-         * (Additional Java 9 specific functionality may also be used and is handled by this task.)
-         *
-         * Usually we want to pass the "--release 9" parameter to the compiler to specify the target version. [1]
-         * Keep in mind however, that there is a bug in JDK 9 preventing usage of the "--release" flag from the JDK
-         * Tools API. [2] Since we want to compile using JDK 9 there is no reason to pass the flag when we are running
-         * on JDK 9 though.
-         * Also there is a bug in javac that causes modular MRJARs to be recognized as automatic modules. This is a
-         * warning when javac is invoke via CLI, but seems to be an error when it is invoked via Tools API. Thus Gradle
-         * cannot invoke the compiler using that API and needs to use the command line. (This bug only surfaces with an
-         * according dependency.)
-         *
-         * [1] https://github.com/gradle/gradle/issues/2510
-         * [2] https://bugs.openjdk.java.net/browse/JDK-8139607
-         */
         destinationDir = File(buildDir, "classes/java-jdk9/main")
 
         val java9Source = fileTree("src/main/java-jdk9") {
@@ -126,15 +75,13 @@ tasks {
         options.sourcepath = files(sourceSets["main"].java.srcDirs) + files(java9Source.dir)
 
         classpath = files()
+
         options.release.set(9)
 
         afterEvaluate {
             options.compilerArgs.add("--module-path")
             options.compilerArgs.add(compileJava.get().classpath.asPath)
         }
-
-        options.forkOptions.javaHome = jdk9Home
-        options.isFork = true
     }
 
     classes {
@@ -173,16 +120,14 @@ tasks {
     }
 
     javadoc {
-        doFirst {
-            executable = Jvm.forHome(jdk14Home).javadocExecutable.absolutePath
-        }
-
         with (options as StandardJavadocDocletOptions) {
             tags = listOf(
                 "apiNote:a:API Note:",
                 "implSpec:a:Implementation Requirements:",
                 "implNote:a:Implementation Note:"
             )
+
+            addStringOption("-release", "8")
         }
     }
 
@@ -214,12 +159,15 @@ tasks {
         val output = File(buildDir, "compileNative/gw2ml.dll")
         outputs.files(output)
 
-        doFirst {
-            args("/I${jdk8Home}/include")
-            args("/I${jdk8Home}/include/win32")
-            args(inputs.files)
-            args("/Fe:${output.absolutePath}")
-        }
+        val compiler = project.javaToolchains.compilerFor {
+            languageVersion.set(JavaLanguageVersion.of(8))
+        }.get()
+
+        args("I${compiler.metadata.installationPath}/include")
+        args("I${compiler.metadata.installationPath}/include/win32")
+        args("I${compiler.metadata.installationPath}/include/win32")
+        args(inputs.files)
+        args("/Fe:${output.absolutePath}")
     }
 
     val generateNativeModuleInfo = create<GenerateOpenModuleInfo>("generateNativeModuleInfo") {
@@ -242,17 +190,12 @@ tasks {
 
         classpath = files()
 
-        sourceCompatibility = "9"
-        targetCompatibility = "9"
-        if (!currentJVMVersion.isJava9) options.compilerArgs.addAll(listOf("--release", "9"))
+        options.release.set(9)
 
         afterEvaluate {
             options.compilerArgs.add("--module-path")
             options.compilerArgs.add(compileJava.get().classpath.asPath + ";" + jar.get().outputs.files.asPath)
         }
-
-        options.forkOptions.javaHome = jdk9Home
-        options.isFork = true
     }
 
     create<Jar>("nativeJar") {
