@@ -1,7 +1,8 @@
-### 2.0.1
+### 2.0.2
 
-_Released 2021 Feb 27_
+_Released 2021 Mar 09_
 
-#### Overview
+#### Fixes
 
-This is a maintenance release only and does not contain any behavioral change.
+- Errors in native code no longer could crash the JVM.
+- Errors in native code now throw `IllegalStateException` (as documented) instead of `NoClassDefFoundError`.
