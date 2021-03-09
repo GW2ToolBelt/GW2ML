@@ -37,7 +37,7 @@ typedef struct GW2MLinstance {
 } GW2MLinstance;
 
 inline jint throwIllegalStateException(JNIEnv *env, char *message) {
-    jclass clazz = (*env)->FindClass(env, "java/lang/NoClassDefFoundError");
+    jclass clazz = (*env)->FindClass(env, "java/lang/IllegalStateException");
     return (*env)->ThrowNew(env, clazz, message);
 }
 
