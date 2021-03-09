@@ -59,7 +59,6 @@ JNIEXPORT jobject JNICALL Java_com_gw2tb_gw2ml_MumbleLink_nOpen(JNIEnv* env, jcl
     void* linkedMem = (void*) MapViewOfFile(hFileMapping, FILE_MAP_READ, 0, 0, MUMBLE_LINK_BYTES);
     if (linkedMem == NULL) {
         CloseHandle(hFileMapping);
-        hFileMapping = NULL;
         return NULL;
     }
 
@@ -71,21 +70,30 @@ JNIEXPORT jobject JNICALL Java_com_gw2tb_gw2ml_MumbleLink_nOpen(JNIEnv* env, jcl
     if (buffer == NULL) {
         UnmapViewOfFile(linkedMem);
         CloseHandle(hFileMapping);
-        if (hFileMapping == NULL) throwIllegalStateException(env, "Failed to create new direct ByteBuffer.");
+        free(instance);
+
+        throwIllegalStateException(env, "Failed to create new direct ByteBuffer.");
+        return NULL;
     }
 
     jclass cls = (*env)->FindClass(env, "com/gw2tb/gw2ml/MumbleLink");
     if (!cls) {
         UnmapViewOfFile(linkedMem);
         CloseHandle(hFileMapping);
-        if (hFileMapping == NULL) throwIllegalStateException(env, "Failed to find MumbleLink class.");
+        free(instance);
+
+        throwIllegalStateException(env, "Failed to find MumbleLink class.");
+        return NULL;
     }
 
     jmethodID cid = (*env)->GetMethodID(env, cls, "<init>", "(JLjava/nio/ByteBuffer;Ljava/lang/String;)V");
     if (!cid) {
         UnmapViewOfFile(linkedMem);
         CloseHandle(hFileMapping);
-        if (hFileMapping == NULL) throwIllegalStateException(env, "Failed to find MumbleLink constructor.");
+        free(instance);
+
+        throwIllegalStateException(env, "Failed to find MumbleLink constructor.");
+        return NULL;
     }
 
     return (*env)->NewObject(env, cls, cid, instance, buffer, handle);
