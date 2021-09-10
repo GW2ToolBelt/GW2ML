@@ -32,7 +32,7 @@ plugins {
 }
 
 val artifactName = "gw2ml"
-val nextVersion = "2.0.2"
+val nextVersion = "2.0.3"
 
 group = "com.gw2tb.gw2ml"
 version = when (deployment.type) {
