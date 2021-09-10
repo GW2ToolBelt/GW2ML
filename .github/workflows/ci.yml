@@ -7,9 +7,14 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
       - uses: AdoptOpenJDK/install-jdk@v1
         with:
           version: '16'
+
       - name: Gradle Build
         run: |
           ./gradlew --version --console=plain
