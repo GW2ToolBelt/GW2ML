@@ -19,8 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("UnstableApiUsage")
-
 import com.gw2tb.gw2ml.build.*
 import com.gw2tb.gw2ml.build.BuildType
 import com.gw2tb.gw2ml.build.tasks.*
