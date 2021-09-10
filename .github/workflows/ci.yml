@@ -2,14 +2,14 @@ name: CI
 on: push
 
 jobs:
-  jdk15:
-    name: OpenJDK 15 (Windows)
+  jdk16:
+    name: OpenJDK 16 (Windows)
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
       - uses: AdoptOpenJDK/install-jdk@v1
         with:
-          version: '15'
+          version: '16'
       - name: Gradle Build
         run: |
           ./gradlew --version --console=plain

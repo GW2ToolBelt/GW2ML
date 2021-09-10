@@ -42,7 +42,7 @@ version = when (deployment.type) {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(15))
+        languageVersion.set(JavaLanguageVersion.of(16))
     }
 }
 
