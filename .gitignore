@@ -11,3 +11,5 @@
 /buildSrc/.gradle
 /buildSrc/build
 /buildSrc/out
+
+/local.properties

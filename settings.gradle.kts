@@ -20,3 +20,12 @@
  * SOFTWARE.
  */
 rootProject.name = "GW2ML"
+
+gradle.beforeProject {
+    val localPropertiesFile = rootDir.resolve("local.properties")
+    if (!localPropertiesFile.exists()) return@beforeProject
+
+    val localProperties = java.util.Properties()
+    localPropertiesFile.inputStream().use(localProperties::load)
+    localProperties.forEach { (k, v) -> project.extra.set(k as String, v) }
+}
