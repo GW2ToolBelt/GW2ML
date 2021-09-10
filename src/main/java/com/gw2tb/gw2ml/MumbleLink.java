@@ -201,7 +201,7 @@ public final class MumbleLink implements AutoCloseable {
         if (this.address == ADDRESS_CUSTOM) return;
 
         synchronized (cacheGuard) {
-            if (--refCount == 0) {
+            if (--this.refCount == 0) {
                 nClose(this.address);
                 cachedInstances.remove(this.handle);
             }
