@@ -294,5 +294,5 @@ repositories {
 }
 
 dependencies {
-    compileOnly(group = "com.google.code.findbugs", name = "jsr305", version = "3.0.2")
+    compileOnlyApi(group = "com.google.code.findbugs", name = "jsr305", version = "3.0.2")
 }
