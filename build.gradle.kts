@@ -65,7 +65,7 @@ tasks {
      * (Additional Java 9 specific functionality may also be used and is handled by this task.)
      */
     val compileJava9 = create<JavaCompile>("compileJava9") {
-        destinationDir = File(buildDir, "classes/java-jdk9/main")
+        destinationDirectory.set(File(buildDir, "classes/java-jdk9/main"))
 
         val java9Source = fileTree("src/main/java-jdk9") {
             include("**/*.java")
@@ -178,7 +178,7 @@ tasks {
         dependsOn(generateNativeModuleInfo)
         dependsOn(jar)
 
-        destinationDir = File(buildDir, "classes/compileNativeModuleInfo/main")
+        destinationDirectory.set(File(buildDir, "classes/compileNativeModuleInfo/main"))
 
         val nativeModuleInfoSource = fileTree(generateNativeModuleInfo.outputFile.parentFile) {
             include("**/*.java")
