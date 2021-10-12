@@ -82,6 +82,8 @@ tasks {
         afterEvaluate {
             options.compilerArgs.add("--module-path")
             options.compilerArgs.add(compileJava.get().classpath.asPath)
+            options.compilerArgs.add("--module-version")
+            options.compilerArgs.add("$version")
         }
     }
 
