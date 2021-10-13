@@ -60,6 +60,11 @@ build scripts to find out which toolchains are requested.
 
 An installed JDK 1.8 (or later) is required to use Gradle.
 
+Additionally, [Build Tools for Visual Studio](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019)
+are required to build the natives for windows. The `vcvarsall` utility is used to set up the environment for the
+compilation. Its location may be specified by setting the `WIN_BUILD_TOOLS_DIR` (for example in a `local.properties`
+file).
+
 ### Building
 
 Once the setup is complete, invoke the respective Gradle tasks using the

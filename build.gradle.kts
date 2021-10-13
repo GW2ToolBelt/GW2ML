@@ -142,34 +142,53 @@ tasks {
         from(javadoc.get().outputs)
     }
 
-    // TODO the compileNative task still needs a major revamp
-    val compileNative = create<Exec>("compileNative") {
-        executable = "cl"
-        workingDir = mkdir(File(buildDir, "compileNative/tmp"))
+    val compileNativeWinX64 = create("compileNativeWinX64")
 
-        standardOutput = System.out
-        errorOutput = System.err
+    create("configureCompileNativeWinX64") {
+        compileNativeWinX64.dependsOn(this)
 
-        args("/LD")
-        args("/Wall")
-        args("/O2")
-
-        inputs.files(fileTree(file("src/main/c")) {
+        val nativeSources = fileTree(file("src/main/c")) {
             include("*.c")
             include("*.h")
-        })
+        }
 
-        val output = File(buildDir, "compileNative/gw2ml.dll")
-        outputs.files(output)
+        val output = File(buildDir, "compileNativeWinX64/gw2ml.dll")
 
-        val compiler = project.javaToolchains.compilerFor {
-            languageVersion.set(JavaLanguageVersion.of(8))
-        }.get()
+        doLast {
+            val compiler = project.javaToolchains.compilerFor {
+                languageVersion.set(JavaLanguageVersion.of(8))
+            }.get()
 
-        args("/I${compiler.metadata.installationPath}/include")
-        args("/I${compiler.metadata.installationPath}/include/win32")
-        args(inputs.files)
-        args("/Fe:${output.absolutePath}")
+            val argsFile = File(buildDir, "compileNativeWinX64/tmp/steps.txt")
+            argsFile.parentFile.mkdirs()
+
+            argsFile.writeText(
+                """
+                |call ${extra.properties["WIN_BUILD_TOOLS_DIR"].let { if (it != null) File(it as String, "vcvarsall.bat").absolutePath else "vcvarsall.bat" }} x64
+                |cl /LD /Wall /O2 /I${compiler.metadata.installationPath}/include /I${compiler.metadata.installationPath}/include/win32 ${nativeSources.asPath} /Fe:${output.absolutePath}"
+                """.trimMargin()
+            )
+
+            compileNativeWinX64.apply {
+                val executableFile = file("gradle/bulk_exec.bat")
+                inputs.file(executableFile)
+                inputs.file(argsFile)
+                inputs.files(nativeSources)
+                outputs.files(output)
+
+                doLast {
+                    exec {
+                        executable = executableFile.absolutePath
+                        workingDir = mkdir(File(buildDir, "compileNativeWinX64/tmp"))
+
+                        standardOutput = System.out
+                        errorOutput = System.err
+
+                        args(argsFile)
+                    }
+                }
+            }
+        }
     }
 
     val generateNativeModuleInfo = create<GenerateOpenModuleInfo>("generateNativeModuleInfo") {
@@ -202,8 +221,8 @@ tasks {
         }
     }
 
-    create<Jar>("nativeJar") {
-        dependsOn(compileNative)
+    create<Jar>("nativeWinJar") {
+        dependsOn(compileNativeWinX64)
         dependsOn(compileNativeModuleInfo)
 
         archiveBaseName.set(artifactName)
@@ -214,7 +233,7 @@ tasks {
             includeEmptyDirs = false
         }
 
-        from(compileNative.outputs) {
+        from(compileNativeWinX64.outputs) {
             into("windows/x64/com/gw2tb/gw2ml")
         }
 
@@ -231,7 +250,7 @@ tasks {
     }
 
     create("buildNativeWindows") {
-        dependsOn(compileNative)
+        dependsOn(compileNativeWinX64)
         dependsOn(compileNativeModuleInfo)
     }
 }
@@ -252,7 +271,7 @@ publishing {
             from(components["java"])
             artifact(tasks["sourcesJar"])
             artifact(tasks["javadocJar"])
-            artifact(tasks["nativeJar"])
+            artifact(tasks["nativeWinJar"])
 
             artifactId = artifactName
 
