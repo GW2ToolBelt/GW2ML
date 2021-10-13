@@ -142,7 +142,9 @@ tasks {
         from(javadoc.get().outputs)
     }
 
-    val compileNativeWinX64 = create("compileNativeWinX64")
+    val compileNativeWinX64 = create("compileNativeWinX64") {
+        outputs.cacheIf { true }
+    }
 
     create("configureCompileNativeWinX64") {
         compileNativeWinX64.dependsOn(this)
