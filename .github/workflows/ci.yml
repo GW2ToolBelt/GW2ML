@@ -28,7 +28,7 @@ jobs:
       - name: Gradle Build
         run: |
           ./gradlew --version --console=plain
-          ./gradlew build -Psnapshot --info -S --console=plain
+          ./gradlew build buildNativeWindows -Psnapshot --info -S --console=plain
 
       - name: Cleanup Gradle Cache
         run: |
