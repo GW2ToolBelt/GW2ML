@@ -11,6 +11,8 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
+      - uses: GW2ToolBelt/msvc-dev-cmd@v1
+
       - uses: AdoptOpenJDK/install-jdk@v1
         with:
           version: '16'
