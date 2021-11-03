@@ -1,8 +1,7 @@
-### 2.0.2
+### 2.0.3
 
-_Released 2021 Mar 09_
+_Released 2021 Nov 03_
 
-#### Fixes
+#### Improvements
 
-- Errors in native code no longer could crash the JVM.
-- Errors in native code now throw `IllegalStateException` (as documented) instead of `NoClassDefFoundError`.
+- Added version information to the module descriptor.
