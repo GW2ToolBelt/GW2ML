@@ -34,7 +34,10 @@ jobs:
           ./gradlew --version --console=plain
           ./gradlew build buildNativeWindows -Psnapshot --info -S --console=plain
 
+      - name: Stop Gradle Daemon
+        run: ./gradlew --stop
+
       - name: Cleanup Gradle Cache
         run: |
-          rm -f ~/.gradle/caches/modules-2/modules-2.lock
-          rm -f ~/.gradle/caches/modules-2/gc.properties
+          rm -fo ~/.gradle/caches/modules-2/modules-2.lock
+          rm -fo ~/.gradle/caches/modules-2/gc.properties
