@@ -166,7 +166,7 @@ tasks {
 
             argsFile.writeText(
                 """
-                |call ${extra.properties["WIN_BUILD_TOOLS_DIR"].let { if (it != null) File(it as String, "vcvarsall.bat").absolutePath else "vcvarsall.bat" }} x64
+                |call ${(extra.properties["WIN_BUILD_TOOLS_DIR"] ?: System.getenv("WIN_BUILD_TOOLS_DIR")).let {if (it != null) File(it as String, "vcvarsall.bat").absolutePath else "vcvarsall.bat" }} x64
                 |cl /LD /Wall /O2 /I${compiler.metadata.installationPath}/include /I${compiler.metadata.installationPath}/include/win32 ${nativeSources.asPath} /Fe:${output.absolutePath}"
                 """.trimMargin()
             )
