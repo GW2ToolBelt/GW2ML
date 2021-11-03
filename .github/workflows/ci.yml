@@ -13,7 +13,7 @@ jobs:
 
       - uses: TheMrMilchmann/setup-msvc-dev@v1
         with:
-          export-path-tovcvarsall: WIN_BUILD_TOOLS_DIR
+          export-path-to-vcvarsall: WIN_BUILD_TOOLS_DIR
 
       - uses: AdoptOpenJDK/install-jdk@v1
         with:
