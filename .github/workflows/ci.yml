@@ -2,8 +2,8 @@ name: CI
 on: push
 
 jobs:
-  jdk16:
-    name: OpenJDK 16 (Windows)
+  jdk17:
+    name: OpenJDK 17 (Windows)
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,7 +17,7 @@ jobs:
 
       - uses: AdoptOpenJDK/install-jdk@v1
         with:
-          version: '16'
+          version: '17'
 
       - name: Cache Gradle packages
         uses: actions/cache@v2
