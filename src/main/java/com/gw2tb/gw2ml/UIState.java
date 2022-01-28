@@ -134,7 +134,7 @@ public final class UIState {
         return (uiState & (1 << 6)) != 0;
     }
 
-    @Deprecated
+    @Deprecated // Disallow instantiation of static utility class.
     private UIState() { throw new UnsupportedOperationException(); }
 
 }
