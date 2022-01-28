@@ -22,6 +22,9 @@
 package com.gw2tb.gw2ml;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A utility class for interpreting the value of the {@link MumbleLink.Context#getMountType() mountType} field.
@@ -94,6 +97,21 @@ public enum MountType {
      */
     SKYSCALE(8);
 
+    private static final Map<Byte, MountType> valuesByID = Collections.unmodifiableMap(Arrays.stream(values()).filter(it -> it != UNKNOWN).collect(
+        HashMap::new,
+        (map, element) -> {
+            Byte key = element.mountType;
+            MountType prev = map.put(key, element);
+            if (prev != null) throw new IllegalArgumentException("Two mount types may not share the same ID");
+        },
+        (m1, m2) -> {
+            for (Map.Entry<Byte, MountType> entry : m2.entrySet()) {
+                MountType prev = m1.putIfAbsent(entry.getKey(), entry.getValue());
+                if (prev != null) throw new IllegalArgumentException("Two mount types may not share the same ID");
+            }
+        }
+    ));
+
     /**
      * Returns the appropriate {@code MountType} representation for the given numerical value.
      *
@@ -103,13 +121,43 @@ public enum MountType {
      *
      * @return  the appropriate {@code MountType} representation for the given numerical value
      *
+     * @since   2.1.0
+     */
+    public static MountType valueOf(byte mountType) {
+        return valuesByID.getOrDefault(mountType, MountType.UNKNOWN);
+    }
+
+    /**
+     * Returns the appropriate {@code MountType} representation for the given numerical value.
+     *
+     * <p>If the given value does not correspond to any known {@code MountType}, {@link #UNKNOWN} is returned.</p>
+     *
+     * @param mountType   the map type to search
+     *
+     * @return  the appropriate {@code MountType} representation for the given numerical value
+     *
+     * @since   2.1.0
+     */
+    public static MountType valueOf(int mountType) {
+        return (mountType < Byte.MIN_VALUE || Byte.MAX_VALUE < mountType) ? UNKNOWN : valueOf((byte) mountType);
+    }
+
+    /**
+     * Returns the appropriate {@code MountType} representation for the given numerical value.
+     *
+     * <p>If the given value does not correspond to any known {@code MountType}, {@link #UNKNOWN} is returned.</p>
+     *
+     * @param mountType   the map type to search
+     *
+     * @return  the appropriate {@code MountType} representation for the given numerical value
+     *
+     * @deprecated  Use {@link #valueOf(byte)} or {@link #valueOf(int)} instead.
+     *
      * @since   1.5.0
      */
+    @Deprecated
     public static MountType valueOf(long mountType) {
-        return Arrays.stream(MountType.values())
-            .filter(it -> it.numericalValue() == mountType)
-            .findFirst()
-            .orElse(MountType.UNKNOWN);
+        return (mountType < Byte.MIN_VALUE || Byte.MAX_VALUE < mountType) ? UNKNOWN : valueOf((byte) mountType);
     }
 
     private final byte mountType;

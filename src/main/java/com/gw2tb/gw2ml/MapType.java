@@ -22,6 +22,9 @@
 package com.gw2tb.gw2ml;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
  * Full MapType enum as published on 08 Apr 2020 07:56 UTC.
@@ -193,6 +196,21 @@ public enum MapType {
      */
     WVW(19);
 
+    private static final Map<Long, MapType> valuesByID = Collections.unmodifiableMap(Arrays.stream(values()).filter(it -> it != UNKNOWN).collect(
+        HashMap::new,
+        (map, element) -> {
+            Long key = element.mapType;
+            MapType prev = map.put(key, element);
+            if (prev != null) throw new IllegalArgumentException("Two mount types may not share the same ID");
+        },
+        (m1, m2) -> {
+            for (Map.Entry<Long, MapType> entry : m2.entrySet()) {
+                MapType prev = m1.putIfAbsent(entry.getKey(), entry.getValue());
+                if (prev != null) throw new IllegalArgumentException("Two mount types may not share the same ID");
+            }
+        }
+    ));
+
     /**
      * Returns the appropriate {@code MapType} representation for the given numerical value.
      *
@@ -205,10 +223,7 @@ public enum MapType {
      * @since   1.0.0
      */
     public static MapType valueOf(long mapType) {
-        return Arrays.stream(MapType.values())
-            .filter(it -> it.numericalValue() == mapType)
-            .findFirst()
-            .orElse(MapType.UNKNOWN);
+        return valuesByID.getOrDefault(mapType, UNKNOWN);
     }
 
     private final long mapType;
