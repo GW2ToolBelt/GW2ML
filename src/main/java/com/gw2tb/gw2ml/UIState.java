@@ -31,11 +31,11 @@ package com.gw2tb.gw2ml;
 public final class UIState {
 
     /**
-     * Returns whether or not the world map is currently open.
+     * Returns whether the world map is currently open.
      *
      * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
      *
-     * @return  whether or not the world map is currently open
+     * @return  whether the world map is currently open
      *
      * @since   0.1.0
      */
@@ -45,14 +45,14 @@ public final class UIState {
     }
 
     /**
-     * Returns whether or not the compass is in the upper right corner of the screen.
+     * Returns whether the compass is in the upper right corner of the screen.
      *
      * <p>If the compass is not in the upper right corner of the screen, it is in the bottom right corner of the screen.
      * </p>
      *
      * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
      *
-     * @return  whether or not the compass is in the upper right corner of the screen
+     * @return  whether the compass is in the upper right corner of the screen
      *
      * @since   0.1.0
      */
@@ -61,11 +61,11 @@ public final class UIState {
     }
 
     /**
-     * Returns whether or not rotation is enabled for the ingame compass.
+     * Returns whether rotation is enabled for the ingame compass.
      *
      * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
      *
-     * @return  whether or not rotation is enabled for the ingame compass
+     * @return  whether rotation is enabled for the ingame compass
      *
      * @since   0.1.0
      */
@@ -74,11 +74,11 @@ public final class UIState {
     }
 
     /**
-     * Returns whether or not the game client is currently focused.
+     * Returns whether the game client is currently focused.
      *
      * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
      *
-     * @return  whether or not the game client is currently focused
+     * @return  whether the game client is currently focused
      *
      * @since   1.1.0
      */
@@ -87,11 +87,11 @@ public final class UIState {
     }
 
     /**
-     * Returns whether or not the player is currently in a competitive mode.
+     * Returns whether the player is currently in a competitive mode.
      *
      * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
      *
-     * @return  whether or not the player is currently in a competitive mode
+     * @return  whether the player is currently in a competitive mode
      *
      * @since   1.1.0
      */
@@ -100,7 +100,7 @@ public final class UIState {
     }
 
     /**
-     * Returns whether or not the input focus is currently owned by a textfield.
+     * Returns whether the input focus is currently owned by a textfield.
      *
      * <p>Notes:</p>
      *
@@ -113,7 +113,7 @@ public final class UIState {
      *
      * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
      *
-     * @return  whether or not the input focus is currently owned by a textfield
+     * @return  whether the input focus is currently owned by a textfield
      *
      * @since   1.2.0
      */
@@ -122,11 +122,11 @@ public final class UIState {
     }
 
     /**
-     * Returns whether or not the player is currently in combat.
+     * Returns whether the player is currently in combat.
      *
      * @param uiState   the {@link MumbleLink.Context#getUIState() uiState} bitfield
      *
-     * @return  whether or not the player is currently in combat
+     * @return  whether the player is currently in combat
      *
      * @since   1.4.0
      */
@@ -134,7 +134,7 @@ public final class UIState {
         return (uiState & (1 << 6)) != 0;
     }
 
-    // This utility class only provides static functionality and is not meant to be initialized.
-    private UIState() {}
+    @Deprecated
+    private UIState() { throw new UnsupportedOperationException(); }
 
 }

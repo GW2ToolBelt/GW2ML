@@ -213,9 +213,9 @@ public final class MumbleLink implements AutoCloseable {
     private static native void nClose(long address);
 
     /**
-     * Returns whether or not this object is invalid.
+     * Returns whether this object is invalid.
      *
-     * @return  whether or not this object is invalid
+     * @return  whether this object is invalid
      *
      * @see #close()
      *
@@ -460,8 +460,7 @@ public final class MumbleLink implements AutoCloseable {
      *
      * <ul>
      * <li>At the time of writing MumbleLink data is not updated during loading screens. Thus, this identifier may be
-     * used to (roughly) detect whether or not the game client is currently in one. (Keep in mind that is behavior might
-     * change.)</li>
+     * used to (roughly) detect whether game client is currently in one. (Keep in mind that is behavior might change.)</li>
      * </ul>
      *
      * @return  an integral identifier that is incremented every time the MumbleLink data is updated
