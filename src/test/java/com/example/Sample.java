@@ -53,7 +53,7 @@ public class Sample {
                 long mapType = mumbleLink.getContext().getMapType();
                 System.out.printf(
                     "ctx_MapType:\t\t\t%s (%s)%n",
-                    mapType, MapType.valueOf(mapType).toString()
+                    mapType, MapType.valueOf(mapType)
                 );
 
                 System.out.printf("ctx_ShardID:\t\t\t%s%n", Integer.toBinaryString(mumbleLink.getContext().getShardID()));
@@ -86,7 +86,7 @@ public class Sample {
                 byte mountType = mumbleLink.getContext().getMountType();
                 System.out.printf(
                     "ctx_MountType:\t\t\t%s (%s)%n",
-                    mountType, MountType.valueOf(mountType).toString()
+                    mountType, MountType.valueOf(mountType)
                 );
 
                 System.out.printf("description:\t\t\t%s%n%n", mumbleLink.getDescription());
