@@ -852,6 +852,11 @@ public final class MumbleLink implements AutoCloseable {
         private static final int AF_INET    = 2,
                                  AF_INET6   = 10;
 
+        private final byte[] serverAddress = new byte[28];
+
+        @Nullable
+        private InetSocketAddress inetAddress;
+
         /**
          * Returns the address of the map server that the game client is currently connected to.
          *
@@ -865,65 +870,77 @@ public final class MumbleLink implements AutoCloseable {
         public InetSocketAddress getServerAddress() {
             MumbleLink.this.validateState();
 
-            int port;
-            InetAddress inetAddress;
+            boolean isInvalid = (this.inetAddress == null);
 
-            switch (Short.toUnsignedInt(MumbleLink.this.data.getShort(OFFSET_Context_serverAddress))) {
-                case AF_INET: {
-                    /*
-                     * struct sockaddr_in {
-                     *     sa_family_t    sin_family;   // AF_INET                      <-- ONLY 16bit on Windows for some reason...
-                     *     in_port_t      sin_port;     // port in network byte order
-                     *     struct in_addr sin_addr;     // internet address
-                     * }
-                     *
-                     * struct in_addr {
-                     *     uint32_t       s_addr;       // address in network byte order
-                     * }
-                     */
-                    port = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 2);
-
-                    byte[] addr = new byte[4];
-                    for (int i = 0; i < addr.length; i++) addr[i] = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 4 + i);
-
-                    try {
-                        inetAddress = InetAddress.getByAddress(addr);
-                    } catch (UnknownHostException e) {
-                        throw new RuntimeException(e);
-                    }
-                } break;
-                case AF_INET6: {
-                    /*
-                     * struct sockaddr_in6 {
-                     *      sa_family_t     sin6_family;    // AF_INET6                 <-- ONLY 16bit on Windows for some reason...
-                     *      in_port_t       sin6_port;      // port number
-                     *      uint32_t        sin6_flowinfo;  // IPv6 flow information
-                     *      struct in6_addr sin6_addr;      // IPv6 address
-                     *      uint32_t        sin6_scope_id;  // Scope ID (new in 2.4)
-                     * }
-                     *
-                     * struct in6_addr {
-                     *     unsigned char   s6_addr[16];     // IPv6 address
-                     * }
-                     */
-                    port = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 2);
-                    // TODO flow information is currently ignored (but should not be required)
-
-                    byte[] addr = new byte[16];
-                    for (int i = 0; i < addr.length; i++) addr[i] = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 8 + i);
-
-                    int scopeId = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 24);
-
-                    try {
-                        inetAddress = Inet6Address.getByAddress(null, addr, scopeId);
-                    } catch (UnknownHostException e) {
-                        throw new RuntimeException(e);
-                    }
-                } break;
-                default: return null;
+            for (int i = OFFSET_Context_serverAddress; i < OFFSET_Context_serverAddress + this.serverAddress.length; i++) {
+                byte b = MumbleLink.this.data.get(i);
+                isInvalid |= (this.serverAddress[i] != b);
+                this.serverAddress[i] = b;
             }
 
-            return new InetSocketAddress(inetAddress, port);
+            if (isInvalid) {
+                int port;
+                InetAddress inetAddress;
+
+                switch (Short.toUnsignedInt(MumbleLink.this.data.getShort(OFFSET_Context_serverAddress))) {
+                    case AF_INET: {
+                        /*
+                         * struct sockaddr_in {
+                         *     sa_family_t    sin_family;   // AF_INET                      <-- ONLY 16bit on Windows for some reason...
+                         *     in_port_t      sin_port;     // port in network byte order
+                         *     struct in_addr sin_addr;     // internet address
+                         * }
+                         *
+                         * struct in_addr {
+                         *     uint32_t       s_addr;       // address in network byte order
+                         * }
+                         */
+                        port = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 2);
+
+                        byte[] addr = new byte[4];
+                        for (int i = 0; i < addr.length; i++) addr[i] = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 4 + i);
+
+                        try {
+                            inetAddress = InetAddress.getByAddress(addr);
+                        } catch (UnknownHostException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } break;
+                    case AF_INET6: {
+                        /*
+                         * struct sockaddr_in6 {
+                         *      sa_family_t     sin6_family;    // AF_INET6                 <-- ONLY 16bit on Windows for some reason...
+                         *      in_port_t       sin6_port;      // port number
+                         *      uint32_t        sin6_flowinfo;  // IPv6 flow information
+                         *      struct in6_addr sin6_addr;      // IPv6 address
+                         *      uint32_t        sin6_scope_id;  // Scope ID (new in 2.4)
+                         * }
+                         *
+                         * struct in6_addr {
+                         *     unsigned char   s6_addr[16];     // IPv6 address
+                         * }
+                         */
+                        port = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 2);
+                        // TODO flow information is currently ignored (but should not be required)
+
+                        byte[] addr = new byte[16];
+                        for (int i = 0; i < addr.length; i++) addr[i] = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 8 + i);
+
+                        int scopeId = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 24);
+
+                        try {
+                            inetAddress = Inet6Address.getByAddress(null, addr, scopeId);
+                        } catch (UnknownHostException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } break;
+                    default: return null;
+                }
+
+                this.inetAddress = new InetSocketAddress(inetAddress, port);
+            }
+
+            return this.inetAddress;
         }
 
         /**
