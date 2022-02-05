@@ -95,7 +95,19 @@ public enum MountType {
      *
      * @since   1.5.0
      */
-    SKYSCALE(8);
+    SKYSCALE(8),
+    /**
+     * The "Skiff" mount.
+     *
+     * @since   2.1.0
+     */
+    SKIFF(9),
+    /**
+     * The "Siege Turtle" mount.
+     *
+     * @since   2.1.0
+     */
+    SIEGETURTLE(10);
 
     private static final Map<Byte, MountType> valuesByID = Collections.unmodifiableMap(Arrays.stream(values()).filter(it -> it != UNKNOWN).collect(
         HashMap::new,
