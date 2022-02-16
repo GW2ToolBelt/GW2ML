@@ -201,12 +201,12 @@ public enum MapType {
         (map, element) -> {
             Long key = element.mapType;
             MapType prev = map.put(key, element);
-            if (prev != null) throw new IllegalArgumentException("Two mount types may not share the same ID");
+            if (prev != null) throw new IllegalArgumentException("Two map types may not share the same ID");
         },
         (m1, m2) -> {
             for (Map.Entry<Long, MapType> entry : m2.entrySet()) {
                 MapType prev = m1.putIfAbsent(entry.getKey(), entry.getValue());
-                if (prev != null) throw new IllegalArgumentException("Two mount types may not share the same ID");
+                if (prev != null) throw new IllegalArgumentException("Two map types may not share the same ID");
             }
         }
     ));
