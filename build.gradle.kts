@@ -65,9 +65,6 @@ tasks {
     val compileJava9 = create<JavaCompile>("compileJava9") {
         destinationDirectory.set(File(buildDir, "classes/java-jdk9/main"))
 
-        // Remove when https://github.com/gradle/gradle/issues/18262 is fixed
-        modularity.inferModulePath.set(false)
-
         val java9Source = fileTree("src/main/java-jdk9") {
             include("**/*.java")
         }
@@ -75,13 +72,11 @@ tasks {
         source = java9Source
         options.sourcepath = files(sourceSets["main"].java.srcDirs) + files(java9Source.dir)
 
-        classpath = files()
+        classpath = compileJava.get().classpath
 
         options.release.set(9)
 
         afterEvaluate {
-            options.compilerArgs.add("--module-path")
-            options.compilerArgs.add(compileJava.get().classpath.asPath)
             options.compilerArgs.add("--module-version")
             options.compilerArgs.add("$version")
         }
