@@ -27,6 +27,7 @@ plugins {
     `java-library`
     signing
     `maven-publish`
+    alias(libs.plugins.extra.java.module.info)
 }
 
 val artifactName = "gw2ml"
@@ -314,6 +315,10 @@ repositories {
     mavenCentral()
 }
 
+extraJavaModuleInfo {
+    automaticModule("jsr305-3.0.2.jar", "jsr305")
+}
+
 dependencies {
-    compileOnlyApi(group = "com.google.code.findbugs", name = "jsr305", version = "3.0.2")
+    compileOnlyApi(libs.jsr305)
 }
