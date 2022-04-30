@@ -40,8 +40,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashSet;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.zip.CRC32;
 import javax.annotation.Nullable;
@@ -63,9 +65,13 @@ final class SharedLibraryLoader {
 
     private static final Lock EXTRACT_PATH_LOCK = new ReentrantLock();
 
+    private static final HashSet<Path> extractPaths = new HashSet<>(4);
+
     @GuardedBy("EXTRACT_PATH_LOCK")
     @Nullable
     private static Path extractPath;
+
+    private static boolean checkedJDK8195129;
 
     /**
      * Extracts the specified shared library or native resource from the classpath to a temporary directory.
@@ -73,10 +79,11 @@ final class SharedLibraryLoader {
      * @param name     the resource name
      * @param filename the resource filename
      * @param resource the classpath {@link URL} were the resource can be found
+     * @param load     should call {@code System::load} in the context of the appropriate ClassLoader
      *
      * @return a {@link FileChannel} that has locked the resource file
      */
-    static FileChannel load(String name, String filename, URL resource) {
+    static FileChannel load(String name, String filename, URL resource, @Nullable Consumer<String> load) {
         try {
             Path extractedFile;
 
@@ -84,14 +91,26 @@ final class SharedLibraryLoader {
 
             try {
                 if (extractPath != null) {
-                    // Reuse the GW2ML shared library location
+                    // This path is already tested and safe to use
                     extractedFile = extractPath.resolve(filename);
                 } else {
-                    extractedFile = getExtractPath(filename, resource);
-                    // Do not store unless the test for JDK-8195129 has passed
-                    if (Platform.get() != Platform.WINDOWS || workaroundJDK8195129(extractedFile)) {
-                        initExtractPath(extractPath = extractedFile.getParent());
+                    extractedFile = getExtractPath(filename, resource, load);
+
+                    Path parent = extractedFile.getParent();
+                    // Do not store unless the test for JDK-8195129 has passed.
+                    // This means that in the worst case com.gw2tb.gw2ml.librarypath
+                    // will contain multiple directories. (Windows only)
+                    // -----------------
+                    // Example scenario:
+                    // -----------------
+                    // * load gw2ml.dll - already extracted and in classpath (SLL not used)
+                    // * load library with loadNative - extracted to a directory with unicode characters
+                    // * then another with loadSystem - this will hit LoadLibraryA in the JVM, need an ANSI-safe directory.
+                    if (Platform.get() != Platform.WINDOWS || checkedJDK8195129) {
+                        extractPath = parent;
                     }
+
+                    initExtractPath(parent);
                 }
             } finally {
                 EXTRACT_PATH_LOCK.unlock();
@@ -104,6 +123,9 @@ final class SharedLibraryLoader {
     }
 
     private static void initExtractPath(Path extractPath) {
+        if (extractPaths.contains(extractPath)) return;
+        extractPaths.add(extractPath);
+
         String newLibPath = extractPath.toAbsolutePath().toString();
 
         // Prepend the path in which the libraries were extracted to com.gw2tb.gw2ml.librarypath
@@ -121,42 +143,48 @@ final class SharedLibraryLoader {
      *
      * @return the extracted library
      */
-    private static Path getExtractPath(String filename, URL resource) {
+    private static Path getExtractPath(String filename, URL resource, @Nullable Consumer<String> load) {
+        Path root, file;
+
         String override = Configuration.SHARED_LIBRARY_EXTRACT_PATH.get();
-        if (override != null) return Paths.get(override, filename);
+        if (override != null) {
+            file = (root = Paths.get(override)).resolve(filename);
+
+            if (canWrite(root, file, resource, load)) {
+                return file;
+            }
+        }
 
         String version = MumbleLink.GW2ML_VERSION;
-
-        Path root, file;
 
         // Temp directory with username in path
         file = (root = Paths.get(System.getProperty("java.io.tmpdir")))
             .resolve(Paths.get(Configuration.SHARED_LIBRARY_EXTRACT_DIRECTORY.get("gw2ml" + System.getProperty("user.name")), version, filename));
-        if (canWrite(root, file, resource)) return file;
+        if (canWrite(root, file, resource, load)) return file;
 
         Path gw2mlVersionFileName = Paths.get("." + Configuration.SHARED_LIBRARY_EXTRACT_DIRECTORY.get("gw2ml"), version, filename);
 
         // Working directory
         file = (root = Paths.get("").toAbsolutePath()).resolve(gw2mlVersionFileName);
-        if (canWrite(root, file, resource)) return file;
+        if (canWrite(root, file, resource, load)) return file;
 
         // User home
         file = (root = Paths.get(System.getProperty("user.home"))).resolve(gw2mlVersionFileName);
-        if (canWrite(root, file, resource)) return file;
+        if (canWrite(root, file, resource, load)) return file;
 
         if (Platform.get() == Platform.WINDOWS) {
             // C:\Windows\Temp
             String env = System.getenv("SystemRoot");
             if (env != null) {
                 file = (root = Paths.get(env, "Temp")).resolve(gw2mlVersionFileName);
-                if (canWrite(root, file, resource)) return file;
+                if (canWrite(root, file, resource, load)) return file;
             }
 
             // C:\Temp
             env = System.getenv("SystemDrive");
             if (env != null) {
                 file = (root = Paths.get(env + "/")).resolve(Paths.get("Temp").resolve(gw2mlVersionFileName));
-                if (canWrite(root, file, resource)) return file;
+                if (canWrite(root, file, resource, load)) return file;
             }
         }
 
@@ -166,7 +194,7 @@ final class SharedLibraryLoader {
             root = file.getParent();
             file = file.resolve(filename);
 
-            if (canWrite(root, file, resource)) return file;
+            if (canWrite(root, file, resource, load)) return file;
         } catch (IOException ignored) {}
 
         throw new RuntimeException("Failed to find an appropriate directory to extract the native library");
@@ -196,8 +224,8 @@ final class SharedLibraryLoader {
         }
 
         // If file doesn't exist or the CRC doesn't match, extract it to the temp dir.
-        JNILibraryLoader.log(String.format("    Extracting: %s", resource.getPath()));
-        if (extractPath == null) JNILibraryLoader.log(String.format("            to: %s", file));
+        JNILibraryLoader.log(String.format("\tExtracting: %s", resource.getPath()));
+        if (extractPath == null) JNILibraryLoader.log(String.format("\t        to: %s", file));
 
         Files.createDirectories(file.getParent());
         try (InputStream source = resource.openStream()) {
@@ -257,7 +285,7 @@ final class SharedLibraryLoader {
      *
      * @return true if the file is writable
      */
-    private static boolean canWrite(Path root, Path file, URL resource) {
+    private static boolean canWrite(Path root, Path file, URL resource, @Nullable Consumer<String> load) {
         Path testFile;
 
         if (Files.exists(file)) {
@@ -279,15 +307,8 @@ final class SharedLibraryLoader {
             Files.write(testFile, new byte[0]);
             Files.delete(testFile);
 
-            if (workaroundJDK8195129(file)) {
-                /*
-                 * We have full access, the JVM has locked the file, but System.load can still fail if the path contains
-                 * unicode characters, due to JDK-8195129. Test for this here and return false if it fails to try other
-                 * paths.
-                 */
-                try (FileChannel ignored = extract(file, resource)) {
-                    System.load(file.toAbsolutePath().toString());
-                }
+            if (load != null && Platform.get() == Platform.WINDOWS) {
+                workaroundJDK8195129(file, resource, load);
             }
 
             return true;
@@ -315,8 +336,25 @@ final class SharedLibraryLoader {
         } catch (IOException ignored) {}
     }
 
-    private static boolean workaroundJDK8195129(Path file) {
-        return Platform.get() == Platform.WINDOWS && file.toString().endsWith(".dll");
+    private static void workaroundJDK8195129(Path file, URL resource, Consumer<String> load) throws Throwable {
+        String filepath = file.toAbsolutePath().toString();
+        if (filepath.endsWith(".dll")) {
+            boolean mustCheck = false;
+            for (int i = 0; i < filepath.length(); i++) {
+                if (0x80 <= filepath.charAt(i)) {
+                    mustCheck = true;
+                }
+            }
+            if (mustCheck) {
+                // We have full access, the JVM has locked the file, but System.load can still fail if
+                // the path contains unicode characters, due to JDK-8195129. Test for this here and
+                // try other paths if it fails.
+                try (FileChannel ignored = extract(file, resource)) {
+                    load.accept(file.toAbsolutePath().toString());
+                }
+            }
+            checkedJDK8195129 = true;
+        }
     }
 
     // This utility class only provides static functionality and is not meant to be initialized.

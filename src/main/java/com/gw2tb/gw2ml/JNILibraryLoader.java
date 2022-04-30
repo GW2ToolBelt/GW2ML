@@ -175,7 +175,7 @@ final class JNILibraryLoader {
                 if (debugLoader) log("\tUsing SharedLibraryLoader...");
 
                 // Extract from classpath and try com.gw2tb.gw2ml.librarypath
-                try (FileChannel ignored = SharedLibraryLoader.load(name, libName, libURL)) {
+                try (FileChannel ignored = SharedLibraryLoader.load(name, libName, libURL, null)) {
                     if (loadSystemFromLibraryPath(load, context, module, libName)) {
                         return;
                     }
