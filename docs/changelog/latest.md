@@ -1,13 +1,7 @@
-### 2.1.0
+### 2.1.1
 
-_Released 2022 Feb 05_
+_Released 2022 Apr 30_
 
-#### Improvements
+#### Fixes
 
-- Added `MountType` constants for the Skiff and the Siege Turtle.
-- Added caching for `MumbleLink.Context#getServerAddress()`.
-- Improved lookup speed for `MapType#valueOf` and `MountType#valueOf`.
-
-#### Deprecations
-
-- Deprecated `MapType#valueOf(long)`.
+- Improved runtime library extraction.
