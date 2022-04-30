@@ -56,9 +56,8 @@ import javax.annotation.concurrent.GuardedBy;
  * @see Configuration#SHARED_LIBRARY_EXTRACT_DIRECTORY
  * @see Configuration#SHARED_LIBRARY_EXTRACT_PATH
  *
- *
- * @author Mario Zechner (https://github.com/badlogic)
- * @author Nathan Sweet (https://github.com/NathanSweet)
+ * @author Mario Zechner (<a href="https://github.com/badlogic">https://github.com/badlogic</a>)
+ * @author Nathan Sweet (<a href="https://github.com/NathanSweet">https://github.com/NathanSweet</a>)
  */
 final class SharedLibraryLoader {
 
