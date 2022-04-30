@@ -135,13 +135,13 @@ final class SharedLibraryLoader {
         file = (root = Paths.get(System.getProperty("java.io.tmpdir"))).resolve(tempDirectory);
         if (canWrite(root, file, resource)) return file;
 
-        // User home
+        // Working directory
         tempDirectory = Paths.get(Configuration.SHARED_LIBRARY_EXTRACT_DIRECTORY.get("gw2ml"), version, filename);
-        file = (root = Paths.get(System.getProperty("user.home"))).resolve(tempDirectory);
+        file = (root = Paths.get("").toAbsolutePath()).resolve(tempDirectory);
         if (canWrite(root, file, resource)) return file;
 
-        // Working directory
-        file = (root = Paths.get("").toAbsolutePath()).resolve(tempDirectory);
+        // User home
+        file = (root = Paths.get(System.getProperty("user.home"))).resolve(tempDirectory);
         if (canWrite(root, file, resource)) return file;
 
         if (Platform.get() == Platform.WINDOWS) {
