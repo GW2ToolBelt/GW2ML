@@ -872,8 +872,8 @@ public final class MumbleLink implements AutoCloseable {
 
             boolean isInvalid = (this.inetAddress == null);
 
-            for (int i = OFFSET_Context_serverAddress; i < OFFSET_Context_serverAddress + this.serverAddress.length; i++) {
-                byte b = MumbleLink.this.data.get(i);
+            for (int i = 0; i < this.serverAddress.length; i++) {
+                byte b = MumbleLink.this.data.get(OFFSET_Context_serverAddress + i);
                 isInvalid |= (this.serverAddress[i] != b);
                 this.serverAddress[i] = b;
             }
