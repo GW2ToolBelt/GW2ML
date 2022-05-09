@@ -343,6 +343,7 @@ final class SharedLibraryLoader {
             for (int i = 0; i < filepath.length(); i++) {
                 if (0x80 <= filepath.charAt(i)) {
                     mustCheck = true;
+                    break;
                 }
             }
             if (mustCheck) {
