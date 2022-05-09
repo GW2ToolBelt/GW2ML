@@ -1,7 +1,7 @@
-### 2.1.1
+### 2.1.2
 
-_Released 2022 Apr 30_
+_Released 2022 May 10_
 
 #### Fixes
 
-- Improved runtime library extraction.
+- Fixed an `IndexOutOfBoundsException` caused by server address caching.

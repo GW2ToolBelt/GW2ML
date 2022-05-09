@@ -1,3 +1,14 @@
+### 2.1.2
+
+_Released 2022 May 10_
+
+#### Fixes
+
+- Fixed an `IndexOutOfBoundsException` caused by server address caching.
+
+
+---
+
 ### 2.1.1
 
 _Released 2022 Apr 30_
