@@ -59,6 +59,9 @@ public final class MumbleLink implements AutoCloseable {
     private static final long NULL = 0L;
     private static final long ADDRESS_CUSTOM = -1L;
 
+    private static final int AF_INET    = 2,
+                             AF_INET6   = (Platform.get() == Platform.WINDOWS) ? 23 : 10;
+
     static final String GW2ML_VERSION = apiGetManifestValue("Implementation-Version").orElse("dev");
 
     private static final String JNI_LIBRARY_NAME = Configuration.LIBRARY_NAME.get(Platform.mapLibraryNameBundled("gw2ml"));
@@ -848,9 +851,6 @@ public final class MumbleLink implements AutoCloseable {
                 dest.put(destOffset + i, MumbleLink.this.data.get(OFFSET_context + srcOffset + i));
             }
         }
-
-        private static final int AF_INET    = 2,
-                                 AF_INET6   = (Platform.get() == Platform.WINDOWS) ? 23 : 10;
 
         private final byte[] serverAddress = new byte[28];
 
