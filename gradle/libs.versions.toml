@@ -1,5 +1,5 @@
 [versions]
-extra-java-module-info = "0.11"
+extra-java-module-info = "0.14"
 jsr305 = "3.0.2"
 
 
