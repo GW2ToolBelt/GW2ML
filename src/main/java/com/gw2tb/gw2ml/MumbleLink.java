@@ -895,7 +895,7 @@ public final class MumbleLink implements AutoCloseable {
                          *     uint32_t       s_addr;       // address in network byte order
                          * }
                          */
-                        port = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 2);
+                        port = Short.toUnsignedInt(MumbleLink.this.data.getShort(OFFSET_Context_serverAddress + 2));
 
                         byte[] addr = new byte[4];
                         for (int i = 0; i < addr.length; i++) addr[i] = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 4 + i);
@@ -920,7 +920,7 @@ public final class MumbleLink implements AutoCloseable {
                          *     unsigned char   s6_addr[16];     // IPv6 address
                          * }
                          */
-                        port = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 2);
+                        port = Short.toUnsignedInt(MumbleLink.this.data.getShort(OFFSET_Context_serverAddress + 2));
                         // TODO flow information is currently ignored (but should not be required)
 
                         byte[] addr = new byte[16];
