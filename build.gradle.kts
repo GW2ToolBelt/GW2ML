@@ -76,11 +76,7 @@ tasks {
         classpath = compileJava.get().classpath
 
         options.release.set(9)
-
-        afterEvaluate {
-            options.compilerArgs.add("--module-version")
-            options.compilerArgs.add("$version")
-        }
+        options.javaModuleVersion.set("$version")
     }
 
     classes {
