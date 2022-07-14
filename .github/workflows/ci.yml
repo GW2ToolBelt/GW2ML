@@ -30,9 +30,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Gradle Build
-        run: |
-          ./gradlew --version --console=plain
-          ./gradlew build buildNativeWindows -Psnapshot --info -S --console=plain
+        run: ./gradlew build buildNativeWindows -Psnapshot --info -S --console=plain --show-version
 
       - name: Stop Gradle Daemon
         run: ./gradlew --stop
