@@ -46,6 +46,10 @@ java {
 }
 
 tasks {
+    withType<JavaCompile> {
+        javaCompiler.set(project.javaToolchains.compilerFor(project.java.toolchain))
+    }
+
     compileJava {
         /* Java 8 is the minimum supported version. */
         options.release.set(8)
@@ -203,16 +207,10 @@ tasks {
         source = nativeModuleInfoSource
         options.sourcepath = files(nativeModuleInfoSource.dir)
 
-        classpath = files()
+        classpath = files(compileJava.get().classpath, jar.get().outputs)
 
         options.release.set(9)
-
-        afterEvaluate {
-            options.compilerArgs.add("--module-path")
-            options.compilerArgs.add(compileJava.get().classpath.asPath + ";" + jar.get().outputs.files.asPath)
-            options.compilerArgs.add("--module-version")
-            options.compilerArgs.add("$version")
-        }
+        options.javaModuleVersion.set("$version")
     }
 
     create<Jar>("nativeWinJar") {
