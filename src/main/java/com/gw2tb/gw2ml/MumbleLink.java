@@ -901,6 +901,8 @@ public final class MumbleLink implements AutoCloseable {
                     } catch (UnknownHostException e) {
                         throw new RuntimeException("Failed to parse IPv4 server address", e);
                     }
+
+                    this.inetAddress = new InetSocketAddress(inetAddress, port);
                 } else if (family == AF_INET6) {
                     /*
                      * struct sockaddr_in6 {
@@ -928,11 +930,13 @@ public final class MumbleLink implements AutoCloseable {
                     } catch (UnknownHostException e) {
                         throw new RuntimeException("Failed to parse IPv6 server address", e);
                     }
-                } else {
-                    throw new RuntimeException("Unknown server address family: " + family);
-                }
 
-                this.inetAddress = new InetSocketAddress(inetAddress, port);
+                    this.inetAddress = new InetSocketAddress(inetAddress, port);
+                } else if (family != 0) {
+                    throw new RuntimeException("Unknown server address family: " + family);
+                } else {
+                    this.inetAddress = null;
+                }
             }
 
             return this.inetAddress;
