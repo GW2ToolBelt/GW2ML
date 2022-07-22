@@ -188,6 +188,23 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
+     * Clears the underlying buffer by setting all bytes to zero.
+     *
+     * @apiNote It may be useful to clear a {@code MumbleLink} instance when launching multiple Guild Wars 2 processes
+     *          with the same mumble handle sequentially.
+     *
+     * @since   2.2.0
+     */
+    public void clear() {
+        synchronized (cacheGuard) {
+            this.validateState();
+            nClear(this.address);
+        }
+    }
+
+    private static native void nClear(long address);
+
+    /**
      * Closes this resource.
      *
      * <p>This method does nothing if this view is backed by a custom buffer or if it has already been closed.</p>

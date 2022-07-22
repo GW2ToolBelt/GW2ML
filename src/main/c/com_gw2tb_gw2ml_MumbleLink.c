@@ -46,7 +46,7 @@ JNIEXPORT jobject JNICALL Java_com_gw2tb_gw2ml_MumbleLink_nOpen(JNIEnv* env, jcl
 
     const char* handleName = (*env)->GetStringUTFChars(env, handle, NULL);
 
-    HANDLE hFileMapping = OpenFileMappingA(FILE_MAP_READ, FALSE, handleName);
+    HANDLE hFileMapping = OpenFileMappingA(FILE_MAP_WRITE, FALSE, handleName);
     if (hFileMapping == NULL) {
         hFileMapping = CreateFileMappingA(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, MUMBLE_LINK_BYTES, handleName);
         (*env)->ReleaseStringUTFChars(env, handle, handleName);
@@ -56,7 +56,7 @@ JNIEXPORT jobject JNICALL Java_com_gw2tb_gw2ml_MumbleLink_nOpen(JNIEnv* env, jcl
         (*env)->ReleaseStringUTFChars(env, handle, handleName);
     }
 
-    void* linkedMem = (void*) MapViewOfFile(hFileMapping, FILE_MAP_READ, 0, 0, MUMBLE_LINK_BYTES);
+    void* linkedMem = (void*) MapViewOfFile(hFileMapping, FILE_MAP_WRITE, 0, 0, MUMBLE_LINK_BYTES);
     if (linkedMem == NULL) {
         CloseHandle(hFileMapping);
         return NULL;
@@ -97,6 +97,14 @@ JNIEXPORT jobject JNICALL Java_com_gw2tb_gw2ml_MumbleLink_nOpen(JNIEnv* env, jcl
     }
 
     return (*env)->NewObject(env, cls, cid, instance, buffer, handle);
+}
+
+JNIEXPORT void JNICALL Java_com_gw2tb_gw2ml_MumbleLink_nClear(JNIEnv* env, jclass clazz, jlong address) {
+    UNUSED_PARAM(env);
+    UNUSED_PARAM(clazz);
+
+    GW2MLinstance* instance = (GW2MLinstance*) address;
+    SecureZeroMemory(instance->linkedMem, MUMBLE_LINK_BYTES);
 }
 
 JNIEXPORT void JNICALL Java_com_gw2tb_gw2ml_MumbleLink_nClose(JNIEnv* env, jclass clazz, jlong address) {
