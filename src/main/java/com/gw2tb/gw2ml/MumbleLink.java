@@ -21,11 +21,11 @@
  */
 package com.gw2tb.gw2ml;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import javax.annotation.Nullable;
@@ -62,7 +63,7 @@ public final class MumbleLink implements AutoCloseable {
     private static final int AF_INET    = 2,
                              AF_INET6   = (Platform.get() == Platform.WINDOWS) ? 23 : 10;
 
-    static final String GW2ML_VERSION = apiGetManifestValue("Implementation-Version").orElse("dev");
+    static final String GW2ML_VERSION = apiGetManifestValue(Attributes.Name.IMPLEMENTATION_VERSION).orElse("dev");
 
     private static final String JNI_LIBRARY_NAME = Configuration.LIBRARY_NAME.get(Platform.mapLibraryNameBundled("gw2ml"));
 
@@ -158,22 +159,16 @@ public final class MumbleLink implements AutoCloseable {
      *
      * @return  the attribute value or null if the attribute was not found or there is no JAR file
      */
-    private static Optional<String> apiGetManifestValue(String attributeName) {
-        URL url = MumbleLink.class.getClassLoader().getResource("com/gw2tb/gw2ml/MumbleLink.class");
+    private static Optional<String> apiGetManifestValue(Attributes.Name attributeName) {
+        try (InputStream in = MumbleLink.class.getResourceAsStream("/" + JarFile.MANIFEST_NAME)) {
+            if (in == null) return Optional.empty();
 
-        if (url != null) {
-            String classURL = url.toString();
-
-            if (classURL.startsWith("jar:")) {
-                try (InputStream stream = new URL(classURL.substring(0, classURL.lastIndexOf('!') + 1) + '/' + JarFile.MANIFEST_NAME).openStream()) {
-                    return Optional.ofNullable(new Manifest(stream).getMainAttributes().getValue(attributeName));
-                } catch (Exception e) {
-                    e.printStackTrace(JNILibraryLoader.DEBUG_STREAM);
-                }
-            }
+            Manifest manifest = new Manifest(in);
+            return Optional.ofNullable(manifest.getMainAttributes().getValue(attributeName));
+        } catch (IOException e) {
+            e.printStackTrace(JNILibraryLoader.DEBUG_STREAM);
+            return Optional.empty();
         }
-
-        return Optional.empty();
     }
 
     private final Context context = new Context();
