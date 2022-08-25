@@ -1,14 +1,9 @@
-### 2.2.0
+### 2.2.1
 
-_Released 2022 Jul 22_
-
-#### Improvements
-
-- Added support for clearing the MumbleLink buffer (via `MumbleLink#clear()`).
+_Released 2022 Aug 25_
 
 #### Fixes
 
-- Several fixes and improvements to server address parsing. (Thanks to @Medyro)
-    - The port is now parsed correctly instead of just the first byte.
-    - IPv6 addresses are now properly recognized on Windows.
-    - Improved error messages for parsing failures.
+- Clearing a `MumbleLink` instance that wraps a custom `ByteBuffer` does now
+  properly zeroes the buffer's content.
+- The server address is now parsed using network byte order.
