@@ -894,16 +894,17 @@ public final class MumbleLink implements AutoCloseable {
         public InetSocketAddress getServerAddress() {
             MumbleLink.this.validateState();
 
+            ByteBuffer data = MumbleLink.this.data.order(ByteOrder.BIG_ENDIAN);
             boolean isInvalid = (this.inetAddress == null);
 
             for (int i = 0; i < this.serverAddress.length; i++) {
-                byte b = MumbleLink.this.data.get(OFFSET_Context_serverAddress + i);
+                byte b = data.get(OFFSET_Context_serverAddress + i);
                 isInvalid |= (this.serverAddress[i] != b);
                 this.serverAddress[i] = b;
             }
 
             if (isInvalid) {
-                int family = Short.toUnsignedInt(MumbleLink.this.data.getShort(OFFSET_Context_serverAddress));
+                int family = Short.toUnsignedInt(data.getShort(OFFSET_Context_serverAddress));
 
                 int port;
                 InetAddress inetAddress;
@@ -920,10 +921,10 @@ public final class MumbleLink implements AutoCloseable {
                      *     uint32_t       s_addr;       // address in network byte order
                      * }
                      */
-                    port = Short.toUnsignedInt(MumbleLink.this.data.getShort(OFFSET_Context_serverAddress + 2));
+                    port = Short.toUnsignedInt(data.getShort(OFFSET_Context_serverAddress + 2));
 
                     byte[] addr = new byte[4];
-                    for (int i = 0; i < addr.length; i++) addr[i] = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 4 + i);
+                    for (int i = 0; i < addr.length; i++) addr[i] = data.get(OFFSET_Context_serverAddress + 4 + i);
 
                     try {
                         inetAddress = InetAddress.getByAddress(addr);
@@ -946,13 +947,13 @@ public final class MumbleLink implements AutoCloseable {
                      *     unsigned char   s6_addr[16];     // IPv6 address
                      * }
                      */
-                    port = Short.toUnsignedInt(MumbleLink.this.data.getShort(OFFSET_Context_serverAddress + 2));
+                    port = Short.toUnsignedInt(data.getShort(OFFSET_Context_serverAddress + 2));
                     // TODO flow information is currently ignored (but should not be required)
 
                     byte[] addr = new byte[16];
-                    for (int i = 0; i < addr.length; i++) addr[i] = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 8 + i);
+                    for (int i = 0; i < addr.length; i++) addr[i] = data.get(OFFSET_Context_serverAddress + 8 + i);
 
-                    int scopeId = MumbleLink.this.data.get(OFFSET_Context_serverAddress + 24);
+                    int scopeId = data.getInt(OFFSET_Context_serverAddress + 24);
 
                     try {
                         inetAddress = Inet6Address.getByAddress(null, addr, scopeId);
