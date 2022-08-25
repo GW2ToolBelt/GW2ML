@@ -196,9 +196,13 @@ public final class MumbleLink implements AutoCloseable {
      * @since   2.2.0
      */
     public void clear() {
-        synchronized (cacheGuard) {
-            this.validateState();
-            nClear(this.address);
+        if (this.address == ADDRESS_CUSTOM) {
+            this.data.put(new byte[this.data.capacity()]);
+        } else {
+            synchronized (cacheGuard) {
+                this.validateState();
+                nClear(this.address);
+            }
         }
     }
 
