@@ -894,17 +894,17 @@ public final class MumbleLink implements AutoCloseable {
         public InetSocketAddress getServerAddress() {
             MumbleLink.this.validateState();
 
-            ByteBuffer data = MumbleLink.this.data.order(ByteOrder.BIG_ENDIAN);
             boolean isInvalid = (this.inetAddress == null);
 
             for (int i = 0; i < this.serverAddress.length; i++) {
-                byte b = data.get(OFFSET_Context_serverAddress + i);
+                byte b = MumbleLink.this.data.get(OFFSET_Context_serverAddress + i);
                 isInvalid |= (this.serverAddress[i] != b);
                 this.serverAddress[i] = b;
             }
 
             if (isInvalid) {
-                int family = Short.toUnsignedInt(data.getShort(OFFSET_Context_serverAddress));
+                int family = Short.toUnsignedInt(MumbleLink.this.data.getShort(OFFSET_Context_serverAddress));
+                ByteBuffer data = MumbleLink.this.data.order(ByteOrder.BIG_ENDIAN);
 
                 int port;
                 InetAddress inetAddress;
