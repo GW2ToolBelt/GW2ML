@@ -1,9 +1,8 @@
-### 2.2.1
+### 2.2.2
 
-_Released 2022 Aug 25_
+_Released 2022 Aug 27_
 
 #### Fixes
 
-- Clearing a `MumbleLink` instance that wraps a custom `ByteBuffer` does now
-  properly zeroes the buffer's content.
-- The server address is now parsed using network byte order.
+- Removed instance caching to resolve issues with closing of cached instances.
+- The byte order is now properly reset after parsing the server address.
