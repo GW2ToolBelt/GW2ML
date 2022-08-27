@@ -30,8 +30,6 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.jar.Attributes;
@@ -71,11 +69,6 @@ public final class MumbleLink implements AutoCloseable {
         JNILibraryLoader.loadSystem("com.gw2tb.gw2ml", JNI_LIBRARY_NAME);
     }
 
-    private static final Object cacheGuard = new Object();
-    private static final Map<String, MumbleLink> cachedInstances = new HashMap<>();
-
-    private int refCount = 0;
-
     /**
      * Opens a {@link MumbleLink} view of the data provided by Guild Wars 2 via the MumbleLink mechanism.
      *
@@ -86,11 +79,9 @@ public final class MumbleLink implements AutoCloseable {
      *
      * @throws IllegalStateException    if an unexpected error occurs
      *
-     * @implNote    For better performance this implementation reuses MumbleLink objects whenever possible. In practice
-     *              this means that closing a MumbleLink object might not have an immediate effect which in turn results
-     *              into the object still being valid. However, once close has been invoked on a reference to an object,
-     *              that reference should be discarded as quickly as possible since the underlying object may be
-     *              invalidated at any time by another thread.
+     * @implNote    For better performance, this implementation reuses native resources whenever possible. In practice,
+     *              this means that closing a MumbleLink object might not immediately close the underlying native
+     *              resources.
      *
      * @since   0.1.0
      */
@@ -104,10 +95,6 @@ public final class MumbleLink implements AutoCloseable {
      *
      * <p>The object returned by this method must be explicitly {@link #close() closed}.</p>
      *
-     * <p>The object returned by this method may not be unique, and may make use of reference-counting mechanisms.
-     * Additionally, it is not guaranteed that the returned object becomes {@link #isClosed()} invalid after calling
-     * {@link #close()}.</p>
-     *
      * <p>It is recommended to open a {@code MumbleLink} object once and keep it around for the lifetime of the
      * application when possible.</p>
      *
@@ -118,22 +105,10 @@ public final class MumbleLink implements AutoCloseable {
      *
      * @throws IllegalStateException    if an unexpected error occurs
      *
-     * @implNote    For better performance this implementation reuses MumbleLink objects whenever possible. In practice
-     *              this means that closing a MumbleLink object might not have an immediate effect which in turn results
-     *              into the object still being valid. However, once close has been invoked on a reference to an object,
-     *              that reference should be discarded as quickly as possible since the underlying object may be
-     *              invalidated at any time by another thread.
-     *
      * @since   1.4.0
      */
     public static MumbleLink open(String handle) {
-        synchronized (cacheGuard) {
-            MumbleLink instance = cachedInstances.computeIfAbsent(handle, ignored -> nOpen(handle));
-            if (instance.refCount + 1 < 0) throw new IllegalStateException("This GW2ML implementation does not support having more than 2147483647 open views of the same handle.");
-
-            instance.refCount++;
-            return instance;
-        }
+        return nOpen(handle);
     }
 
     /**
@@ -147,7 +122,7 @@ public final class MumbleLink implements AutoCloseable {
      * @since   1.3.0
      */
     public static MumbleLink viewOf(ByteBuffer buffer) {
-        return new MumbleLink(ADDRESS_CUSTOM, buffer, null);
+        return new MumbleLink(ADDRESS_CUSTOM, buffer);
     }
 
     private static native MumbleLink nOpen(String handle);
@@ -173,18 +148,13 @@ public final class MumbleLink implements AutoCloseable {
 
     private final Context context = new Context();
 
-    private long address;
     private final ByteBuffer data;
 
-    @Nullable
-    private final String handle;
+    private long address;
 
-    private MumbleLink(long address, ByteBuffer data, @Nullable String handle) {
-        this.address = address;
-
-        /* Only configure the ByteOrder for the */
+    private MumbleLink(long address, ByteBuffer data) {
         this.data = (address != ADDRESS_CUSTOM) ? data.order(ByteOrder.nativeOrder()) : data;
-        this.handle = handle;
+        this.address = address;
     }
 
     /**
@@ -199,10 +169,8 @@ public final class MumbleLink implements AutoCloseable {
         if (this.address == ADDRESS_CUSTOM) {
             this.data.put(new byte[this.data.capacity()]);
         } else {
-            synchronized (cacheGuard) {
-                this.validateState();
-                nClear(this.address);
-            }
+            this.validateState();
+            nClear(this.address);
         }
     }
 
@@ -217,16 +185,10 @@ public final class MumbleLink implements AutoCloseable {
      */
     @Override
     public void close() {
-        if (this.address == ADDRESS_CUSTOM) return;
+        if (this.address == ADDRESS_CUSTOM || this.address == NULL) return;
 
-        synchronized (cacheGuard) {
-            if (--this.refCount == 0) {
-                nClose(this.address);
-                cachedInstances.remove(this.handle);
-            }
-
-            this.address = NULL;
-        }
+        nClose(this.address);
+        this.address = NULL;
     }
 
     private static native void nClose(long address);

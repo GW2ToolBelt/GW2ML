@@ -86,7 +86,7 @@ JNIEXPORT jobject JNICALL Java_com_gw2tb_gw2ml_MumbleLink_nOpen(JNIEnv* env, jcl
         return NULL;
     }
 
-    jmethodID cid = (*env)->GetMethodID(env, cls, "<init>", "(JLjava/nio/ByteBuffer;Ljava/lang/String;)V");
+    jmethodID cid = (*env)->GetMethodID(env, cls, "<init>", "(JLjava/nio/ByteBuffer;)V");
     if (!cid) {
         UnmapViewOfFile(linkedMem);
         CloseHandle(hFileMapping);
@@ -96,7 +96,7 @@ JNIEXPORT jobject JNICALL Java_com_gw2tb_gw2ml_MumbleLink_nOpen(JNIEnv* env, jcl
         return NULL;
     }
 
-    return (*env)->NewObject(env, cls, cid, instance, buffer, handle);
+    return (*env)->NewObject(env, cls, cid, instance, buffer);
 }
 
 JNIEXPORT void JNICALL Java_com_gw2tb_gw2ml_MumbleLink_nClear(JNIEnv* env, jclass clazz, jlong address) {
