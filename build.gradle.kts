@@ -19,25 +19,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import com.gw2tb.gw2ml.build.*
-import com.gw2tb.gw2ml.build.BuildType
-import com.gw2tb.gw2ml.build.tasks.*
+import com.gw2tb.build.tasks.*
 
 plugins {
-    `java-library`
-    signing
-    `maven-publish`
     alias(libs.plugins.extra.java.module.info)
+    id("com.gw2tb.maven-publish-conventions")
+    `java-library`
 }
 
 val artifactName = "gw2ml"
-val nextVersion = "2.3.0"
-
-group = "com.gw2tb.gw2ml"
-version = when (deployment.type) {
-    BuildType.SNAPSHOT -> "$nextVersion-SNAPSHOT"
-    else -> nextVersion
-}
 
 java {
     toolchain {
@@ -248,16 +238,6 @@ tasks {
 }
 
 publishing {
-    repositories {
-        maven {
-            url = uri(deployment.repo)
-
-            credentials {
-                username = deployment.user
-                password = deployment.password
-            }
-        }
-    }
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
@@ -266,43 +246,8 @@ publishing {
             artifact(tasks["nativeWinJar"])
 
             artifactId = artifactName
-
-            pom {
-                name.set(project.name)
-                description.set("A Java library for accessing data provided by a Guild Wars 2 game client via the MumbleLink mechanism.")
-                packaging = "jar"
-                url.set("https://github.com/GW2ToolBelt/GW2ML")
-
-                licenses {
-                    license {
-                        name.set("MIT")
-                        url.set("https://github.com/GW2ToolBelt/GW2ML/blob/master/LICENSE")
-                        distribution.set("repo")
-                    }
-                }
-
-                developers {
-                    developer {
-                        id.set("TheMrMilchmann")
-                        name.set("Leon Linhart")
-                        email.set("themrmilchmann@gmail.com")
-                        url.set("https://github.com/TheMrMilchmann")
-                    }
-                }
-
-                scm {
-                    connection.set("scm:git:git://github.com/GW2ToolBelt/GW2ML.git")
-                    developerConnection.set("scm:git:git://github.com/GW2ToolBelt/GW2ML.git")
-                    url.set("https://github.com/GW2ToolBelt/GW2ML.git")
-                }
-            }
         }
     }
-}
-
-signing {
-    isRequired = (deployment.type === BuildType.RELEASE)
-    sign(publishing.publications)
 }
 
 repositories {

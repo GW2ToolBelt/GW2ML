@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.gw2ml.build.tasks
+package com.gw2tb.build.tasks
 
 import org.gradle.api.*
 import org.gradle.api.tasks.*
