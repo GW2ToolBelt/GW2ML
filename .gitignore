@@ -1,15 +1,15 @@
 /.gradle
+
 !/.idea
 /.idea/*
 !/.idea/copyright
+!/.idea/runConfigurations
 !/.idea/scopes
+!/.idea/icon.png
+
 .vs
 /build
 /out
 /vsbuild
-
-/buildSrc/.gradle
-/buildSrc/build
-/buildSrc/out
 
 /local.properties
