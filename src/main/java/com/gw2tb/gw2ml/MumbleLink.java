@@ -259,7 +259,7 @@ public final class MumbleLink implements AutoCloseable {
      *          float mapCenterY;                         1108+72            1            4
      *          float mapScale;                           1108+76            1            4
      *          uint32_t processId;                       1108+80            1            4
-     *          uint32_t processId;                       1108+84            1            1
+     *          uint8_t mountType;                        1108+84            1            1
      *     }
      *     wchar_t description[2048];                     1364            2048         4096
      * }
