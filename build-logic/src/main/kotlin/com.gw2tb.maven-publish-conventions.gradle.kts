@@ -44,32 +44,32 @@ publishing {
     }
     publications.withType<MavenPublication>().configureEach {
         pom {
-            name.set(project.name)
-            description.set("A Java library for accessing data provided by a Guild Wars 2 game client via the MumbleLink mechanism.")
+            name = project.name
+            description = "A Java library for accessing data provided by a Guild Wars 2 game client via the MumbleLink mechanism."
             packaging = "jar"
-            url.set("https://github.com/GW2ToolBelt/GW2ML")
+            url = "https://github.com/GW2ToolBelt/GW2ML"
 
             licenses {
                 license {
-                    name.set("MIT")
-                    url.set("https://github.com/GW2ToolBelt/GW2ML/blob/master/LICENSE")
-                    distribution.set("repo")
+                    name = "MIT"
+                    url = "https://github.com/GW2ToolBelt/GW2ML/blob/master/LICENSE"
+                    distribution = "repo"
                 }
             }
 
             developers {
                 developer {
-                    id.set("TheMrMilchmann")
-                    name.set("Leon Linhart")
-                    email.set("themrmilchmann@gmail.com")
-                    url.set("https://github.com/TheMrMilchmann")
+                    id = "TheMrMilchmann"
+                    name = "Leon Linhart"
+                    email = "themrmilchmann@gmail.com"
+                    url = "https://github.com/TheMrMilchmann"
                 }
             }
 
             scm {
-                connection.set("scm:git:git://github.com/GW2ToolBelt/GW2ML.git")
-                developerConnection.set("scm:git:git://github.com/GW2ToolBelt/GW2ML.git")
-                url.set("https://github.com/GW2ToolBelt/GW2ML.git")
+                connection = "scm:git:git://github.com/GW2ToolBelt/GW2ML.git"
+                developerConnection = "scm:git:git://github.com/GW2ToolBelt/GW2ML.git"
+                url = "https://github.com/GW2ToolBelt/GW2ML.git"
             }
         }
     }
