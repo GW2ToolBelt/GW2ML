@@ -47,8 +47,8 @@ publishing {
         pom {
             name = project.name
             description = "A Java library for accessing data provided by a Guild Wars 2 game client via the MumbleLink mechanism."
-            packaging = "jar"
             url = "https://github.com/GW2ToolBelt/GW2ML"
+            packaging = "jar"
 
             licenses {
                 license {
