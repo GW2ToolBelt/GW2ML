@@ -877,13 +877,7 @@ public final class MumbleLink implements AutoCloseable {
          */
         public static final int BYTES = 256;
 
-        /**
-         * Do not use this method directly. Use {@link MumbleLink#getContext()} instead.
-         *
-         * @deprecated Use {@link MumbleLink#getContext()} instead.
-         */
-        @Deprecated
-        public Context() {}
+        private Context() {}
 
         /**
          * Shorthand for {@code copy(0, dest, 0, BYTES)}.
