@@ -154,24 +154,6 @@ public enum MountType {
         return (mountType < Byte.MIN_VALUE || Byte.MAX_VALUE < mountType) ? UNKNOWN : valueOf((byte) mountType);
     }
 
-    /**
-     * Returns the appropriate {@code MountType} representation for the given numerical value.
-     *
-     * <p>If the given value does not correspond to any known {@code MountType}, {@link #UNKNOWN} is returned.</p>
-     *
-     * @param mountType   the map type to search
-     *
-     * @return  the appropriate {@code MountType} representation for the given numerical value
-     *
-     * @deprecated  Use {@link #valueOf(byte)} or {@link #valueOf(int)} instead.
-     *
-     * @since   1.5.0
-     */
-    @Deprecated
-    public static MountType valueOf(long mountType) {
-        return (mountType < Byte.MIN_VALUE || Byte.MAX_VALUE < mountType) ? UNKNOWN : valueOf((byte) mountType);
-    }
-
     private final byte mountType;
 
     MountType(int mountType) {
