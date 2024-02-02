@@ -1,13 +1,8 @@
 [versions]
-extra-java-module-info = "0.14"
-jsr305 = "3.0.2"
+jspecify = "0.3.0"
 
 
 [libraries]
-# com.google.code.findbugs - JSR305
-jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
-
-
-[plugins]
-# de.jjohannes.gradle:extra-java-module-info - extra-java-module-info
-extra-java-module-info = { id = "de.jjohannes.extra-java-module-info", version.ref = "extra-java-module-info" }
+# org.jspecify - JSpecify
+# https://github.com/jspecify/jspecify
+jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }

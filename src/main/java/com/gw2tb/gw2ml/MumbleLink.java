@@ -21,6 +21,8 @@
  */
 package com.gw2tb.gw2ml;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Inet6Address;
@@ -35,7 +37,6 @@ import java.util.Optional;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
-import javax.annotation.Nullable;
 
 /**
  * A {@link MumbleLink} object serves as a view for the data provided by a Guild Wars 2 game client in MumbleLink

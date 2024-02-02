@@ -19,10 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import com.gw2tb.build.tasks.*
-
 plugins {
-    alias(libs.plugins.extra.java.module.info)
     id("com.gw2tb.maven-publish-conventions")
     `java-library`
 }
@@ -83,10 +80,6 @@ repositories {
     mavenCentral()
 }
 
-extraJavaModuleInfo {
-    automaticModule("com.google.code.findbugs:jsr305", "jsr305")
-}
-
 dependencies {
-    compileOnlyApi(libs.jsr305)
+    compileOnly(libs.jspecify)
 }

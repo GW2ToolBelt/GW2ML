@@ -19,9 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import org.jspecify.annotations.NullMarked;
+
+@NullMarked
 module com.gw2tb.gw2ml {
 
-    requires static jsr305;
+    requires static org.jspecify;
 
     exports com.gw2tb.gw2ml;
 
