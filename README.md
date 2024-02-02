@@ -1,9 +1,9 @@
 # GW2ML
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square&label=License)](https://github.com/GW2Toolbelt/GW2ML/blob/master/LICENSE)
-[![Maven Central](https://img.shields.io/maven-central/v/com.gw2tb.gw2ml/gw2ml.svg?style=flat-square&label=Maven%20Central)](https://maven-badges.herokuapp.com/maven-central/com.gw2tb.gw2ml/gw2ml)
-[![JavaDoc](https://img.shields.io/maven-central/v/com.gw2tb.gw2ml/gw2ml.svg?style=flat-square&label=JavaDoc&color=blue)](https://javadoc.io/doc/com.gw2tb.gw2ml/gw2ml)
-![Java](https://img.shields.io/badge/Java-8-green.svg?style=flat-square&color=b07219&logo=Java)
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge&label=License)](https://github.com/GW2Toolbelt/GW2ML/blob/master/LICENSE)
+[![Maven Central](https://img.shields.io/maven-central/v/com.gw2tb.gw2ml/gw2ml.svg?style=for-the-badge&label=Maven%20Central)](https://maven-badges.herokuapp.com/maven-central/com.gw2tb.gw2ml/gw2ml)
+[![JavaDoc](https://img.shields.io/maven-central/v/com.gw2tb.gw2ml/gw2ml.svg?style=for-the-badge&label=JavaDoc&color=blue)](https://javadoc.io/doc/com.gw2tb.gw2ml/gw2ml)
+![Java](https://img.shields.io/badge/Java-8-green.svg?style=for-the-badge&color=b07219&logo=Java)
 
 GW2ML is a Java library for fast and non-cached access to the data provided
 by the Guild Wars 2 game client via the MumbleLink mechanism.
