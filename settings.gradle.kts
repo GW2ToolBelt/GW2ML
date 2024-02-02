@@ -32,3 +32,5 @@ plugins {
 }
 
 rootProject.name = "GW2ML"
+
+enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
