@@ -14,32 +14,6 @@ system introduced in Java 9.
 
 ## Usage
 
-### Setup
-
-GW2ML consists of multiple artifacts:
-
-- `gw2ml.jar` (The main library.)
-- `gw2ml-sources.jar` (The source archive.)
-- `gw2ml-javadoc.jar` (The JavaDoc archive.)
-- `gw2ml-natives-<platform>.jar` (The platform-specific prebuilt native libraries.)
-
-To compile an application using GW2ML, the base artifact should be added to the
-class-path (or the module-path). When running an application GW2ML requires a
-platform-specific native library to be available. GW2ML extracts the native
-library to a temporary folder and loads them automatically if a native artifact
-is on the class-path (or module-path). If more customization is required (e.g.
-when creating a platform-specific installer) the natives may be extracted
-manually and loaded via `java.library.path`. See the [Configuration](/src/main/java/com/gw2tb/gw2ml/Configuration.java)
-class for more options.
-
-GW2ML provides prebuilt artifacts for all supported platforms. The currently
-supported platforms/architectures are:
-
-- Windows x64 (`gw2ml-natives-windows.jar`)
-
-
-### Accessing MumbleLink data
-
 GW2ML provides an API that is designed to be as simple and intuitive to use as
 possible while remaining efficient. The primary entry-point is [`MumbleLink.open()`](https://javadoc.io/doc/com.gw2tb.gw2ml/gw2ml/latest/com/gw2tb/gw2ml/MumbleLink.html)
 which must be used to open a view of the MumbleLink data before anything can be
@@ -61,11 +35,6 @@ build scripts to find out which toolchains are requested.
 
 An installed JDK 1.8 (or later) is required to use Gradle.
 
-Additionally, [Build Tools for Visual Studio](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019)
-are required to build the natives for windows. The `vcvarsall` utility is used to set up the environment for the
-compilation. Its location may be specified by setting the `WIN_BUILD_TOOLS_DIR` (for example in a `local.properties`
-file).
-
 ### Building
 
 Once the setup is complete, invoke the respective Gradle tasks using the
@@ -79,9 +48,7 @@ or the following command on Windows:
 
 Important Gradle tasks to remember are:
 - `clean`                   - clean build results
-- `build`                   - assemble and test the Java library
-- `buildNative<Platform>`   - assemble and test the platform-specific native
-                              code
+- `build`                   - assemble and test the project
 - `publishToMavenLocal`     - build and install all public artifacts to the
                               local maven repository
 
@@ -111,6 +78,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
-For further information please refer to [LICENSE](LICENSE) and
-[THIRDPARTY](./docs/THIRDPARTY).

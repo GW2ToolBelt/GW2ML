@@ -1,41 +1,106 @@
 name: CI
-on: push
+on:
+  - pull_request
+  - push
+  - workflow_dispatch
+
+
+env:
+  JDK_VERSION: "21"
+  WORKSPACE_ARCHIVE: workspace.tar
+  WORKSPACE_ARTIFACT: build-results
+
 
 jobs:
-  jdk18:
-    name: OpenJDK 18 (Windows)
+  build:
+    name: Build
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
-      - uses: TheMrMilchmann/setup-msvc-dev@v3
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
-          export-path-to-vcvarsall: WIN_BUILD_TOOLS_DIR
+          distribution: "temurin"
+          java-version: ${{ env.JDK_VERSION }}
 
-      - uses: AdoptOpenJDK/install-jdk@v1
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
         with:
-          version: '18'
+          gradle-home-cache-cleanup: true
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
+      - name: Gradle Assemble
+        run: ./gradlew assemble --info -S --show-version
+
+      - name: Tar files
+        run: tar --exclude='.git' -cvf ${{ env.WORKSPACE_ARCHIVE }} .
+
+      - name: Upload workspace artifact
+        uses: actions/upload-artifact@v4
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          name: ${{ env.WORKSPACE_ARTIFACT }}
+          path: ${{ env.WORKSPACE_ARCHIVE }}
+          retention-days: 1
 
-      - name: Gradle Build
-        run: ./gradlew build buildNativeWindows -Psnapshot --info -S --console=plain --show-version
+  check:
+    name: Check
+    strategy:
+      matrix:
+        jdk: [ 22 ]
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.WORKSPACE_ARTIFACT }}
+          path: .
 
-      - name: Stop Gradle Daemon
-        run: ./gradlew --stop
-
-      - name: Cleanup Gradle Cache
+      - name: Untar
         run: |
-          rm -fo ~/.gradle/caches/modules-2/modules-2.lock
-          rm -fo ~/.gradle/caches/modules-2/gc.properties
+          tar -xvf ${{ env.WORKSPACE_ARCHIVE }}
+          rm ${{ env.WORKSPACE_ARCHIVE }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: ${{ env.JDK_VERSION }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-home-cache-cleanup: true
+
+      - name: Gradle Check
+        run: ./gradlew check --info -S --show-version -Ptoolchain.test.version=${{ matrix.jdk }}
+
+
+  # So, what's happening here?
+  #
+  # Basically, restoring the workspace state between jobs is incredibly annoying.
+  # We can get reasonable support by using the upload-/download-artifact
+  # actions, but they suffer from a severe limitation:
+  # GH Actions has a storage limit and the minimum retention is 24 hours...
+  #
+  # Since the storage quota is limited, we have to make sure that the artifact
+  # is removed. Unfortunately, there is no official way to do this, so we resort
+  # to a third party action for now.
+  #
+  # See also: https://github.com/actions/upload-artifact/issues/290
+  cleanup:
+    name: Cleanup
+    if: ${{ always() }}
+    needs: [build-docs, check]
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Cleanup
+        uses: GeekyEggo/delete-artifact@65041433121f7239077fa20be14c0690f70569de
+        with:
+          name: ${{ env.WORKSPACE_ARTIFACT }}

@@ -20,11 +20,10 @@
  * SOFTWARE.
  */
 plugins {
+    alias(libs.plugins.gradle.toolchain.switches)
     id("com.gw2tb.maven-publish-conventions")
     `java-library`
 }
-
-val artifactName = "gw2ml"
 
 java {
     toolchain {
@@ -65,13 +64,9 @@ tasks {
 
 publishing {
     publications {
-        create<MavenPublication>("mavenJava") {
+        register<MavenPublication>("mavenJava") {
             from(components["java"])
-            artifact(tasks["sourcesJar"])
-            artifact(tasks["javadocJar"])
-            artifact(tasks["nativeWinJar"])
-
-            artifactId = artifactName
+            artifactId = "gw2ml"
         }
     }
 }

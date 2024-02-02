@@ -1,4 +1,5 @@
 [versions]
+gradle-toolchain-switches = "0.3.0"
 jspecify = "0.3.0"
 
 
@@ -6,3 +7,9 @@ jspecify = "0.3.0"
 # org.jspecify - JSpecify
 # https://github.com/jspecify/jspecify
 jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
+
+
+[plugins]
+# io.github.themrmilchmann.gradle.toolchainswitches:gradle-toolchain-switches - Gradle Toolchain Switches Plugin
+# https://github.com/TheMrMilchmann/gradle-toolchain-switches
+gradle-toolchain-switches = { id = "io.github.themrmilchmann.toolchain-switches", version.ref = "gradle-toolchain-switches" }

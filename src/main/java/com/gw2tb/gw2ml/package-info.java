@@ -20,5 +20,4 @@
  * SOFTWARE.
  */
 /** Provides the GW2ML API. */
-@NonNullApi
 package com.gw2tb.gw2ml;
