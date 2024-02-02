@@ -31,81 +31,17 @@ val artifactName = "gw2ml"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(18))
+        languageVersion = JavaLanguageVersion.of(21)
     }
+
+    withJavadocJar()
+    withSourcesJar()
 }
 
 tasks {
-    withType<JavaCompile> {
-        javaCompiler.set(project.javaToolchains.compilerFor(project.java.toolchain))
-    }
-
-    compileJava {
-        /* Java 8 is the minimum supported version. */
-        options.release.set(8)
-    }
-
-    compileTestJava {
-        /* Java 8 is used for testing. */
-        options.release.set(8)
-    }
-
-    /*
-     * To make the library a fully functional module for Java 9 and later, we make use of multi-release JARs. To be
-     * precise: The module descriptor (module-info.class) is placed in /META-INF/versions/9 to be available on
-     * Java 9 and later only.
-     *
-     * (Additional Java 9 specific functionality may also be used and is handled by this task.)
-     */
-    val compileJava9 = create<JavaCompile>("compileJava9") {
-        destinationDirectory.set(File(buildDir, "classes/java-jdk9/main"))
-
-        val java9Source = fileTree("src/main/java-jdk9") {
-            include("**/*.java")
-        }
-
-        source = java9Source
-        options.sourcepath = files(sourceSets["main"].java.srcDirs) + files(java9Source.dir)
-
-        classpath = compileJava.get().classpath
-
-        options.release.set(9)
-        options.javaModuleVersion.set("$version")
-    }
-
-    classes {
-        dependsOn(compileJava9)
-    }
-
-    jar {
-        archiveBaseName.set(artifactName)
-
-        into("META-INF/versions/9") {
-            from(compileJava9.outputs.files.filter(File::isDirectory))
-            includeEmptyDirs = false
-        }
-
-        manifest {
-            attributes(mapOf(
-                "Name" to project.name,
-                "Specification-Version" to project.version,
-                "Specification-Vendor" to "Leon Linhart <themrmilchmann@gmail.com>",
-                "Implementation-Version" to project.version,
-                "Implementation-Vendor" to "Leon Linhart <themrmilchmann@gmail.com>",
-                "Multi-Release" to "true"
-            ))
-        }
-    }
-
-    create<Jar>("sourcesJar") {
-        archiveBaseName.set(artifactName)
-        archiveClassifier.set("sources")
-        from(sourceSets["main"].allSource)
-
-        into("META-INF/versions/9") {
-            from(compileJava9.inputs.files.filter(File::isDirectory))
-            includeEmptyDirs = false
-        }
+    withType<JavaCompile>().configureEach {
+        options.compilerArgs.add("--enable-preview")
+        options.release = 21
     }
 
     javadoc {
@@ -116,124 +52,17 @@ tasks {
                 "implNote:a:Implementation Note:"
             )
 
-            addStringOption("-release", "8")
+            addStringOption("-release", "21")
         }
     }
 
-    create<Jar>("javadocJar") {
-        dependsOn(javadoc)
+    withType<Jar>().configureEach {
+        archiveBaseName = "gw2ml"
 
-        archiveBaseName.set(artifactName)
-        archiveClassifier.set("javadoc")
-        from(javadoc.get().outputs)
-    }
+        isPreserveFileTimestamps = false
+        isReproducibleFileOrder = true
 
-    val compileNativeWinX64 = create("compileNativeWinX64") {
-        outputs.cacheIf { true }
-    }
-
-    create("configureCompileNativeWinX64") {
-        compileNativeWinX64.dependsOn(this)
-
-        val nativeSources = fileTree(file("src/main/c")) {
-            include("*.c")
-            include("*.h")
-        }
-
-        val output = File(buildDir, "compileNativeWinX64/gw2ml.dll")
-
-        doLast {
-            val compiler = project.javaToolchains.compilerFor {
-                languageVersion.set(JavaLanguageVersion.of(8))
-            }.get()
-
-            val argsFile = File(buildDir, "compileNativeWinX64/tmp/steps.txt")
-            argsFile.parentFile.mkdirs()
-
-            argsFile.writeText(
-                """
-                |call "${(project.extra.properties["WIN_BUILD_TOOLS_DIR"] ?: System.getenv("WIN_BUILD_TOOLS_DIR")).let { if (it != null) File(it as String, "vcvarsall.bat").absolutePath else "vcvarsall.bat" }}" x64
-                |cl /LD /Wall /O2 /I${compiler.metadata.installationPath}/include /I${compiler.metadata.installationPath}/include/win32 ${nativeSources.asPath} /Fe:${output.absolutePath}"
-                """.trimMargin()
-            )
-
-            compileNativeWinX64.apply {
-                val executableFile = file("gradle/bulk_exec.bat")
-                inputs.file(executableFile)
-                inputs.file(argsFile)
-                inputs.files(nativeSources)
-                outputs.files(output)
-
-                doLast {
-                    exec {
-                        executable = executableFile.absolutePath
-                        workingDir = mkdir(File(buildDir, "compileNativeWinX64/tmp"))
-
-                        standardOutput = System.out
-                        errorOutput = System.err
-
-                        args(argsFile)
-                    }
-                }
-            }
-        }
-    }
-
-    val generateNativeModuleInfo = create<GenerateOpenModuleInfo>("generateNativeModuleInfo") {
-        moduleName = "com.gw2tb.gw2ml.natives"
-        body = "requires transitive com.gw2tb.gw2ml;"
-    }
-
-    val compileNativeModuleInfo = create<JavaCompile>("compileNativeModuleInfo") {
-        dependsOn(generateNativeModuleInfo)
-        dependsOn(jar)
-
-        destinationDirectory.set(File(buildDir, "classes/compileNativeModuleInfo/main"))
-
-        val nativeModuleInfoSource = fileTree(generateNativeModuleInfo.outputFile.parentFile) {
-            include("**/*.java")
-        }
-
-        source = nativeModuleInfoSource
-        options.sourcepath = files(nativeModuleInfoSource.dir)
-
-        classpath = files(compileJava.get().classpath, jar.get().outputs)
-
-        options.release.set(9)
-        options.javaModuleVersion.set("$version")
-    }
-
-    create<Jar>("nativeWinJar") {
-        dependsOn(compileNativeWinX64)
-        dependsOn(compileNativeModuleInfo)
-
-        archiveBaseName.set(artifactName)
-        archiveClassifier.set("natives-windows")
-
-        into("META-INF/versions/9") {
-            from(compileNativeModuleInfo.outputs.files.filter(File::isDirectory))
-            includeEmptyDirs = false
-        }
-
-        from(compileNativeWinX64.outputs) {
-            into("windows/x64/com/gw2tb/gw2ml")
-        }
-
-        manifest {
-            attributes(mapOf(
-                "Name" to project.name,
-                "Specification-Version" to project.version,
-                "Specification-Vendor" to "Leon Linhart <themrmilchmann@gmail.com>",
-                "Implementation-Version" to project.version,
-                "Implementation-Vendor" to "Leon Linhart <themrmilchmann@gmail.com>",
-                "Multi-Release" to "true"
-            ))
-        }
-    }
-
-    create("buildNativeWindows") {
-        dependsOn(compileNativeWinX64)
-        dependsOn(compileNativeModuleInfo)
+        includeEmptyDirs = false
     }
 }
 
