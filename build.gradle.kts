@@ -27,7 +27,7 @@ plugins {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(22)
     }
 
     withJavadocJar()
@@ -36,8 +36,7 @@ java {
 
 tasks {
     withType<JavaCompile>().configureEach {
-        options.compilerArgs.add("--enable-preview")
-        options.release = 21
+        options.release = 22
     }
 
     javadoc {
@@ -48,7 +47,7 @@ tasks {
                 "implNote:a:Implementation Note:"
             )
 
-            addStringOption("-release", "21")
+            addStringOption("-release", "22")
         }
     }
 
