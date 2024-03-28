@@ -18,3 +18,15 @@ updates:
           - "actions/download-artifact"
           - "actions/upload-artifact"
           - "actions/upload-pages-artifact"
+
+  - package-ecosystem: "pip"
+    directory: "/.github/workflows/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 20
+    commit-message:
+      prefix: "build"
+    labels:
+      - "a:chore"
+      - "in:dependencies"
+      - "in:docs"
