@@ -1,0 +1,287 @@
+name: Publish
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: The environment to publish to
+        type: environment
+
+
+concurrency:
+  group: "publish"
+  cancel-in-progress: false
+
+
+env:
+  JDK_VERSION: "21"
+  DOCS_BUNDLE: docs.bundle
+  DOCS_BUNDLE_ARTIFACT: docs-bundle
+  WORKSPACE_ARCHIVE: workspace.tar
+  WORKSPACE_ARTIFACT: build-results
+
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: ${{ env.JDK_VERSION }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-home-cache-cleanup: true
+
+      - name: Gradle Assemble
+        run: ./gradlew assemble --info -S --show-version
+
+      - name: Tar files
+        run: tar --exclude='.git' -cvf ${{ env.WORKSPACE_ARCHIVE }} .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.WORKSPACE_ARTIFACT }}
+          path: ${{ env.WORKSPACE_ARCHIVE }}
+          retention-days: 1
+
+
+  check:
+    name: Check
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.WORKSPACE_ARTIFACT }}
+          path: .
+
+      - name: Untar
+        run: |
+          tar -xvf ${{ env.WORKSPACE_ARCHIVE }}
+          rm ${{ env.WORKSPACE_ARCHIVE }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: ${{ env.JDK_VERSION }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-home-cache-cleanup: true
+
+      - name: Gradle Check
+        run: ./gradlew check --info -S --show-version
+
+
+  build-docs:
+    name: Build Documentation
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.WORKSPACE_ARTIFACT }}
+          path: .
+
+      - name: Untar
+        run: |
+          tar -xvf ${{ env.WORKSPACE_ARCHIVE }}
+          rm ${{ env.WORKSPACE_ARCHIVE }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+
+      - name: Install dependencies
+        run: pip3 install --no-deps -r .github/workflows/mkdocs-requirements.txt
+
+      - name: Configure git for mike
+        shell: bash
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git fetch origin gh-pages
+
+      - name: Get Version
+        id: version
+        run: grep '^version=' gradle.properties >> $GITHUB_OUTPUT
+
+      - name: Mike Deploy
+        env:
+          VERSION_NAME: ${{ steps.version.outputs.version }}
+        run: mike deploy -u $VERSION_NAME latest
+
+      - name: Create Bundle
+        run: git bundle create ${{ env.DOCS_BUNDLE }} gh-pages
+
+      - name: Upload workspace artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.DOCS_BUNDLE_ARTIFACT }}
+          path: ${{ env.DOCS_BUNDLE }}
+          retention-days: 1
+
+
+  ghp-release:
+    name: Release Documentation to GitHub Pages
+    needs: [build-docs, close-staging-repository]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.DOCS_BUNDLE_ARTIFACT }}
+          path: .
+
+      - name: Unpack git bundle
+        run: |
+          git fetch ${{ env.DOCS_BUNDLE }} gh-pages:gh-pages
+          git switch --force gh-pages
+
+      - name: Configure git
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Push to GH Pages
+        run: git push origin gh-pages
+
+
+  create-staging-repository:
+    name: Create Staging Repository
+    needs: check
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - id: create
+        uses: TheMrMilchmann/nexus-actions/create-staging-repo@v2
+        with:
+          base-url: ${{ vars.SONATYPE_BASE_URL }}
+          username: ${{ secrets.SONATYPE_USERNAME }}
+          password: ${{ secrets.SONATYPE_PASSWORD }}
+          staging-profile-id: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
+          description: "${{ github.repository }}/${{ github.workflow }}#${{ github.run_number }}"
+    outputs:
+      staging-repository-id: ${{ steps.create.outputs.staging-repository-id }}
+
+
+  nexus-upload:
+    name: Upload to Nexus
+    needs: create-staging-repository
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.WORKSPACE_ARTIFACT }}
+          path: .
+
+      - name: Untar
+        run: |
+          tar -xvf ${{ env.WORKSPACE_ARCHIVE }}
+          rm ${{ env.WORKSPACE_ARCHIVE }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: ${{ env.JDK_VERSION }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-home-cache-cleanup: true
+
+      - name: Gradle Publish
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_sonatypeBaseUrl: ${{ vars.SONATYPE_BASE_URL }}
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
+          ORG_GRADLE_PROJECT_stagingRepositoryId: ${{ needs.create-staging-repository.outputs.staging-repository-id }}
+        run: ./gradlew publishAllPublicationsToMavenRepository --info -S --show-version
+
+
+  close-staging-repository:
+    name: Close Staging Repository
+    needs: [create-staging-repository, nexus-upload]
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: TheMrMilchmann/nexus-actions/close-staging-repo@v2
+        with:
+          base-url: ${{ vars.SONATYPE_BASE_URL }}
+          username: ${{ secrets.SONATYPE_USERNAME }}
+          password: ${{ secrets.SONATYPE_PASSWORD }}
+          staging-repository-id: ${{ needs.create-staging-repository.outputs.staging-repository-id }}
+          description: "${{ github.repository }}/${{ github.workflow }}#${{ github.run_number }}"
+
+
+  nexus-release:
+    name: Release to Nexus
+    needs: [create-staging-repository, close-staging-repository, ghp-release]
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Release Staging Repository
+        uses: TheMrMilchmann/nexus-actions/release-staging-repo@v2
+        with:
+          base-url: ${{ vars.SONATYPE_BASE_URL }}
+          username: ${{ secrets.SONATYPE_USERNAME }}
+          password: ${{ secrets.SONATYPE_PASSWORD }}
+          staging-repository-id: ${{ needs.create-staging-repository.outputs.staging-repository-id }}
+          description: "${{ github.repository }}/${{ github.workflow }}#${{ github.run_number }}"
+
+
+  # So, what's happening here?
+  #
+  # Basically, restoring the workspace state between jobs is incredibly annoying.
+  # We can get reasonable support by using the upload-/download-artifact
+  # actions, but they suffer from a severe limitation:
+  # GH Actions has a storage limit and the minimum retention is 24 hours...
+  #
+  # Since the storage quota is limited, we have to make sure that the artifact
+  # is removed. Unfortunately, there is no official way to do this, so we resort
+  # to a third party action for now.
+  #
+  # See also: https://github.com/actions/upload-artifact/issues/290
+  cleanup:
+    name: Cleanup
+    if: ${{ always() }}
+    needs: nexus-release
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Cleanup
+        uses: GeekyEggo/delete-artifact@24928e75e6e6590170563b8ddae9fac674508aa1
+        with:
+          name: ${{ env.WORKSPACE_ARTIFACT }}
+
+      - name: Cleanup
+        uses: GeekyEggo/delete-artifact@24928e75e6e6590170563b8ddae9fac674508aa1
+        with:
+          name: ubuntu-latest-${{ env.DOCS_BUNDLE_ARTIFACT }}
