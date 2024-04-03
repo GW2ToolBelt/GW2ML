@@ -40,6 +40,8 @@ tasks {
     }
 
     javadoc {
+        setDestinationDir(layout.projectDirectory.dir("docs/site/api").asFile)
+
         with (options as StandardJavadocDocletOptions) {
             tags = listOf(
                 "apiNote:a:API Note:",
