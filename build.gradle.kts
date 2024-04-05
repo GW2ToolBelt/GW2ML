@@ -78,4 +78,8 @@ repositories {
 
 dependencies {
     compileOnly(libs.jspecify)
+
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter.api)
+    runtimeOnly(libs.junit.jupiter.engine)
 }

@@ -1,12 +1,18 @@
 [versions]
 gradle-toolchain-switches = "0.3.0"
 jspecify = "0.3.0"
+junit = "5.10.2"
 
 
 [libraries]
 # org.jspecify - JSpecify
 # https://github.com/jspecify/jspecify
 jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
+
+# org.junit - JUnit
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 
 
 [plugins]
