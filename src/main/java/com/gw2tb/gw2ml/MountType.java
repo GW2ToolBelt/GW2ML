@@ -125,13 +125,11 @@ public enum MountType {
     ));
 
     /**
-     * Returns the appropriate {@code MountType} representation for the given numerical value.
+     * {@return the appropriate {@code MountType} representation for the given numerical value}
      *
      * <p>If the given value does not correspond to any known {@code MountType}, {@link #UNKNOWN} is returned.</p>
      *
      * @param mountType   the map type to search
-     *
-     * @return  the appropriate {@code MountType} representation for the given numerical value
      *
      * @since   2.1.0
      */
@@ -140,13 +138,11 @@ public enum MountType {
     }
 
     /**
-     * Returns the appropriate {@code MountType} representation for the given numerical value.
+     * {@return the appropriate {@code MountType} representation for the given numerical value}
      *
      * <p>If the given value does not correspond to any known {@code MountType}, {@link #UNKNOWN} is returned.</p>
      *
      * @param mountType   the map type to search
-     *
-     * @return  the appropriate {@code MountType} representation for the given numerical value
      *
      * @since   2.1.0
      */
@@ -161,11 +157,9 @@ public enum MountType {
     }
 
     /**
-     * Returns the numerical value of this mount type.
+     * {@return the numerical value of this mount type}
      *
      * <p>This is the same value as the value returned by {@link MumbleLink.Context#getMountType()}.</p>
-     *
-     * @return  the numerical value of this mount type
      *
      * @since   1.5.0
      */

@@ -360,9 +360,7 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * Returns whether this object is invalid.
-     *
-     * @return  whether this object is invalid
+     * {@return whether this object is invalid}
      *
      * @see #close()
      *
@@ -580,11 +578,9 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * Returns the version number as specified by the MumbleLink standard.
+     * {@return the version number as specified by the MumbleLink standard}
      *
      * <p>This is part of the MumbleLink standard and useless to most applications.</p>
-     *
-     * @return  the version number as specified by the MumbleLink standard
      *
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
      *
@@ -596,7 +592,7 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * Returns an integral identifier that is incremented every time the MumbleLink data is updated.
+     * {@return an integral identifier that is incremented every time the MumbleLink data is updated}
      *
      * <p>Notes:</p>
      *
@@ -604,8 +600,6 @@ public final class MumbleLink implements AutoCloseable {
      * <li>At the time of writing MumbleLink data is not updated during loading screens. Thus, this identifier may be
      * used to (roughly) detect whether game client is currently in one. (Keep in mind that is behavior might change.)</li>
      * </ul>
-     *
-     * @return  an integral identifier that is incremented every time the MumbleLink data is updated
      *
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
      *
@@ -805,9 +799,7 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * Returns a JSON-formatted {@code String} with additional information.
-     *
-     * @return  a JSON-formatted {@code String} with additional information
+     * {@return a JSON-formatted {@code String} with additional information}
      *
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
      *
@@ -819,11 +811,8 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * Returns the length of the context (in bytes) that will be used by a MumbleServer to determine whether two users
-     * can hear each other positionally.
-     *
-     * @return  the length of the context (in bytes) that will be used by a MumbleServer to determine whether two users
-     *          can hear each other positionally
+     * {@return the length of the context (in bytes) that will be used by a MumbleServer to determine whether two users
+     * can hear each other positionally}
      *
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
      *
@@ -835,11 +824,9 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * Returns a {@link Context} object that may be used to access the additional context information.
+     * {@return a {@code Context} object that may be used to access the additional context information}
      *
      * <p>The returned object is strongly tied to this object and is only valid as long as this object is valid.</p>
-     *
-     * @return  a {@code Context} object that may be used to access the additional context information.
      *
      * @since   0.1.0
      */
@@ -848,9 +835,7 @@ public final class MumbleLink implements AutoCloseable {
     }
 
     /**
-     * Returns the description that may provide additional information about the game's current state.
-     *
-     * @return  the description that may provide additional information about the game's current state
+     * {@return the description that may provide additional information about the game's current state}
      *
      * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
      *
@@ -1063,9 +1048,7 @@ public final class MumbleLink implements AutoCloseable {
         private InetSocketAddress inetAddress;
 
         /**
-         * Returns the address of the map server that the game client is currently connected to.
-         *
-         * @return  the address of the map server that the game client is currently connected to
+         * {@return the address of the map server that the game client is currently connected to}
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1144,11 +1127,9 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns information about the type of the map the player is currently on.
+         * {@return information about the type of the map the player is currently on}
          *
          * <p>The functionality provided by {@link MapType} may be used to interpret the value.</p>
-         *
-         * @return  information about the type of the map the player is currently on
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1160,9 +1141,7 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns a 32bit bitfield that contains various information about the current game shard.
-         *
-         * @return  a 32bit bitfield that contains various information about the current game shard
+         * {@return a 32bit bitfield that contains various information about the current game shard}
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1176,9 +1155,7 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns the ID of the current game instance.
-         *
-         * @return  the ID of the current game instance
+         * {@return the ID of the current game instance}
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1207,11 +1184,9 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns a 32bit bitfield that contains various information about the current state of the game UI.
+         * {@return a 32bit bitfield that contains various information about the current state of the game UI}
          *
          * <p>The functionality provided by {@link UIState} may be used to interpret the value of the bitfield.</p>
-         *
-         * @return  a 32bit bitfield that contains various information about the current state of the game UI.
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1223,9 +1198,7 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns the width of the compass in pixels.
-         *
-         * @return  the width of the compass in pixels
+         * {@return the width of the compass in pixels}
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1237,9 +1210,7 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns the height of the compass in pixels.
-         *
-         * @return  the height of the compass in pixels
+         * {@return the height of the compass in pixels}
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1251,9 +1222,7 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns the rotation of the compass in radians.
-         *
-         * @return  the rotation of the compass in radians
+         * {@return the rotation of the compass in radians}
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1265,9 +1234,7 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns the {@code X}-component of the position of the player in continent coordinates.
-         *
-         * @return  the {@code X}-component of the position of the player in continent coordinates
+         * {@return the {@code X}-component of the position of the player in continent coordinates}
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1279,9 +1246,7 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns the {@code Y}-component of the position of the player in continent coordinates.
-         *
-         * @return  the {@code Y}-component of the position of the player in continent coordinates
+         * {@return the {@code Y}-component of the position of the player in continent coordinates}
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1293,9 +1258,7 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns the {@code X}-component of the position at the center of the map.
-         *
-         * @return  the {@code X}-component of the position at the center of the map
+         * {@return the {@code X}-component of the position at the center of the map}
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1307,9 +1270,7 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns the {@code Y}-component of the position at the center of the map.
-         *
-         * @return  the {@code Y}-component of the position at the center of the map
+         * {@return the {@code Y}-component of the position at the center of the map}
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1321,9 +1282,7 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns the scale of the map.
-         *
-         * @return  the scale of the map
+         * {@return the scale of the map}
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1335,9 +1294,7 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns the ID of the process.
-         *
-         * @return  the ID of the process
+         * {@return the ID of the process}
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *
@@ -1349,11 +1306,9 @@ public final class MumbleLink implements AutoCloseable {
         }
 
         /**
-         * Returns information about the type of the mount the player is currently riding.
+         * {@return information about the type of the mount the player is currently riding}
          *
          * <p>The functionality provided by {@link MountType} may be used to interpret the value.</p>
-         *
-         * @return  information about the type of the mount the player is currently riding
          *
          * @throws IllegalStateException    if this view was {@link #isClosed() invalidated}
          *

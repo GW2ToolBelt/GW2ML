@@ -212,13 +212,11 @@ public enum MapType {
     ));
 
     /**
-     * Returns the appropriate {@code MapType} representation for the given numerical value.
+     * {@return the appropriate {@code MapType} representation for the given numerical value}
      *
      * <p>If the given value does not correspond to any known {@code MapType}, {@link #UNKNOWN} is returned.</p>
      *
      * @param mapType   the map type to search
-     *
-     * @return  the appropriate {@code MapType} representation for the given numerical value
      *
      * @since   1.0.0
      */
@@ -233,11 +231,9 @@ public enum MapType {
     }
 
     /**
-     * Returns the numerical value of this map type.
+     * {@return the numerical value of this mount type}
      *
      * <p>This is the same value as the value returned by {@link MumbleLink.Context#getMapType()}.</p>
-     *
-     * @return  the numerical value of this map type
      *
      * @since   1.0.0
      */
