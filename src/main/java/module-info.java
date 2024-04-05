@@ -19,8 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import com.gw2tb.gw2ml.MumbleLink;
 import org.jspecify.annotations.NullMarked;
 
+/**
+ * Defines classes and interfaces for reading data from Guild Wars 2 using the MumbleLink API.
+ *
+ * @see MumbleLink
+ */
 @NullMarked
 module com.gw2tb.gw2ml {
 
