@@ -31,8 +31,7 @@ final class Native {
 
     public static final MemorySegment INVALID_HANDLE_VALUE = MemorySegment.ofAddress(-1L);
 
-    public static final int FILE_MAP_READ   = 0x0002,
-                            FILE_MAP_WRITE  = 0x0004;
+    public static final int FILE_MAP_WRITE  = 0x0004;
 
     public static final int PAGE_EXECUTE_READWRITE = 0x40;
 
