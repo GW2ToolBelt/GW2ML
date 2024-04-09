@@ -39,6 +39,10 @@ tasks {
         options.release = 22
     }
 
+    withType<Test>().configureEach {
+        useJUnitPlatform()
+    }
+
     javadoc {
         setDestinationDir(layout.projectDirectory.dir("docs/site/api").asFile)
 
