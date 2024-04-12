@@ -235,9 +235,12 @@ public enum MapType {
      *
      * <p>This is the same value as the value returned by {@link MumbleLink.Context#getMapType()}.</p>
      *
+     * @throws IllegalArgumentException if this is {@link #UNKNOWN}
+     *
      * @since   1.0.0
      */
     public long numericalValue() {
+        if (this == UNKNOWN) throw new IllegalArgumentException("Cannot get numerical value of MapType.UNKNOWN");
         return this.mapType;
     }
 

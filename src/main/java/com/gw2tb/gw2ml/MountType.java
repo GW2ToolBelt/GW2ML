@@ -161,9 +161,12 @@ public enum MountType {
      *
      * <p>This is the same value as the value returned by {@link MumbleLink.Context#getMountType()}.</p>
      *
+     * @throws IllegalArgumentException if this is {@link #UNKNOWN}
+     *
      * @since   1.5.0
      */
     public long numericalValue() {
+        if (this == UNKNOWN) throw new IllegalArgumentException("Cannot get numerical value of MountType.UNKNOWN");
         return this.mountType;
     }
 
