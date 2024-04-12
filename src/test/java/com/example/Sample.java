@@ -21,10 +21,13 @@
  */
 package com.example;
 
+import com.gw2tb.gw2ml.MapType;
+import com.gw2tb.gw2ml.MountType;
+import com.gw2tb.gw2ml.MumbleLink;
+import com.gw2tb.gw2ml.UIState;
+
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
-
-import com.gw2tb.gw2ml.*;
 
 public class Sample {
 
