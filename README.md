@@ -8,6 +8,8 @@
 GW2ML is a Java library for fast and non-cached access to the data provided
 by the Guild Wars 2 game client via the MumbleLink mechanism.
 
+Just like Guild Wars 2 itself, this library is only compatible with Windows.
+
 
 ## Usage
 
