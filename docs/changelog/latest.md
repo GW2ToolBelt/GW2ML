@@ -1,8 +1,23 @@
-### 2.2.2
+### 3.0.0
 
-_Released 2022 Aug 27_
+_Released 2024 Apr 13_
 
-#### Fixes
+#### Improvements
 
-- Removed instance caching to resolve issues with closing of cached instances.
-- The byte order is now properly reset after parsing the server address.
+- Migrated from JNI to Java's new FFI.
+    - This removes the need to have a separate native artifact alongside the
+      library.
+    - Introduced new method overloads that accept `MemorySegment` instead of
+      `ByteBuffer`.
+    - Deprecated the `ByteBuffer` methods for removal.
+- Migrated from JSR305 annotations to [JSpecify](https://jspecify.dev/).
+
+#### Breaking Changes
+
+- Attempts to receive the numerical value for `UNKNOWN` enum types will now
+  throw an `IllegalArgumentException`.
+- `MumbleLink#viewOf(ByteBuffer)` now requires a direct buffer.
+- Removed (public) dependency on `com.google.code.findbugs:jsr305`.
+- Removed the deprecated `MountType#valueOf(long)` overload.
+- The deprecated public constructor of `MumbleLink.Context` has been hidden.
+- The minimum required Java version is now 22.
