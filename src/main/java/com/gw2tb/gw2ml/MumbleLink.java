@@ -572,9 +572,7 @@ public final class MumbleLink implements AutoCloseable {
         if (srcOffset + length > BYTES) throw new IndexOutOfBoundsException();
         if (destOffset + length > dest.byteSize()) throw new IndexOutOfBoundsException();
 
-        for (int i = 0; i < length; i++) {
-            dest.set(JAVA_BYTE, destOffset + i, this.data.get(JAVA_BYTE, srcOffset + i));
-        }
+        MemorySegment.copy(this.data, srcOffset, dest, destOffset, length);
     }
 
     /**
@@ -1036,9 +1034,7 @@ public final class MumbleLink implements AutoCloseable {
             if (srcOffset + length > BYTES) throw new IndexOutOfBoundsException();
             if (destOffset + length > dest.byteSize()) throw new IndexOutOfBoundsException();
 
-            for (int i = 0; i < length; i++) {
-                dest.set(JAVA_BYTE, destOffset + i, MumbleLink.this.data.get(JAVA_BYTE, LINKED_MEMORY.byteOffset(groupElement("context")) + srcOffset + i));
-            }
+            MemorySegment.copy(MumbleLink.this.data, LINKED_MEMORY.byteOffset(groupElement("context")) + srcOffset, dest, destOffset, length);
         }
 
         @SuppressWarnings("resource")
