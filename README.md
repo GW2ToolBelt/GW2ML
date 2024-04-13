@@ -19,6 +19,12 @@ which must be used to open a view of the MumbleLink data before anything can be
 read. Once that is done the data can be accessed through various getter methods
 on the returned view object.
 
+```java
+try (var mumbleLink = MumbleLink.open()) {
+    System.out.println(mumbleLink.getName());
+}
+```
+
 A sample program that prints all data every few seconds to the command line can
 be found [here](/src/test/java/com/example/Sample.java).
 (This is also useful for testing whether your game client is writing any data.)
