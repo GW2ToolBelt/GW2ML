@@ -805,7 +805,7 @@ public final class MumbleLink implements AutoCloseable {
      */
     public String getIdentity() {
         this.validateState();
-        return wcharsToString(this.data, LINKED_MEMORY.byteOffset(groupElement("identity")), 1024);
+        return wcharsToString(this.data, LINKED_MEMORY.byteOffset(groupElement("identity")), 256);
     }
 
     /**
@@ -843,7 +843,7 @@ public final class MumbleLink implements AutoCloseable {
      */
     public String getDescription() {
         this.validateState();
-        return wcharsToString(this.data, LINKED_MEMORY.byteOffset(groupElement("description")), 4096);
+        return wcharsToString(this.data, LINKED_MEMORY.byteOffset(groupElement("description")), 2048);
     }
 
     /**
