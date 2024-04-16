@@ -1,23 +1,7 @@
-### 3.0.0
+### 3.0.1
 
-_Released 2024 Apr 13_
+_Released 2024 Apr 16_
 
-#### Improvements
+#### Fixes
 
-- Migrated from JNI to Java's new FFI.
-    - This removes the need to have a separate native artifact alongside the
-      library.
-    - Introduced new method overloads that accept `MemorySegment` instead of
-      `ByteBuffer`.
-    - Deprecated the `ByteBuffer` methods for removal.
-- Migrated from JSR305 annotations to [JSpecify](https://jspecify.dev/).
-
-#### Breaking Changes
-
-- Attempts to receive the numerical value for `UNKNOWN` enum types will now
-  throw an `IllegalArgumentException`.
-- `MumbleLink#viewOf(ByteBuffer)` now requires a direct buffer.
-- Removed (public) dependency on `com.google.code.findbugs:jsr305`.
-- Removed the deprecated `MountType#valueOf(long)` overload.
-- The deprecated public constructor of `MumbleLink.Context` has been hidden.
-- The minimum required Java version is now 22.
+- `MumbleLink#clear` does no longer crash the JVM. [[GH-25](https://github.com/GW2ToolBelt/GW2ML/issues/25)]
