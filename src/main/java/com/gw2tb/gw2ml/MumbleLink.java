@@ -257,7 +257,6 @@ public final class MumbleLink implements AutoCloseable {
             hFileMapping = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_EXECUTE_READWRITE, 0, BYTES, handle);
 
             if (hFileMapping.equals(NULL)) {
-                // TODO throw
                 throw new IllegalStateException("Failed to create file mapping");
             }
         }
