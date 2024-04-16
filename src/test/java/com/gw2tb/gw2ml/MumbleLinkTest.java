@@ -68,6 +68,13 @@ public final class MumbleLinkTest {
     }
 
     @Test
+    public void testClear() {
+        try (MumbleLink mumbleLink = MumbleLink.open()) {
+            mumbleLink.clear();
+        }
+    }
+
+    @Test
     public void testClose() {
         MumbleLink mumbleLink = MumbleLink.open();
         assertEquals(0, mumbleLink.getUIVersion());

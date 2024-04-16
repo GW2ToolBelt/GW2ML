@@ -251,7 +251,7 @@ public final class MumbleLink implements AutoCloseable {
      * @since   1.4.0
      */
     public static MumbleLink open(String handle) {
-        MemorySegment hFileMapping = OpenFileMapping(FILE_MAP_WRITE, false, handle);
+        MemorySegment hFileMapping = OpenFileMapping(FILE_MAP_ALL_ACCESS, false, handle);
 
         if (hFileMapping.equals(NULL)) {
             hFileMapping = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_EXECUTE_READWRITE, 0, BYTES, handle);
@@ -262,7 +262,7 @@ public final class MumbleLink implements AutoCloseable {
             }
         }
 
-        MemorySegment linkedMemory = MapViewOfFile(hFileMapping, FILE_MAP_WRITE, 0, 0, BYTES);
+        MemorySegment linkedMemory = MapViewOfFile(hFileMapping, FILE_MAP_ALL_ACCESS, 0, 0, BYTES);
         if (linkedMemory.equals(NULL)) {
             CloseHandle(hFileMapping);
             throw new IllegalStateException("Failed to close file mapping");
