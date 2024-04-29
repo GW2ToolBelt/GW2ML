@@ -14,7 +14,7 @@ mergedeep==1.3.4
 mike==2.0.0
 mkdocs==1.6.0
 mkdocs-get-deps==0.2.0
-mkdocs-material==9.5.19
+mkdocs-material==9.5.20
 mkdocs-material-extensions==1.3
 packaging==22.0
 paginate==0.5.6
