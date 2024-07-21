@@ -1,0 +1,3 @@
+{
+    "extends": ["github>GW2ToolBelt/.github//.github/renovate.json5"],
+}
