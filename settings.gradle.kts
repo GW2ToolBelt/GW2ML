@@ -34,3 +34,11 @@ plugins {
 rootProject.name = "GW2ML"
 
 enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        register("buildDeps") {
+            from(files("./gradle/build.versions.toml"))
+        }
+    }
+}

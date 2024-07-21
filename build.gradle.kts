@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 plugins {
-    alias(libs.plugins.gradle.toolchain.switches)
+    alias(buildDeps.plugins.gradle.toolchain.switches)
     id("com.gw2tb.maven-publish-conventions")
     `java-library`
 }
@@ -83,7 +83,7 @@ repositories {
 dependencies {
     compileOnly(libs.jspecify)
 
-    testImplementation(platform(libs.junit.bom))
-    testImplementation(libs.junit.jupiter.api)
-    runtimeOnly(libs.junit.jupiter.engine)
+    testImplementation(platform(buildDeps.junit.bom))
+    testImplementation(buildDeps.junit.jupiter.api)
+    runtimeOnly(buildDeps.junit.jupiter.engine)
 }

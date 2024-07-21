@@ -1,0 +1,17 @@
+[versions]
+gradle-toolchain-switches = "0.3.0"
+junit = "5.10.2"
+
+
+[libraries]
+# org.junit - JUnit
+# https://github.com/junit-team/junit5
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+
+
+[plugins]
+# io.github.themrmilchmann.gradle.toolchainswitches:gradle-toolchain-switches - Gradle Toolchain Switches Plugin
+# https://github.com/TheMrMilchmann/gradle-toolchain-switches
+gradle-toolchain-switches = { id = "io.github.themrmilchmann.toolchain-switches", version.ref = "gradle-toolchain-switches" }
