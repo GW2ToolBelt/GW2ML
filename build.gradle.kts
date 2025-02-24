@@ -85,5 +85,5 @@ dependencies {
 
     testImplementation(platform(buildDeps.junit.bom))
     testImplementation(buildDeps.junit.jupiter.api)
-    runtimeOnly(buildDeps.junit.jupiter.engine)
+    testRuntimeOnly(buildDeps.junit.jupiter.engine)
 }
