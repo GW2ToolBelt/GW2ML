@@ -1,3 +1,14 @@
+### 3.0.2
+
+_Released 2025 Feb 24_
+
+#### Fixes
+
+- The library no longer depends on JUnit at runtime.
+
+
+---
+
 ### 3.0.1
 
 _Released 2024 Apr 16_

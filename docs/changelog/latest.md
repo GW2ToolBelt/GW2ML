@@ -1,7 +1,7 @@
-### 3.0.1
+### 3.0.2
 
-_Released 2024 Apr 16_
+_Released 2025 Feb 24_
 
 #### Fixes
 
-- `MumbleLink#clear` does no longer crash the JVM. [[GH-25](https://github.com/GW2ToolBelt/GW2ML/issues/25)]
+- The library no longer depends on JUnit at runtime.
