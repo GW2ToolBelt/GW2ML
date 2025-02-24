@@ -36,6 +36,12 @@ rootProject.name = "GW2ML"
 enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
 dependencyResolutionManagement {
+    repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
+
+    repositories {
+        mavenCentral()
+    }
+
     versionCatalogs {
         register("buildDeps") {
             from(files("./gradle/build.versions.toml"))

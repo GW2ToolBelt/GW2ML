@@ -76,10 +76,6 @@ publishing {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     compileOnly(libs.jspecify)
 
