@@ -13,7 +13,6 @@ concurrency:
 
 
 env:
-  JDK_VERSION: "21"
   DOCS_BUNDLE: docs.bundle
   DOCS_BUNDLE_ARTIFACT: docs-bundle
   WORKSPACE_ARCHIVE: workspace.tar
@@ -32,7 +31,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: ${{ env.JDK_VERSION }}
+          java-version-file: .github/workflows/.java-version
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -70,7 +69,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: ${{ env.JDK_VERSION }}
+          java-version-file: .github/workflows/.java-version
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -200,7 +199,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: ${{ env.JDK_VERSION }}
+          java-version-file: .github/workflows/.java-version
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4

@@ -6,7 +6,6 @@ on:
 
 
 env:
-  JDK_VERSION: "21"
   WORKSPACE_ARCHIVE: workspace.tar
   WORKSPACE_ARTIFACT: build-results
 
@@ -23,7 +22,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: ${{ env.JDK_VERSION }}
+          java-version-file: .github/workflows/.java-version
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -97,7 +96,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: ${{ env.JDK_VERSION }}
+          java-version-file: .github/workflows/.java-version
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
