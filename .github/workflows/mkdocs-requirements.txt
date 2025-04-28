@@ -8,7 +8,7 @@ babel==2.17.0
     # via mkdocs-material
 backrefs==5.7.post1
     # via mkdocs-material
-certifi==2025.1.31
+certifi==2025.4.26
     # via requests
 charset-normalizer==3.4.1
     # via requests
@@ -68,7 +68,7 @@ platformdirs==4.3.6
     # via mkdocs-get-deps
 pygments==2.19.1
     # via mkdocs-material
-pymdown-extensions==10.14.3
+pymdown-extensions==10.15
     # via mkdocs-material
 pyparsing==3.1.4
     # via mike
