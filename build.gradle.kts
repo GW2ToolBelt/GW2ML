@@ -59,11 +59,6 @@ tasks {
 
     withType<Jar>().configureEach {
         archiveBaseName = "gw2ml"
-
-        isPreserveFileTimestamps = false
-        isReproducibleFileOrder = true
-
-        includeEmptyDirs = false
     }
 }
 
