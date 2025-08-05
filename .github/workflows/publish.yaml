@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{ env.WORKSPACE_ARTIFACT }}
           path: .
@@ -87,7 +87,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Checkout
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{ env.WORKSPACE_ARTIFACT }}
           path: .
@@ -141,7 +141,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Checkout
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{ env.DOCS_BUNDLE_ARTIFACT }}
           path: .
@@ -185,7 +185,7 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
       - name: Checkout
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{ env.WORKSPACE_ARTIFACT }}
           path: .
