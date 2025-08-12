@@ -37,6 +37,7 @@ jobs:
     strategy:
       matrix:
         jdk: [ 22, 24 ]
+    needs: build
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -53,7 +54,6 @@ jobs:
 
       - name: Gradle Check
         run: ./gradlew check --info -S --show-version -Ptoolchain.test.version=${{ matrix.jdk }}
-
 
   build-docs:
     name: Build Documentation
