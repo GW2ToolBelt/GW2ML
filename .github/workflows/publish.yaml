@@ -53,6 +53,7 @@ jobs:
         uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4
 
       - name: Gradle Check
+        shell: bash
         run: ./gradlew check --info -S --show-version -Ptoolchain.test.version=${{ matrix.jdk }}
 
   build-docs:
