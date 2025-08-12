@@ -8,6 +8,10 @@ concurrency:
   group: "publish"
   cancel-in-progress: false
 
+env:
+  DOCS_BUNDLE: docs.bundle
+  DOCS_BUNDLE_ARTIFACT: docs-bundle
+
 jobs:
   build:
     name: Build
