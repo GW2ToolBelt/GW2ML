@@ -72,7 +72,7 @@ publishing {
 }
 
 dependencies {
-    compileOnly(libs.jspecify)
+    api(libs.jspecify)
 
     testImplementation(platform(buildDeps.junit.bom))
     testImplementation(buildDeps.junit.jupiter.api)

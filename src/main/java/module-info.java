@@ -30,7 +30,7 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 module com.gw2tb.gw2ml {
 
-    requires static org.jspecify;
+    requires transitive org.jspecify;
 
     exports com.gw2tb.gw2ml;
 
