@@ -36,6 +36,7 @@ java {
 
 tasks {
     withType<JavaCompile>().configureEach {
+        options.javaModuleVersion = "$version"
         options.release = 22
     }
 
