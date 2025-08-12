@@ -1,3 +1,16 @@
+### 3.1.0
+
+_Released 2025 Aug 12_
+
+#### Improvements
+
+- JSpecify is now exposed as "api" dependency to consumers.
+    - This is done to ensure that tooling can properly handle the
+      JSpecify-annotated public API of this library.
+
+
+---
+
 ### 3.0.2
 
 _Released 2025 Feb 24_

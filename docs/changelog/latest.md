@@ -1,7 +1,9 @@
-### 3.0.2
+### 3.1.0
 
-_Released 2025 Feb 24_
+_Released 2025 Aug 12_
 
-#### Fixes
+#### Improvements
 
-- The library no longer depends on JUnit at runtime.
+- JSpecify is now exposed as "api" dependency to consumers.
+    - This is done to ensure that tooling can properly handle the
+      JSpecify-annotated public API of this library.
