@@ -10,9 +10,9 @@ backrefs==6.2
     # via mkdocs-material
 certifi==2026.2.25
     # via requests
-charset-normalizer==3.4.6
+charset-normalizer==3.4.7
     # via requests
-click==8.3.1
+click==8.3.2
     # via mkdocs
 colorama==0.4.6
     # via mkdocs-material
@@ -77,7 +77,7 @@ pyyaml-env-tag==1.1
     # via
     #   mike
     #   mkdocs
-requests==2.33.0
+requests==2.33.1
     # via mkdocs-material
 six==1.17.0
     # via python-dateutil
