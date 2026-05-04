@@ -6,7 +6,7 @@
 #
 babel==2.18.0
     # via mkdocs-material
-backrefs==6.2
+backrefs==7.0
     # via mkdocs-material
 certifi==2026.4.22
     # via requests
