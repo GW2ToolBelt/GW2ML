@@ -12,13 +12,13 @@ certifi==2026.4.22
     # via requests
 charset-normalizer==3.4.7
     # via requests
-click==8.3.3
+click==8.4.0
     # via mkdocs
 colorama==0.4.6
     # via mkdocs-material
 ghp-import==2.1.0
     # via mkdocs
-idna==3.14
+idna==3.15
     # via requests
 jinja2==3.1.6
     # via
@@ -60,7 +60,7 @@ platformdirs==4.9.6
     # via mkdocs-get-deps
 pygments==2.20.0
     # via mkdocs-material
-pymdown-extensions==10.21.2
+pymdown-extensions==10.21.3
     # via mkdocs-material
 pyparsing==3.3.2
     # via mike
@@ -77,7 +77,7 @@ pyyaml-env-tag==1.1
     # via
     #   mike
     #   mkdocs
-requests==2.33.1
+requests==2.34.2
     # via mkdocs-material
 six==1.17.0
     # via python-dateutil
