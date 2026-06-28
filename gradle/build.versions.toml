@@ -1,6 +1,6 @@
 [versions]
 gradle-toolchain-switches = "0.3.0"
-junit = "6.1.0"
+junit = "6.1.1"
 
 
 [libraries]
