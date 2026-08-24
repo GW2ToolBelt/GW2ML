@@ -18,7 +18,7 @@ colorama==0.4.6
     # via mkdocs-material
 ghp-import==2.1.0
     # via mkdocs
-idna==3.18
+idna==3.19
     # via requests
 jinja2==3.1.6
     # via
@@ -58,9 +58,9 @@ pathspec==1.1.1
     # via mkdocs
 platformdirs==4.11.3
     # via mkdocs-get-deps
-pygments==2.20.0
+pygments==2.21.0
     # via mkdocs-material
-pymdown-extensions==11.0.1
+pymdown-extensions==11.0.2
     # via mkdocs-material
 pyparsing==3.3.2
     # via mike
